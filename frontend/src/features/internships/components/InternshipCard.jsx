@@ -81,7 +81,6 @@ export function InternshipCard({
     : internship.postedDate || 'Just posted';
 
   const skills = Array.isArray(internship.skills) ? internship.skills : [];
-  const category = internship.category;
   const featured = Boolean(internship.featured);
 
   const locationBadgeStyles = {
