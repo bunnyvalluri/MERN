@@ -11,6 +11,7 @@ import {
   MapPin,
   DollarSign,
   Laptop,
+  Briefcase,
 } from 'lucide-react';
 
 const COMMON_SKILLS = [
@@ -19,13 +20,16 @@ const COMMON_SKILLS = [
   'TypeScript',
   'Node.js',
   'Python',
+  'PyTorch',
   'Java',
   'C++',
   'Go',
-  'MongoDB',
+  'Rust',
   'PostgreSQL',
   'AWS',
   'Docker',
+  'Kubernetes',
+  'GraphQL',
 ];
 
 export function InternshipFilters({ filters, onFilterChange, onReset, onClose }) {
@@ -86,10 +90,35 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
       <div className="space-y-1.5">
         <label className="text-xs font-semibold text-slate-700">Keyword / Role</label>
         <Input
-          placeholder="e.g. Software Engineer, React"
+          placeholder="e.g. AI, React, Python, Stripe"
           leftIcon={<Search className="w-4 h-4" />}
           value={filters.search || ''}
           onChange={(e) => handleInputChange('search', e.target.value)}
+        />
+      </div>
+
+      {/* Domain / Category Filter */}
+      <div className="space-y-1.5">
+        <label className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+          <Briefcase className="w-3.5 h-3.5 text-brand-600" />
+          Opportunity Domain
+        </label>
+        <Select
+          value={filters.category || 'ALL'}
+          onChange={(e) => handleInputChange('category', e.target.value)}
+          options={[
+            { value: 'ALL', label: 'All Domains (100+)' },
+            { value: 'LIVE_FEED', label: '🟢 Live Synced 24/7 Drops' },
+            { value: 'TIER_1', label: '🏢 Verified Tier-1 Tech' },
+            { value: 'Artificial Intelligence', label: '🤖 AI & Foundation Models' },
+            { value: 'Full-Stack Engineering', label: '💻 Full-Stack Engineering' },
+            { value: 'Frontend Engineering', label: '🎨 Frontend & UI/UX' },
+            { value: 'Backend Engineering', label: '⚙️ Backend Engineering' },
+            { value: 'Systems Engineering', label: '⚡ Systems & Low-Level' },
+            { value: 'DevOps & Infrastructure', label: '☁️ DevOps & Cloud' },
+            { value: 'Security Engineering', label: '🛡️ Cybersecurity' },
+            { value: 'Quantitative Trading', label: '📈 Quant Trading & FinTech' },
+          ]}
         />
       </div>
 
@@ -155,7 +184,7 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
         <label className="text-xs font-semibold text-slate-700">Minimum Monthly Stipend ($)</label>
         <Input
           type="number"
-          placeholder="e.g. 1000"
+          placeholder="e.g. 5000"
           leftIcon={<DollarSign className="w-4 h-4" />}
           value={filters.minStipend || ''}
           onChange={(e) => handleInputChange('minStipend', e.target.value)}
@@ -170,17 +199,18 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
           value={filters.datePosted || 'all'}
           onChange={(e) => handleInputChange('datePosted', e.target.value)}
           options={[
-            { value: 'all', label: 'Any time' },
-            { value: 'today', label: 'Past 24 hours' },
-            { value: 'past_week', label: 'Past week' },
-            { value: 'past_month', label: 'Past month' },
+            { value: 'all', label: 'Any time (24/7)' },
+            { value: '24h', label: 'Past 24 hours' },
+            { value: '7d', label: 'Past 7 days' },
+            { value: '14d', label: 'Past 14 days' },
+            { value: '30d', label: 'Past 30 days' },
           ]}
         />
       </div>
 
       {/* Popular Skills Chips */}
       <div className="space-y-2 pt-2 border-t border-slate-100">
-        <label className="text-xs font-semibold text-slate-700 block">Skills Filter</label>
+        <label className="text-xs font-semibold text-slate-700 block">Popular Tech Stacks</label>
         <div className="flex flex-wrap gap-1.5">
           {COMMON_SKILLS.map((skill) => {
             const isSelected = selectedSkillsList.includes(skill);
