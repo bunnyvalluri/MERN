@@ -1,10 +1,5 @@
 import React from 'react';
 import {
-  Input,
-  Button,
-  Select,
-} from '../../../components/ui/index.js';
-import {
   Filter,
   RotateCcw,
   Search,
@@ -12,24 +7,36 @@ import {
   DollarSign,
   Laptop,
   Briefcase,
+  Layers,
+  Sparkles,
+  Check,
 } from 'lucide-react';
 
 const COMMON_SKILLS = [
   'React',
-  'JavaScript',
   'TypeScript',
+  'JavaScript',
   'Node.js',
   'Python',
   'PyTorch',
-  'Java',
-  'C++',
   'Go',
   'Rust',
+  'C++',
+  'Java',
   'PostgreSQL',
-  'AWS',
   'Docker',
   'Kubernetes',
+  'AWS',
   'GraphQL',
+  'Next.js',
+  'Swift',
+];
+
+const STIPEND_PRESETS = [
+  { label: 'Any Stipend', value: '' },
+  { label: '$5k+/mo', value: '5000' },
+  { label: '$8k+/mo', value: '8000' },
+  { label: '$10k+/mo', value: '10000' },
 ];
 
 export function InternshipFilters({ filters, onFilterChange, onReset, onClose }) {
@@ -56,23 +63,44 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
     ? filters.skills.split(',').map((s) => s.trim()).filter(Boolean)
     : [];
 
+  const activeCount = [
+    filters.search,
+    filters.location,
+    filters.remote !== 'ALL' && filters.remote,
+    filters.category !== 'ALL' && filters.category,
+    filters.type !== 'ALL' && filters.type,
+    filters.minStipend,
+    filters.skills,
+    filters.datePosted !== 'all' && filters.datePosted,
+  ].filter(Boolean).length;
+
   return (
-    <aside className="w-full space-y-6 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-      <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+    <aside className="w-full space-y-6 bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/90 shadow-sm">
+      {/* Header */}
+      <div className="flex items-center justify-between pb-4 border-b border-slate-100">
         <div className="flex items-center gap-2">
-          <Filter className="w-4 h-4 text-brand-600" />
-          <h3 className="text-sm font-bold text-slate-900 tracking-tight">Filter Opportunities</h3>
+          <div className="w-8 h-8 rounded-xl bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600">
+            <Filter className="w-4 h-4" />
+          </div>
+          <div>
+            <h3 className="text-sm font-extrabold text-slate-900 tracking-tight">Filters</h3>
+            {activeCount > 0 && (
+              <span className="text-[11px] text-brand-600 font-semibold">{activeCount} active</span>
+            )}
+          </div>
         </div>
+
         <div className="flex items-center gap-1.5">
-          <Button
-            variant="ghost"
-            size="xs"
-            leftIcon={<RotateCcw className="w-3.5 h-3.5" />}
-            onClick={onReset}
-            className="text-slate-500 hover:text-slate-900"
-          >
-            Reset
-          </Button>
+          {activeCount > 0 && (
+            <button
+              type="button"
+              onClick={onReset}
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+            >
+              <RotateCcw className="w-3 h-3" />
+              Reset
+            </button>
+          )}
           {onClose && (
             <button
               type="button"
@@ -88,63 +116,69 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
 
       {/* Keyword Search */}
       <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-slate-700">Keyword / Role</label>
-        <Input
-          placeholder="e.g. AI, React, Python, Stripe"
-          leftIcon={<Search className="w-4 h-4" />}
-          value={filters.search || ''}
-          onChange={(e) => handleInputChange('search', e.target.value)}
-        />
+        <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+          <Search className="w-3.5 h-3.5 text-brand-600" /> Search Keyword
+        </label>
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="e.g. AI, React, Python, Stripe"
+            value={filters.search || ''}
+            onChange={(e) => handleInputChange('search', e.target.value)}
+            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-medium text-slate-900 bg-slate-50/50 focus:bg-white focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none transition-all"
+          />
+        </div>
       </div>
 
-      {/* Domain / Category Filter */}
+      {/* Domain / Category Dropdown */}
       <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
-          <Briefcase className="w-3.5 h-3.5 text-brand-600" />
-          Opportunity Domain
+        <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+          <Briefcase className="w-3.5 h-3.5 text-brand-600" /> Domain & Category
         </label>
-        <Select
+        <select
           value={filters.category || 'ALL'}
           onChange={(e) => handleInputChange('category', e.target.value)}
-          options={[
-            { value: 'ALL', label: 'All Domains (100+)' },
-            { value: 'LIVE_FEED', label: '🟢 Live Synced 24/7 Drops' },
-            { value: 'TIER_1', label: '🏢 Verified Tier-1 Tech' },
-            { value: 'Artificial Intelligence', label: '🤖 AI & Foundation Models' },
-            { value: 'Full-Stack Engineering', label: '💻 Full-Stack Engineering' },
-            { value: 'Frontend Engineering', label: '🎨 Frontend & UI/UX' },
-            { value: 'Backend Engineering', label: '⚙️ Backend Engineering' },
-            { value: 'Systems Engineering', label: '⚡ Systems & Low-Level' },
-            { value: 'DevOps & Infrastructure', label: '☁️ DevOps & Cloud' },
-            { value: 'Security Engineering', label: '🛡️ Cybersecurity' },
-            { value: 'Quantitative Trading', label: '📈 Quant Trading & FinTech' },
-          ]}
-        />
+          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-800 bg-slate-50/50 focus:bg-white focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none transition-all"
+        >
+          <option value="ALL">All Categories & Domains (100+)</option>
+          <option value="LIVE_FEED">🟢 Live Synced Feeds (24/7 Drops)</option>
+          <option value="TIER_1">🏢 Verified Tier-1 Tech & FAANG</option>
+          <option value="Artificial Intelligence">🤖 AI & Foundation Models</option>
+          <option value="Full-Stack Engineering">💻 Full-Stack Engineering</option>
+          <option value="Frontend Engineering">🎨 Frontend & UI/UX</option>
+          <option value="Backend Engineering">⚙️ Backend Systems</option>
+          <option value="DevOps & Infrastructure">☁️ Cloud & DevOps</option>
+          <option value="Systems Engineering">⚡ Systems & Kernel</option>
+          <option value="Security Engineering">🛡️ Cybersecurity</option>
+          <option value="Quantitative Trading">📈 Quantitative Trading</option>
+        </select>
       </div>
 
-      {/* Location */}
+      {/* Location Input */}
       <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-slate-700">Location</label>
-        <Input
-          placeholder="City, state, or country"
-          leftIcon={<MapPin className="w-4 h-4" />}
+        <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+          <MapPin className="w-3.5 h-3.5 text-brand-600" /> Location / Region
+        </label>
+        <input
+          type="text"
+          placeholder="San Francisco, New York, Remote..."
           value={filters.location || ''}
           onChange={(e) => handleInputChange('location', e.target.value)}
+          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-medium text-slate-900 bg-slate-50/50 focus:bg-white focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none transition-all"
         />
       </div>
 
-      {/* Workplace Type (Remote/Hybrid/Onsite) */}
-      <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
-          <Laptop className="w-3.5 h-3.5 text-brand-600" />
-          Workplace Type
+      {/* Workplace Type (Remote / Hybrid / On-site) */}
+      <div className="space-y-2">
+        <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+          <Laptop className="w-3.5 h-3.5 text-brand-600" /> Workplace Mode
         </label>
         <div className="grid grid-cols-2 gap-1.5">
           {[
-            { id: 'ALL', label: 'All Types' },
-            { id: 'REMOTE', label: 'Remote Only' },
-            { id: 'HYBRID', label: 'Hybrid' },
-            { id: 'ONSITE', label: 'On-site' },
+            { id: 'ALL', label: 'All Modes' },
+            { id: 'REMOTE', label: '🌐 Remote Only' },
+            { id: 'HYBRID', label: '🏢 Hybrid' },
+            { id: 'ONSITE', label: '📍 In-Office' },
           ].map((item) => {
             const isSelected = (filters.remote || 'ALL') === item.id;
             return (
@@ -152,10 +186,10 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
                 key={item.id}
                 type="button"
                 onClick={() => handleInputChange('remote', item.id)}
-                className={`px-3 py-2 rounded-lg text-xs font-medium border transition-colors text-center shadow-sm ${
+                className={`px-3 py-2 rounded-xl text-xs font-semibold border transition-all text-center shadow-2xs ${
                   isSelected
-                    ? 'bg-brand-600 border-brand-600 text-white font-semibold'
-                    : 'bg-white border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                    ? 'bg-slate-900 border-slate-900 text-white shadow-xs'
+                    : 'bg-slate-50/60 border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-white'
                 }`}
               >
                 {item.label}
@@ -165,52 +199,71 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
         </div>
       </div>
 
-      {/* Employment Type */}
-      <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-slate-700">Commitment</label>
-        <Select
-          value={filters.type || 'ALL'}
-          onChange={(e) => handleInputChange('type', e.target.value)}
-          options={[
-            { value: 'ALL', label: 'All Commitments' },
-            { value: 'FULL_TIME', label: 'Full-Time Internship' },
-            { value: 'PART_TIME', label: 'Part-Time Internship' },
-          ]}
-        />
+      {/* Minimum Compensation Presets */}
+      <div className="space-y-2">
+        <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+          <DollarSign className="w-3.5 h-3.5 text-emerald-600" /> Minimum Stipend
+        </label>
+        <div className="grid grid-cols-2 gap-1.5">
+          {STIPEND_PRESETS.map((preset) => {
+            const isSelected = (filters.minStipend || '') === preset.value;
+            return (
+              <button
+                key={preset.label}
+                type="button"
+                onClick={() => handleInputChange('minStipend', preset.value)}
+                className={`px-3 py-2 rounded-xl text-xs font-semibold border transition-all text-center ${
+                  isSelected
+                    ? 'bg-emerald-600 border-emerald-600 text-white shadow-xs'
+                    : 'bg-slate-50/60 border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-white'
+                }`}
+              >
+                {preset.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Minimum Monthly Stipend */}
+      {/* Commitment Type */}
       <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-slate-700">Minimum Monthly Stipend ($)</label>
-        <Input
-          type="number"
-          placeholder="e.g. 5000"
-          leftIcon={<DollarSign className="w-4 h-4" />}
-          value={filters.minStipend || ''}
-          onChange={(e) => handleInputChange('minStipend', e.target.value)}
-          min={0}
-        />
+        <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+          <Layers className="w-3.5 h-3.5 text-brand-600" /> Commitment
+        </label>
+        <select
+          value={filters.type || 'ALL'}
+          onChange={(e) => handleInputChange('type', e.target.value)}
+          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-800 bg-slate-50/50 focus:bg-white focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none transition-all"
+        >
+          <option value="ALL">All Commitments</option>
+          <option value="FULL_TIME">Full-Time (Summer 2026 / Co-op)</option>
+          <option value="PART_TIME">Part-Time (Academic Year)</option>
+        </select>
       </div>
 
       {/* Date Posted */}
       <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-slate-700">Date Posted</label>
-        <Select
+        <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+          <Sparkles className="w-3.5 h-3.5 text-brand-600" /> Publication Date
+        </label>
+        <select
           value={filters.datePosted || 'all'}
           onChange={(e) => handleInputChange('datePosted', e.target.value)}
-          options={[
-            { value: 'all', label: 'Any time (24/7)' },
-            { value: '24h', label: 'Past 24 hours' },
-            { value: '7d', label: 'Past 7 days' },
-            { value: '14d', label: 'Past 14 days' },
-            { value: '30d', label: 'Past 30 days' },
-          ]}
-        />
+          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-800 bg-slate-50/50 focus:bg-white focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none transition-all"
+        >
+          <option value="all">Any time (24/7 Live Stream)</option>
+          <option value="24h">Past 24 hours</option>
+          <option value="7d">Past 7 days</option>
+          <option value="14d">Past 14 days</option>
+          <option value="30d">Past 30 days</option>
+        </select>
       </div>
 
-      {/* Popular Skills Chips */}
-      <div className="space-y-2 pt-2 border-t border-slate-100">
-        <label className="text-xs font-semibold text-slate-700 block">Popular Tech Stacks</label>
+      {/* Popular Skills Multi-Select */}
+      <div className="space-y-2 pt-3 border-t border-slate-100">
+        <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
+          Tech Stack & Skills
+        </label>
         <div className="flex flex-wrap gap-1.5">
           {COMMON_SKILLS.map((skill) => {
             const isSelected = selectedSkillsList.includes(skill);
@@ -219,13 +272,13 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
                 key={skill}
                 type="button"
                 onClick={() => handleSkillToggle(skill)}
-                className={`text-[11px] px-2.5 py-1 rounded-md border transition-colors ${
+                className={`text-[11px] px-2.5 py-1.5 rounded-xl border font-mono transition-all duration-150 ${
                   isSelected
-                    ? 'bg-brand-50 border-brand-300 text-brand-700 font-semibold'
-                    : 'bg-slate-50 border-slate-200 text-slate-600 hover:text-slate-900 hover:border-slate-300'
+                    ? 'bg-brand-50 border-brand-300 text-brand-700 font-bold shadow-2xs'
+                    : 'bg-slate-50 border-slate-200/80 text-slate-600 hover:text-slate-900 hover:border-slate-300 hover:bg-white'
                 }`}
               >
-                {isSelected ? '✓ ' : '+ '}
+                {isSelected && <Check className="w-3 h-3 inline mr-1 text-brand-600" />}
                 {skill}
               </button>
             );
