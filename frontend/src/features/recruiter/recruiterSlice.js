@@ -182,7 +182,7 @@ const initialState = {
 // ─── Dashboard Analytics & Streams Thunks ────────────────────────────────────
 export const fetchDashboardAnalytics = createAsyncThunk(
   'recruiter/fetchAnalytics',
-  async (_, { rejectWithValue }) => {
+  async () => {
     try {
       const response = await recruiterService.getDashboardAnalytics();
       if (response && response.data) return response.data;
@@ -236,7 +236,7 @@ export const fetchRecruiterNotifications = createAsyncThunk(
 
 export const markNotificationRead = createAsyncThunk(
   'recruiter/markNotificationRead',
-  async (id, { rejectWithValue }) => {
+  async (id) => {
     try {
       const response = await recruiterService.markNotificationRead(id);
       return response.data;
@@ -301,7 +301,7 @@ export const fetchRecruiterInternships = createAsyncThunk(
 
 export const fetchRecruiterInternshipById = createAsyncThunk(
   'recruiter/fetchInternshipById',
-  async (id, { rejectWithValue }) => {
+  async (id) => {
     try {
       const response = await recruiterService.getInternshipById(id);
       if (response && response.data) return response.data;

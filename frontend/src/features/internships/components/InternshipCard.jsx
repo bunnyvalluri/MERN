@@ -62,7 +62,6 @@ export function InternshipCard({
   const companyWebsite = internship.companyId?.website || internship.companyWebsite || '';
   const isVerified = Boolean(internship.companyId?.verified ?? true);
   const isLiveFeed = Boolean(internship.isLiveFeed);
-  const applyUrl = internship.applyUrl || null;
   const category = internship.category || 'Engineering';
 
   // Format location
