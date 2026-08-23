@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute.jsx';
 import { Spinner } from '../components/ui/index.js';
 import SEOHead from '../components/common/SEOHead.jsx';
@@ -61,8 +61,7 @@ function RouteLoadingFallback() {
  */
 export function AppRouter() {
   return (
-    <BrowserRouter>
-      <Suspense fallback={<RouteLoadingFallback />}>
+    <Suspense fallback={<RouteLoadingFallback />}>
         <Routes>
           {/* Public Discovery Routes */}
           <Route path="/" element={<LandingPage />} />
@@ -228,7 +227,6 @@ export function AppRouter() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
-    </BrowserRouter>
   );
 }
 
