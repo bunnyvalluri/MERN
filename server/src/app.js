@@ -7,6 +7,7 @@ import rateLimit from 'express-rate-limit';
 
 import healthRouter from './routes/health.routes.js';
 import authRouter from './routes/auth.routes.js';
+import studentRouter from './routes/student.routes.js';
 import { errorHandler, notFoundHandler } from './middleware/error.middleware.js';
 import { logger } from './utils/logger.js';
 
@@ -66,8 +67,7 @@ app.use(
 // ─── Routes ──────────────────────────────────────────────────────────────────
 app.use('/api/v1/health', healthRouter);
 app.use('/api/v1/auth', authRouter);
-// app.use('/api/v1/users',         userRouter);
-// app.use('/api/v1/students',      studentRouter);
+app.use('/api/v1/students', studentRouter);
 // app.use('/api/v1/recruiters',    recruiterRouter);
 // app.use('/api/v1/companies',     companyRouter);
 // app.use('/api/v1/internships',   internshipRouter);
