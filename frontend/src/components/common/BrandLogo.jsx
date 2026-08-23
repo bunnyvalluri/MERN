@@ -105,6 +105,7 @@ export function BrandLogo({
   badgeText = 'Beta',
   to = '/',
   className = '',
+  inverted = false,
 }) {
   const textSizeMap = {
     sm: 'text-base',
@@ -117,14 +118,24 @@ export function BrandLogo({
       <BrandIcon size={size} />
       <div className="flex items-center gap-2">
         <span
-          className={`font-bold tracking-tight text-slate-900 group-hover:text-brand-600 transition-colors ${
+          className={`font-bold tracking-tight transition-colors ${
+            inverted
+              ? 'text-white group-hover:text-white/80'
+              : 'text-slate-900 group-hover:text-brand-600'
+          } ${
             textSizeMap[size] || textSizeMap.md
           }`}
         >
           InternHub
         </span>
         {showBadge && (
-          <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold font-mono bg-brand-50 text-brand-700 border border-brand-200/80">
+          <span
+            className={`hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold font-mono border ${
+              inverted
+                ? 'bg-white/15 text-white border-white/25'
+                : 'bg-brand-50 text-brand-700 border-brand-200/80'
+            }`}
+          >
             {badgeText}
           </span>
         )}
@@ -136,7 +147,9 @@ export function BrandLogo({
     return (
       <Link
         to={to}
-        className="inline-flex focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-xl p-0.5"
+        className={`inline-flex focus-visible:outline-none focus-visible:ring-2 rounded-xl p-0.5 ${
+          inverted ? 'focus-visible:ring-white/70' : 'focus-visible:ring-brand-500'
+        }`}
       >
         {content}
       </Link>
