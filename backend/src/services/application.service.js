@@ -79,7 +79,55 @@ export class ApplicationService {
     const { internshipId, coverLetter = '', resume: payloadResume } = payload;
 
     // Verify internship existence and state
-    const internship = await Internship.findById(internshipId);
+    let internship = null;
+    if (mongoose.Types.ObjectId.isValid(internshipId)) {
+      internship = await Internship.findById(internshipId);
+    }
+    if (!internship) {
+      const slugKey = String(internshipId).replace(/^int_/, '');
+      internship = await Internship.findOne({
+        $or: [{ slug: slugKey }, { slug: String(internshipId) }],
+      });
+    }
+
+    if (!internship) {
+      const slugKey = String(internshipId).replace(/^int_/, '').toLowerCase();
+      const matched = REAL_INTERNSHIPS.find(
+        (i) => i.slug === slugKey || i._id === internshipId || i.id === internshipId
+      );
+      if (matched) {
+        let comp = await Company.findOne({ slug: matched.companySlug || matched.companyId?.slug });
+        if (!comp) {
+          comp = await Company.create({
+            name: matched.company || matched.companyId?.name || 'Tech Company',
+            slug: matched.companySlug || matched.companyId?.slug || 'tech-company',
+            logo: matched.companyLogo || matched.companyId?.logo || '',
+            description: matched.companyId?.description || 'Enterprise Technology Leader',
+            website: matched.companyId?.website || 'https://internhub.dev',
+            industry: matched.companyId?.industry || 'Technology',
+            verified: true,
+          });
+        }
+        internship = await Internship.create({
+          companyId: comp._id,
+          title: matched.title,
+          slug: matched.slug || slugKey,
+          description: matched.description,
+          responsibilities: matched.responsibilities || [],
+          requirements: matched.requirements || [],
+          skills: matched.skills && matched.skills.length ? matched.skills : ['Software Engineering'],
+          location: matched.location || { city: 'San Francisco', state: 'CA', country: 'United States' },
+          remote: matched.remote || 'REMOTE',
+          type: matched.type || 'FULL_TIME',
+          duration: matched.duration || '3 Months',
+          stipend: matched.stipend || { amount: 8500, currency: 'USD', period: 'MONTH', isUnpaid: false },
+          openings: matched.openings || 5,
+          applicationDeadline: matched.applicationDeadline ? new Date(matched.applicationDeadline) : new Date(Date.now() + 60 * 24 * 3600 * 1000),
+          status: INTERNSHIP_STATUS.PUBLISHED,
+        });
+      }
+    }
+
     if (!internship) {
       throw new ApiError(404, 'Internship opportunity not found.');
     }

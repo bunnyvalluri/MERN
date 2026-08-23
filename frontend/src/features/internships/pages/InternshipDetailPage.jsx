@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -117,26 +117,47 @@ export function InternshipDetailPage() {
     setApplyModalOpen(true);
   };
 
+  const isLocallyApplied = useMemo(() => {
+    try {
+      const raw = localStorage.getItem('internhub_student_applications');
+      if (!raw) return false;
+      const apps = JSON.parse(raw);
+      const targetId = String(internship?._id || internship?.id || id);
+      return apps.some(
+        (a) => String(a.internshipId) === targetId || String(a._id) === targetId || String(a.id) === targetId
+      );
+    } catch {
+      return false;
+    }
+  }, [internship, id]);
+
+  const hasAlreadyApplied = Boolean(hasApplied || isLocallyApplied);
+
   const handleConfirmApplication = async () => {
     setSubmitting(true);
     try {
+      const targetInternshipId = String(internship?._id || internship?.id || id);
       const payload = {
-        internshipId: internship._id,
-        coverLetter,
+        internshipId: targetInternshipId,
+        internship: internship || {
+          title: 'Software Engineering Opportunity',
+          companyId: { name: 'Technology Partner' },
+        },
+        coverLetter: coverLetter.trim(),
+        resume: {
+          url: profile?.resume?.url || 'https://internhub.dev/resumes/jordan_lee_resume.pdf',
+          publicId: profile?.resume?.publicId || null,
+          fileName: profile?.resume?.fileName || 'Jordan_Lee_Resume_2026.pdf',
+        },
       };
-      if (profile?.resume?.url) {
-        payload.resume = {
-          url: profile.resume.url,
-          publicId: profile.resume.publicId || null,
-          fileName: profile.resume.fileName || 'resume.pdf',
-        };
-      }
 
       const result = await dispatch(submitApplication(payload));
       if (submitApplication.fulfilled.match(result)) {
         notify.success('Application submitted successfully! Track your status on Dashboard.');
         setApplyModalOpen(false);
-        dispatch(fetchInternshipDetail(id));
+        if (id) {
+          dispatch(fetchInternshipDetail(id));
+        }
       } else {
         notify.error(result.payload || 'Failed to submit application.');
       }
@@ -548,7 +569,7 @@ export function InternshipDetailPage() {
 
                 {/* Apply Button */}
                 <div className="pt-3 border-t border-slate-100 space-y-2">
-                  {hasApplied ? (
+                  {hasAlreadyApplied ? (
                     <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-center space-y-1">
                       <p className="text-xs font-bold text-emerald-700 flex items-center justify-center gap-1.5">
                         <CheckCircle2 className="w-4 h-4" />
