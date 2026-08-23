@@ -310,16 +310,90 @@ const TRENDING_SEARCHES = [
   { label: '🦄 Figma', query: 'Figma' },
 ];
 
-// Top Hiring Tech Companies Logo Marquee
+// Helper for crisp, reliable company brand icons
+function CompanyLogoIcon({ name }) {
+  switch (name) {
+    case 'Stripe':
+      return (
+        <span className="w-full h-full bg-[#635BFF] text-white flex items-center justify-center font-extrabold text-xs rounded-lg font-serif shadow-xs">
+          S
+        </span>
+      );
+    case 'OpenAI':
+      return (
+        <span className="w-full h-full bg-[#10A37F] text-white flex items-center justify-center text-xs font-bold rounded-lg shadow-xs">
+          <Sparkles className="w-3.5 h-3.5 text-white" />
+        </span>
+      );
+    case 'Vercel':
+      return (
+        <span className="w-full h-full bg-slate-950 text-white flex items-center justify-center text-[10px] font-bold rounded-lg shadow-xs">
+          ▲
+        </span>
+      );
+    case 'Datadog':
+      return (
+        <span className="w-full h-full bg-[#632CA6] text-white flex items-center justify-center font-black text-[10px] rounded-lg font-mono shadow-xs">
+          DD
+        </span>
+      );
+    case 'Anthropic':
+      return (
+        <span className="w-full h-full bg-[#CC785C] text-white flex items-center justify-center font-black text-xs rounded-lg shadow-xs">
+          A
+        </span>
+      );
+    case 'Figma':
+      return (
+        <span className="w-full h-full bg-gradient-to-tr from-[#F24E1E] via-[#A259FF] to-[#0ACF83] text-white flex items-center justify-center font-black text-xs rounded-lg shadow-xs">
+          F
+        </span>
+      );
+    case 'Cloudflare':
+      return (
+        <span className="w-full h-full bg-[#F38020] text-white flex items-center justify-center text-xs rounded-lg shadow-xs">
+          <Cloud className="w-3.5 h-3.5 text-white" />
+        </span>
+      );
+    case 'Linear':
+      return (
+        <span className="w-full h-full bg-[#5E6AD2] text-white flex items-center justify-center text-xs rounded-lg shadow-xs">
+          <Zap className="w-3.5 h-3.5 text-white" />
+        </span>
+      );
+    case 'Google':
+      return (
+        <span className="w-full h-full bg-[#4285F4] text-white flex items-center justify-center font-bold text-xs rounded-lg shadow-xs">
+          G
+        </span>
+      );
+    case 'Microsoft':
+      return (
+        <span className="w-full h-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs rounded-lg shadow-xs">
+          <LayoutGrid className="w-3.5 h-3.5 text-cyan-400" />
+        </span>
+      );
+    default:
+      return (
+        <span className="w-full h-full bg-brand-600 text-white flex items-center justify-center font-bold text-xs rounded-lg shadow-xs">
+          <Building2 className="w-3.5 h-3.5 text-white" />
+        </span>
+      );
+  }
+}
+
+// Top Hiring Tech Companies Logo Marquee Data
 const TOP_COMPANIES = [
-  { name: 'Stripe', logo: 'https://img.logo.dev/stripe.com?token=pk_anonymous', roles: '14 roles' },
-  { name: 'OpenAI', logo: 'https://img.logo.dev/openai.com?token=pk_anonymous', roles: '8 roles' },
-  { name: 'Vercel', logo: 'https://assets.vercel.com/image/upload/front/favicon/vercel/favicon.ico', roles: '11 roles' },
-  { name: 'Datadog', logo: 'https://img.logo.dev/datadoghq.com?token=pk_anonymous', roles: '19 roles' },
-  { name: 'Anthropic', logo: 'https://img.logo.dev/anthropic.com?token=pk_anonymous', roles: '6 roles' },
-  { name: 'Figma', logo: 'https://img.logo.dev/figma.com?token=pk_anonymous', roles: '9 roles' },
-  { name: 'Cloudflare', logo: 'https://img.logo.dev/cloudflare.com?token=pk_anonymous', roles: '12 roles' },
-  { name: 'Linear', logo: 'https://img.logo.dev/linear.app?token=pk_anonymous', roles: '5 roles' },
+  { name: 'Stripe', roles: '14 roles' },
+  { name: 'OpenAI', roles: '8 roles' },
+  { name: 'Vercel', roles: '11 roles' },
+  { name: 'Datadog', roles: '19 roles' },
+  { name: 'Anthropic', roles: '6 roles' },
+  { name: 'Figma', roles: '9 roles' },
+  { name: 'Cloudflare', roles: '12 roles' },
+  { name: 'Linear', roles: '5 roles' },
+  { name: 'Google', roles: '22 roles' },
+  { name: 'Microsoft', roles: '18 roles' },
 ];
 
 // Compensation Explorer Data
@@ -684,44 +758,43 @@ export function LandingPage() {
         </section>
 
         {/* ========================================================================= */}
-        {/* TOP COMPANIES HIRING MARQUEE BANNER                                       */}
+        {/* TOP COMPANIES HIRING ROTATING MARQUEE BANNER                              */}
         {/* ========================================================================= */}
-        <section aria-label="Top hiring tech companies" className="border-y border-slate-200/80 bg-white py-6 overflow-hidden">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between gap-6 flex-wrap md:flex-nowrap">
-              <div className="shrink-0 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400">
-                <Building2 className="w-4 h-4 text-brand-600" />
-                <span>Actively Hiring:</span>
-              </div>
+        <section aria-label="Top hiring tech companies" className="border-y border-slate-200/80 bg-white/90 backdrop-blur-md py-4 overflow-hidden relative">
+          <div className="flex items-center">
+            {/* Left Static Badge */}
+            <div className="hidden lg:flex items-center gap-2 pl-8 pr-6 border-r border-slate-200/80 shrink-0 z-10 bg-white/95">
+              <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-700 whitespace-nowrap">
+                Active Hiring Cohorts:
+              </span>
+            </div>
 
-              <div className="flex items-center gap-6 sm:gap-10 overflow-x-auto no-scrollbar py-1">
-                {TOP_COMPANIES.map((company) => (
+            {/* Rotating Marquee Track with gradient fade masks */}
+            <div className="flex-1 overflow-hidden marquee-mask relative">
+              <div className="animate-marquee-infinite flex items-center gap-4 sm:gap-6 whitespace-nowrap py-1">
+                {[...TOP_COMPANIES, ...TOP_COMPANIES, ...TOP_COMPANIES].map((company, idx) => (
                   <button
-                    key={company.name}
+                    key={`${company.name}-${idx}`}
                     type="button"
                     onClick={() => {
                       setSearchKeyword(company.name);
                       const el = document.getElementById('featured');
                       el?.scrollIntoView({ behavior: 'smooth' });
                     }}
-                    className="flex items-center gap-2 group shrink-0 opacity-75 hover:opacity-100 transition-opacity"
+                    className="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-xl border border-slate-200/80 bg-slate-50/80 hover:bg-white hover:border-brand-300 hover:shadow-card-hover transition-all group shrink-0"
                   >
-                    <div className="w-7 h-7 rounded-lg bg-slate-100 p-1 flex items-center justify-center border border-slate-200 overflow-hidden">
-                      <img
-                        src={company.logo}
-                        alt={company.name}
-                        className="w-full h-full object-contain"
-                        loading="lazy"
-                        onError={(e) => {
-                          e.target.style.display = 'none';
-                        }}
-                      />
+                    <div className="w-7 h-7 rounded-lg overflow-hidden shadow-xs shrink-0 flex items-center justify-center">
+                      <CompanyLogoIcon name={company.name} />
                     </div>
                     <div className="text-left">
                       <span className="text-xs font-bold text-slate-800 group-hover:text-brand-600 transition-colors block">
                         {company.name}
                       </span>
-                      <span className="text-[10px] text-emerald-600 font-mono font-medium block">
+                      <span className="text-[10px] text-emerald-600 font-mono font-semibold block">
                         {company.roles}
                       </span>
                     </div>

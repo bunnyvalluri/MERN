@@ -154,4 +154,30 @@
     mask-composite: exclude;
     pointer-events: none;
   }
+
+  /* Infinite Rotating Marquee */
+  @keyframes marqueeScroll {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee-infinite {
+    display: flex;
+    width: max-content;
+    animation: marqueeScroll 55s linear infinite;
+  }
+
+  .animate-marquee-infinite:hover {
+    animation-play-state: paused;
+  }
+
+  /* Marquee Edge Gradient Mask */
+  .marquee-mask {
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
 }
