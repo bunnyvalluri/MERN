@@ -57,23 +57,23 @@ export function Pagination({
     >
       {/* Items range summary */}
       {totalItems !== undefined && (
-        <div className="text-xs text-slate-400 text-center sm:text-left">
-          Showing <span className="font-semibold text-slate-200">{startItem}</span> to{' '}
-          <span className="font-semibold text-slate-200">{endItem}</span> of{' '}
-          <span className="font-semibold text-slate-200">{totalItems}</span> results
+        <div className="text-xs text-slate-500 text-center sm:text-left">
+          Showing <span className="font-semibold text-slate-800">{startItem}</span> to{' '}
+          <span className="font-semibold text-slate-800">{endItem}</span> of{' '}
+          <span className="font-semibold text-slate-800">{totalItems}</span> results
         </div>
       )}
 
       <div className="flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap">
         {/* Page size selector */}
         {pageSize && onPageSizeChange && (
-          <div className="flex items-center gap-1.5 text-xs text-slate-400 mr-1 sm:mr-2">
+          <div className="flex items-center gap-1.5 text-xs text-slate-500 mr-1 sm:mr-2">
             <span className="hidden xs:inline">Rows:</span>
             <select
               value={pageSize}
               onChange={(e) => onPageSizeChange(Number(e.target.value))}
               aria-label="Rows per page"
-              className="bg-slate-900 border border-slate-800 rounded-lg px-2 py-1 text-slate-200 text-xs focus:outline-none focus:border-brand-500 cursor-pointer"
+              className="bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-700 text-xs focus:outline-none focus:border-brand-500 cursor-pointer shadow-sm"
             >
               {pageSizeOptions.map((opt) => (
                 <option key={opt} value={opt}>
@@ -90,7 +90,7 @@ export function Pagination({
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage <= 1}
           aria-label="Go to previous page"
-          className="p-2 rounded-lg border border-slate-800 bg-slate-900/90 text-slate-300 hover:bg-slate-800 hover:text-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+          className="p-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
@@ -100,7 +100,7 @@ export function Pagination({
           {pages.map((p, idx) => {
             if (p === '...') {
               return (
-                <span key={`dots-${idx}`} className="px-1.5 sm:px-2 text-xs text-slate-500 font-mono">
+                <span key={`dots-${idx}`} className="px-1.5 sm:px-2 text-xs text-slate-400 font-mono">
                   ...
                 </span>
               );
@@ -115,10 +115,10 @@ export function Pagination({
                 onClick={() => onPageChange(p)}
                 aria-current={isCurrent ? 'page' : undefined}
                 aria-label={`Go to page ${p}`}
-                className={`min-w-[30px] sm:min-w-[32px] h-8 px-2 sm:px-2.5 text-xs font-medium rounded-lg border transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 ${
+                className={`min-w-[30px] sm:min-w-[32px] h-8 px-2 sm:px-2.5 text-xs font-medium rounded-lg border transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 shadow-sm ${
                   isCurrent
-                    ? 'bg-brand-600 border-brand-500 text-white shadow-sm font-semibold'
-                    : 'bg-slate-900/90 border-slate-800 text-slate-300 hover:bg-slate-800 hover:text-slate-100'
+                    ? 'bg-brand-600 border-brand-600 text-white font-semibold'
+                    : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900'
                 }`}
               >
                 {p}
@@ -133,7 +133,7 @@ export function Pagination({
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage >= totalPages}
           aria-label="Go to next page"
-          className="p-2 rounded-lg border border-slate-800 bg-slate-900/90 text-slate-300 hover:bg-slate-800 hover:text-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+          className="p-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
         >
           <ChevronRight className="w-4 h-4" />
         </button>

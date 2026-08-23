@@ -92,25 +92,25 @@ export function StudentSettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col">
       <StudentNav />
 
       <main className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         <div className="space-y-1">
-          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
             Account Settings
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400">
+          <p className="text-xs sm:text-sm text-slate-600">
             Manage your account security, contact email, and notification preferences.
           </p>
         </div>
 
         {/* 1. Account Details */}
-        <Card className="border-slate-800 bg-slate-900/80">
-          <CardHeader className="pb-3 border-b border-slate-800">
+        <Card className="border-slate-200 bg-white shadow-sm">
+          <CardHeader className="pb-3 border-b border-slate-100">
             <div className="flex items-center gap-2">
-              <User className="w-4 h-4 text-brand-400" />
-              <CardTitle className="text-sm font-bold text-white">Account Details</CardTitle>
+              <User className="w-4 h-4 text-brand-600" />
+              <CardTitle className="text-sm font-bold text-slate-900">Account Details</CardTitle>
             </div>
           </CardHeader>
           <CardContent className="p-6 space-y-4">
@@ -122,11 +122,11 @@ export function StudentSettingsPage() {
         </Card>
 
         {/* 2. Change Password */}
-        <Card className="border-slate-800 bg-slate-900/80">
-          <CardHeader className="pb-3 border-b border-slate-800">
+        <Card className="border-slate-200 bg-white shadow-sm">
+          <CardHeader className="pb-3 border-b border-slate-100">
             <div className="flex items-center gap-2">
-              <Lock className="w-4 h-4 text-brand-400" />
-              <CardTitle className="text-sm font-bold text-white">Security & Password</CardTitle>
+              <Lock className="w-4 h-4 text-brand-600" />
+              <CardTitle className="text-sm font-bold text-slate-900">Security & Password</CardTitle>
             </div>
           </CardHeader>
           <form onSubmit={handlePasswordSubmit}>
@@ -156,15 +156,15 @@ export function StudentSettingsPage() {
                   />
 
                   {passwordData.newPassword.length > 0 && (
-                    <div className="p-3 rounded-lg bg-slate-950/60 border border-slate-800 space-y-1 text-[11px]">
+                    <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1 text-[11px]">
                       {passwordCriteria.map((c, idx) => (
                         <div
                           key={idx}
                           className={`flex items-center gap-1.5 ${
-                            c.met ? 'text-emerald-400' : 'text-slate-500'
+                            c.met ? 'text-emerald-700' : 'text-slate-400'
                           }`}
                         >
-                          {c.met ? <CheckCircle2 className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
+                          {c.met ? <CheckCircle2 className="w-3 h-3 text-emerald-600" /> : <XCircle className="w-3 h-3 text-slate-400" />}
                           <span>{c.label}</span>
                         </div>
                       ))}
@@ -205,11 +205,11 @@ export function StudentSettingsPage() {
         </Card>
 
         {/* 3. Notifications */}
-        <Card className="border-slate-800 bg-slate-900/80">
-          <CardHeader className="pb-3 border-b border-slate-800">
+        <Card className="border-slate-200 bg-white shadow-sm">
+          <CardHeader className="pb-3 border-b border-slate-100">
             <div className="flex items-center gap-2">
-              <Bell className="w-4 h-4 text-brand-400" />
-              <CardTitle className="text-sm font-bold text-white">Notification Preferences</CardTitle>
+              <Bell className="w-4 h-4 text-brand-600" />
+              <CardTitle className="text-sm font-bold text-slate-900">Notification Preferences</CardTitle>
             </div>
           </CardHeader>
           <CardContent className="p-6 space-y-4">
@@ -242,7 +242,7 @@ export function StudentSettingsPage() {
               />
             </div>
 
-            <div className="flex justify-end pt-3 border-t border-slate-800">
+            <div className="flex justify-end pt-3 border-t border-slate-100">
               <Button variant="secondary" size="sm" onClick={handleSaveNotifications}>
                 Save Preferences
               </Button>
@@ -251,17 +251,17 @@ export function StudentSettingsPage() {
         </Card>
 
         {/* 4. Danger Zone */}
-        <Card className="border-red-900/40 bg-red-950/10">
-          <CardHeader className="pb-3 border-b border-red-900/30">
+        <Card className="border-rose-200 bg-rose-50/40 shadow-sm">
+          <CardHeader className="pb-3 border-b border-rose-100">
             <div className="flex items-center gap-2">
-              <ShieldAlert className="w-4 h-4 text-red-400" />
-              <CardTitle className="text-sm font-bold text-red-400">Danger Zone</CardTitle>
+              <ShieldAlert className="w-4 h-4 text-rose-600" />
+              <CardTitle className="text-sm font-bold text-rose-700">Danger Zone</CardTitle>
             </div>
           </CardHeader>
           <CardContent className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="space-y-1">
-              <p className="text-sm font-semibold text-white">Deactivate Account</p>
-              <p className="text-xs text-slate-400">
+              <p className="text-sm font-semibold text-slate-900">Deactivate Account</p>
+              <p className="text-xs text-slate-600">
                 Temporarily disable your profile and withdraw active applications.
               </p>
             </div>
@@ -284,7 +284,7 @@ export function StudentSettingsPage() {
         description="Are you sure you want to deactivate your student account? You can reactivate anytime by signing back in."
         size="sm"
       >
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
           <Button variant="outline" onClick={() => setDeactivateModalOpen(false)}>
             Cancel
           </Button>

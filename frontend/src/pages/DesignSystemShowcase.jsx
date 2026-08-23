@@ -158,22 +158,22 @@ export function DesignSystemShowcase() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 pb-24">
+    <div className="min-h-screen bg-slate-50 text-slate-800 pb-24 selection:bg-brand-500/20 selection:text-brand-700">
       {/* Top Hero Banner */}
-      <header className="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-30">
+      <header className="border-b border-slate-200 bg-white/90 backdrop-blur-md sticky top-0 z-30 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center shadow-sm">
+            <div className="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center shadow-xs">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-base tracking-tight text-white">InternHub</span>
+                <span className="font-bold text-base tracking-tight text-slate-900">InternHub</span>
                 <Badge variant="primary" size="sm">
-                  Design System v1.0
+                  Design System v2.0 (Light)
                 </Badge>
               </div>
-              <p className="text-[11px] text-slate-400 font-mono hidden sm:block">
+              <p className="text-[11px] text-slate-500 font-mono hidden sm:block">
                 Production-grade SaaS Component Catalog
               </p>
             </div>
@@ -184,7 +184,7 @@ export function DesignSystemShowcase() {
               variant="outline"
               size="xs"
               leftIcon={<ExternalLink className="w-3.5 h-3.5" />}
-              onClick={() => window.open('/docs/DESIGN_SYSTEM.md', '_blank')}
+              onClick={() => window.open('/docs/LIGHT_THEME_MIGRATION.md', '_blank')}
             >
               Docs
             </Button>
@@ -211,19 +211,19 @@ export function DesignSystemShowcase() {
             ]}
           />
           <div className="pt-2">
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
               Design System & Component Showcase
             </h1>
-            <p className="text-sm text-slate-400 mt-1.5 max-w-3xl leading-relaxed">
+            <p className="text-sm text-slate-600 mt-1.5 max-w-3xl leading-relaxed">
               Every component is built mobile-first, accessible, responsive, and styled to feel
-              clean, trustworthy, and minimal for the InternHub multi-role platform.
+              clean, trustworthy, and minimal for the InternHub multi-role platform in pure Light Mode.
             </p>
           </div>
 
           {/* Viewport Test Bar */}
-          <div className="p-3 bg-slate-900/60 border border-slate-800 rounded-xl flex items-center justify-between flex-wrap gap-2 text-xs">
-            <span className="text-slate-400 font-medium flex items-center gap-1.5">
-              <Layers className="w-4 h-4 text-brand-400" />
+          <div className="p-3 bg-white border border-slate-200 rounded-xl flex items-center justify-between flex-wrap gap-2 text-xs shadow-xs">
+            <span className="text-slate-600 font-medium flex items-center gap-1.5">
+              <Layers className="w-4 h-4 text-brand-600" />
               Responsive Breakpoints:
             </span>
             <div className="flex items-center gap-1.5 flex-wrap">
@@ -231,7 +231,7 @@ export function DesignSystemShowcase() {
                 (target) => (
                   <span
                     key={target}
-                    className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono text-[11px]"
+                    className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-mono text-[11px]"
                   >
                     {target}
                   </span>
@@ -243,13 +243,13 @@ export function DesignSystemShowcase() {
 
         {/* 1. TYPOGRAPHY & COLORS */}
         <section className="space-y-6">
-          <div className="border-b border-slate-800 pb-3 flex items-center justify-between">
+          <div className="border-b border-slate-200 pb-3 flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2">
-                <Code2 className="w-5 h-5 text-brand-400" />
+              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <Code2 className="w-5 h-5 text-brand-600" />
                 1. Typography & Palette Tokens
               </h2>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-500 mt-0.5">
                 Font family: Inter (sans-serif) & JetBrains Mono (code/metrics)
               </p>
             </div>
@@ -263,31 +263,31 @@ export function DesignSystemShowcase() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <span className="text-[11px] font-mono text-slate-500 block">Display / H1 (30px / 700)</span>
-                  <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                  <span className="text-[11px] font-mono text-slate-400 block">Display / H1 (30px / 700)</span>
+                  <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
                     Discover Elite Tech Internships
                   </h1>
                 </div>
                 <div>
-                  <span className="text-[11px] font-mono text-slate-500 block">Heading 2 (24px / 600)</span>
-                  <h2 className="text-xl sm:text-2xl font-semibold text-slate-100 tracking-tight">
+                  <span className="text-[11px] font-mono text-slate-400 block">Heading 2 (24px / 600)</span>
+                  <h2 className="text-xl sm:text-2xl font-semibold text-slate-800 tracking-tight">
                     Recruiter Management Dashboard
                   </h2>
                 </div>
                 <div>
-                  <span className="text-[11px] font-mono text-slate-500 block">Heading 3 (18px / 600)</span>
-                  <h3 className="text-base sm:text-lg font-semibold text-slate-200">
+                  <span className="text-[11px] font-mono text-slate-400 block">Heading 3 (18px / 600)</span>
+                  <h3 className="text-base sm:text-lg font-semibold text-slate-800">
                     Application Review Pipeline
                   </h3>
                 </div>
                 <div>
-                  <span className="text-[11px] font-mono text-slate-500 block">Body Base (14px / 400)</span>
-                  <p className="text-sm text-slate-300 leading-relaxed">
+                  <span className="text-[11px] font-mono text-slate-400 block">Body Base (14px / 400)</span>
+                  <p className="text-sm text-slate-600 leading-relaxed">
                     InternHub matches verified university students with leading tech engineering teams.
                   </p>
                 </div>
                 <div>
-                  <span className="text-[11px] font-mono text-slate-500 block">Gradient Headline Utility</span>
+                  <span className="text-[11px] font-mono text-slate-400 block">Gradient Headline Utility</span>
                   <span className="text-gradient text-lg font-bold">
                     Supercharge your early career hiring.
                   </span>
@@ -302,7 +302,7 @@ export function DesignSystemShowcase() {
               </CardHeader>
               <CardContent className="space-y-3.5">
                 <div className="space-y-1.5">
-                  <span className="text-[11px] font-mono text-slate-400">Brand Scale (Indigo)</span>
+                  <span className="text-[11px] font-mono text-slate-500">Brand Scale (Blue)</span>
                   <div className="grid grid-cols-6 gap-1.5 text-center text-[10px] font-mono text-white">
                     <div className="h-8 rounded bg-brand-400 text-slate-900 flex items-center justify-center">400</div>
                     <div className="h-8 rounded bg-brand-500 flex items-center justify-center">500</div>
@@ -314,30 +314,30 @@ export function DesignSystemShowcase() {
                 </div>
 
                 <div className="space-y-1.5 pt-2">
-                  <span className="text-[11px] font-mono text-slate-400">Semantic Feedback Scales</span>
+                  <span className="text-[11px] font-mono text-slate-500">Semantic Feedback Scales</span>
                   <div className="grid grid-cols-4 gap-2 text-xs font-medium">
-                    <div className="p-2 rounded-lg bg-success-500/10 border border-success-500/30 text-success-300 text-center">
+                    <div className="p-2 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-center">
                       Success
                     </div>
-                    <div className="p-2 rounded-lg bg-warning-500/10 border border-warning-500/30 text-warning-300 text-center">
+                    <div className="p-2 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-center">
                       Warning
                     </div>
-                    <div className="p-2 rounded-lg bg-danger-500/10 border border-danger-500/30 text-danger-300 text-center">
+                    <div className="p-2 rounded-lg bg-rose-50 border border-rose-200 text-rose-800 text-center">
                       Danger
                     </div>
-                    <div className="p-2 rounded-lg bg-info-500/10 border border-info-500/30 text-info-300 text-center">
+                    <div className="p-2 rounded-lg bg-blue-50 border border-blue-200 text-blue-800 text-center">
                       Info
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-1.5 pt-2">
-                  <span className="text-[11px] font-mono text-slate-400">Surface Slate Palette</span>
+                  <span className="text-[11px] font-mono text-slate-500">Surface Slate Palette</span>
                   <div className="grid grid-cols-4 gap-2 text-xs font-mono text-center">
-                    <div className="p-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-200">slate-800</div>
-                    <div className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">slate-900</div>
-                    <div className="p-2 rounded-lg bg-slate-950 border border-slate-800 text-slate-400">slate-950</div>
-                    <div className="p-2 rounded-lg bg-slate-700 text-white font-bold">Border</div>
+                    <div className="p-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-800">slate-50</div>
+                    <div className="p-2 rounded-lg bg-white border border-slate-200 text-slate-900">white</div>
+                    <div className="p-2 rounded-lg bg-slate-100 border border-slate-200 text-slate-700">slate-100</div>
+                    <div className="p-2 rounded-lg bg-slate-200 text-slate-900 font-bold">border-200</div>
                   </div>
                 </div>
               </CardContent>
@@ -347,9 +347,9 @@ export function DesignSystemShowcase() {
 
         {/* 2. BUTTONS & ACTIONS */}
         <section className="space-y-6">
-          <div className="border-b border-slate-800 pb-3">
-            <h2 className="text-lg font-bold text-slate-100">2. Buttons & Actions</h2>
-            <p className="text-xs text-slate-400 mt-0.5">
+          <div className="border-b border-slate-200 pb-3">
+            <h2 className="text-lg font-bold text-slate-900">2. Buttons & Actions</h2>
+            <p className="text-xs text-slate-500 mt-0.5">
               Variants, sizes, loading spinners, and icon configurations
             </p>
           </div>
@@ -358,7 +358,7 @@ export function DesignSystemShowcase() {
             <CardContent className="space-y-6">
               {/* Variant Rows */}
               <div>
-                <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-3">
+                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-3">
                   Button Variants
                 </span>
                 <div className="flex items-center gap-3 flex-wrap">
@@ -377,7 +377,7 @@ export function DesignSystemShowcase() {
 
               {/* Sizes */}
               <div>
-                <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-3">
+                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-3">
                   Button Sizes
                 </span>
                 <div className="flex items-center gap-3 flex-wrap">
@@ -393,7 +393,7 @@ export function DesignSystemShowcase() {
 
               {/* Interactive Loading & Icons */}
               <div>
-                <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-3">
+                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-3">
                   Interactive Loading & Icons
                 </span>
                 <div className="flex items-center gap-3 flex-wrap">
@@ -432,9 +432,9 @@ export function DesignSystemShowcase() {
 
         {/* 3. FORM CONTROLS */}
         <section className="space-y-6">
-          <div className="border-b border-slate-800 pb-3">
-            <h2 className="text-lg font-bold text-slate-100">3. Form Controls & Inputs</h2>
-            <p className="text-xs text-slate-400 mt-0.5">
+          <div className="border-b border-slate-200 pb-3">
+            <h2 className="text-lg font-bold text-slate-900">3. Form Controls & Inputs</h2>
+            <p className="text-xs text-slate-500 mt-0.5">
               Accessible, keyboard-navigable inputs with built-in validation states
             </p>
           </div>
@@ -446,7 +446,7 @@ export function DesignSystemShowcase() {
                 <Input
                   label="Search Internships"
                   placeholder="e.g. React, Python, Remote..."
-                  leftIcon={<Search className="w-4 h-4" />}
+                  leftIcon={<Search className="w-4 h-4 text-slate-400" />}
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   showClearButton
@@ -458,7 +458,7 @@ export function DesignSystemShowcase() {
                   label="University Email"
                   type="email"
                   placeholder="student@university.edu"
-                  leftIcon={<Mail className="w-4 h-4" />}
+                  leftIcon={<Mail className="w-4 h-4 text-slate-400" />}
                   required
                   helperText="Use your .edu email for verification"
                 />
@@ -468,7 +468,7 @@ export function DesignSystemShowcase() {
                   type="password"
                   value={passwordValue}
                   onChange={(e) => setPasswordValue(e.target.value)}
-                  leftIcon={<Lock className="w-4 h-4" />}
+                  leftIcon={<Lock className="w-4 h-4 text-slate-400" />}
                   required
                   helperText="Click eye icon to toggle visibility"
                 />
@@ -477,7 +477,7 @@ export function DesignSystemShowcase() {
                   label="Error State Input"
                   value="invalid-email-format"
                   error="Please provide a valid institutional email address."
-                  leftIcon={<Mail className="w-4 h-4" />}
+                  leftIcon={<Mail className="w-4 h-4 text-slate-400" />}
                 />
 
                 <Select
@@ -510,9 +510,9 @@ export function DesignSystemShowcase() {
               />
 
               {/* Toggles, Radios & Checkboxes */}
-              <div className="pt-4 border-t border-slate-800/80 grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="pt-4 border-t border-slate-100 grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                  <span className="text-xs font-semibold text-slate-300 block mb-3">
+                  <span className="text-xs font-semibold text-slate-700 block mb-3">
                     Role Interests (Checkboxes)
                   </span>
                   <div className="space-y-3">
@@ -544,7 +544,7 @@ export function DesignSystemShowcase() {
                 </div>
 
                 <div>
-                  <span className="text-xs font-semibold text-slate-300 block mb-3">
+                  <span className="text-xs font-semibold text-slate-700 block mb-3">
                     Workplace Preference (Radios)
                   </span>
                   <div className="space-y-3">
@@ -568,6 +568,7 @@ export function DesignSystemShowcase() {
                       name="location_pref"
                       value="onsite"
                       label="On-site Only"
+                      description="Relocation assistance provided"
                       checked={selectedRadio === 'onsite'}
                       onChange={() => setSelectedRadio('onsite')}
                     />
@@ -575,7 +576,7 @@ export function DesignSystemShowcase() {
                 </div>
 
                 <div>
-                  <span className="text-xs font-semibold text-slate-300 block mb-3">
+                  <span className="text-xs font-semibold text-slate-700 block mb-3">
                     Notification Settings (Switches)
                   </span>
                   <div className="space-y-4">
@@ -599,9 +600,9 @@ export function DesignSystemShowcase() {
 
         {/* 4. BADGES, ALERTS & TOASTS */}
         <section className="space-y-6">
-          <div className="border-b border-slate-800 pb-3">
-            <h2 className="text-lg font-bold text-slate-100">4. Badges, Alerts & Notifications</h2>
-            <p className="text-xs text-slate-400 mt-0.5">
+          <div className="border-b border-slate-200 pb-3">
+            <h2 className="text-lg font-bold text-slate-900">4. Badges, Alerts & Notifications</h2>
+            <p className="text-xs text-slate-500 mt-0.5">
               Status pills, feedback banners, and toast triggers
             </p>
           </div>
@@ -615,7 +616,7 @@ export function DesignSystemShowcase() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-2.5 flex-wrap">
-                  <Badge variant="neutral">Neutral (#0f172a)</Badge>
+                  <Badge variant="neutral">Neutral</Badge>
                   <Badge variant="primary" dot pulse>
                     Live Posting
                   </Badge>
@@ -715,9 +716,9 @@ export function DesignSystemShowcase() {
 
         {/* 5. MODALS & DROPDOWNS & TABS */}
         <section className="space-y-6">
-          <div className="border-b border-slate-800 pb-3">
-            <h2 className="text-lg font-bold text-slate-100">5. Modals, Dropdowns & Tabs</h2>
-            <p className="text-xs text-slate-400 mt-0.5">
+          <div className="border-b border-slate-200 pb-3">
+            <h2 className="text-lg font-bold text-slate-900">5. Modals, Dropdowns & Tabs</h2>
+            <p className="text-xs text-slate-500 mt-0.5">
               Complex interactive overlays and view switchers
             </p>
           </div>
@@ -731,7 +732,7 @@ export function DesignSystemShowcase() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div>
-                  <span className="text-xs font-semibold text-slate-400 block mb-2.5">
+                  <span className="text-xs font-semibold text-slate-500 block mb-2.5">
                     Trigger Accessible Dialog
                   </span>
                   <div className="flex items-center gap-3 flex-wrap">
@@ -756,8 +757,8 @@ export function DesignSystemShowcase() {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-slate-800">
-                  <span className="text-xs font-semibold text-slate-400 block mb-2.5">
+                <div className="pt-4 border-t border-slate-100">
+                  <span className="text-xs font-semibold text-slate-500 block mb-2.5">
                     Action Dropdown Menu
                   </span>
                   <Dropdown
@@ -772,28 +773,28 @@ export function DesignSystemShowcase() {
                   >
                     <DropdownHeader>Applicant Options</DropdownHeader>
                     <DropdownItem
-                      icon={<CheckCircle className="w-4 h-4 text-success-400" />}
+                      icon={<CheckCircle className="w-4 h-4 text-emerald-600" />}
                       onClick={() => notify.success('Candidate shortlisted')}
                       shortcut="⌘S"
                     >
                       Shortlist Candidate
                     </DropdownItem>
                     <DropdownItem
-                      icon={<Clock className="w-4 h-4 text-brand-400" />}
+                      icon={<Clock className="w-4 h-4 text-brand-600" />}
                       onClick={() => notify.info('Schedule modal triggered')}
                       shortcut="⌘I"
                     >
                       Schedule Interview
                     </DropdownItem>
                     <DropdownItem
-                      icon={<Edit className="w-4 h-4" />}
+                      icon={<Edit className="w-4 h-4 text-slate-600" />}
                       onClick={() => notify.info('Notes editor opened')}
                     >
                       Add Private Notes
                     </DropdownItem>
                     <DropdownDivider />
                     <DropdownItem
-                      icon={<Trash2 className="w-4 h-4" />}
+                      icon={<Trash2 className="w-4 h-4 text-red-600" />}
                       danger
                       onClick={() => notify.error('Candidate rejected')}
                     >
@@ -812,7 +813,7 @@ export function DesignSystemShowcase() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div>
-                  <span className="text-xs font-semibold text-slate-400 block mb-2">
+                  <span className="text-xs font-semibold text-slate-500 block mb-2">
                     Segmented Pill Variant
                   </span>
                   <Tabs defaultValue="all" variant="pills">
@@ -828,25 +829,25 @@ export function DesignSystemShowcase() {
                       </TabTrigger>
                     </TabList>
                     <TabContent value="all">
-                      <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-300">
+                      <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700">
                         Displaying all 24 internship listings across all engineering departments.
                       </div>
                     </TabContent>
                     <TabContent value="active">
-                      <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-300">
+                      <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700">
                         18 active listings receiving live applications.
                       </div>
                     </TabContent>
                     <TabContent value="drafts">
-                      <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-300">
+                      <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700">
                         6 unpublished draft postings pending recruiter review.
                       </div>
                     </TabContent>
                   </Tabs>
                 </div>
 
-                <div className="pt-2 border-t border-slate-800">
-                  <span className="text-xs font-semibold text-slate-400 block mb-2">
+                <div className="pt-2 border-t border-slate-100">
+                  <span className="text-xs font-semibold text-slate-500 block mb-2">
                     Underline Variant
                   </span>
                   <Tabs defaultValue="overview" variant="line">
@@ -856,17 +857,17 @@ export function DesignSystemShowcase() {
                       <TabTrigger value="settings">Settings</TabTrigger>
                     </TabList>
                     <TabContent value="overview">
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-slate-600">
                         Company overview, office locations, and verified recruiter roster.
                       </p>
                     </TabContent>
                     <TabContent value="analytics">
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-slate-600">
                         Real-time funnel conversion metrics from application to hire.
                       </p>
                     </TabContent>
                     <TabContent value="settings">
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-slate-600">
                         Manage company profile branding and hiring team permissions.
                       </p>
                     </TabContent>
@@ -879,9 +880,9 @@ export function DesignSystemShowcase() {
 
         {/* 6. DATA TABLE & PAGINATION */}
         <section className="space-y-6">
-          <div className="border-b border-slate-800 pb-3">
-            <h2 className="text-lg font-bold text-slate-100">6. Responsive Data Table & Pagination</h2>
-            <p className="text-xs text-slate-400 mt-0.5">
+          <div className="border-b border-slate-200 pb-3">
+            <h2 className="text-lg font-bold text-slate-900">6. Responsive Data Table & Pagination</h2>
+            <p className="text-xs text-slate-500 mt-0.5">
               Clean table with avatar badges, sortable headers, and pagination controls
             </p>
           </div>
@@ -933,20 +934,20 @@ export function DesignSystemShowcase() {
                             status="online"
                           />
                           <div className="min-w-0">
-                            <div className="font-semibold text-slate-100 truncate">
+                            <div className="font-semibold text-slate-900 truncate">
                               {app.name}
                             </div>
-                            <div className="text-[11px] text-slate-400 truncate">
+                            <div className="text-[11px] text-slate-500 truncate">
                               {app.email}
                             </div>
                           </div>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <span className="font-medium text-slate-300">{app.role}</span>
+                        <span className="font-medium text-slate-700">{app.role}</span>
                       </TableCell>
                       <TableCell>
-                        <span className="font-mono text-slate-300 font-medium">{app.gpa}</span>
+                        <span className="font-mono text-slate-700 font-medium">{app.gpa}</span>
                       </TableCell>
                       <TableCell>
                         <Badge variant={app.badgeVariant} size="sm" dot>
@@ -954,12 +955,12 @@ export function DesignSystemShowcase() {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <span className="text-xs text-slate-400">{app.appliedAt}</span>
+                        <span className="text-xs text-slate-500">{app.appliedAt}</span>
                       </TableCell>
                       <TableCell align="right">
                         <Dropdown
                           trigger={
-                            <button className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-slate-200">
+                            <button className="p-1 rounded hover:bg-slate-100 text-slate-500 hover:text-slate-900">
                               <ChevronDown className="w-4 h-4" />
                             </button>
                           }
@@ -997,11 +998,11 @@ export function DesignSystemShowcase() {
 
         {/* 7. AVATARS, SKELETONS & EMPTY/ERROR STATES */}
         <section className="space-y-6">
-          <div className="border-b border-slate-800 pb-3">
-            <h2 className="text-lg font-bold text-slate-100">
+          <div className="border-b border-slate-200 pb-3">
+            <h2 className="text-lg font-bold text-slate-900">
               7. Avatars, Skeletons, Empty & Error States
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-500 mt-0.5">
               Loaders and zero-data states for robust application handling
             </p>
           </div>
@@ -1015,7 +1016,7 @@ export function DesignSystemShowcase() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div>
-                  <span className="text-xs font-semibold text-slate-400 block mb-3">
+                  <span className="text-xs font-semibold text-slate-500 block mb-3">
                     Avatar Sizes & Status Badges
                   </span>
                   <div className="flex items-center gap-4 flex-wrap">
@@ -1027,8 +1028,8 @@ export function DesignSystemShowcase() {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-slate-800">
-                  <span className="text-xs font-semibold text-slate-400 block mb-3">
+                <div className="pt-4 border-t border-slate-100">
+                  <span className="text-xs font-semibold text-slate-500 block mb-3">
                     Stacked Avatar Group
                   </span>
                   <AvatarGroup size="md" max={4}>

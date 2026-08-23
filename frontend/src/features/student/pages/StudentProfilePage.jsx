@@ -273,7 +273,7 @@ export function StudentProfilePage() {
 
   if (loading && !profile) {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+      <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col">
         <StudentNav />
         <main className="max-w-5xl w-full mx-auto px-4 py-8 space-y-6">
           <Skeleton className="h-40 w-full rounded-2xl" />
@@ -285,27 +285,27 @@ export function StudentProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col">
       <StudentNav />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         {/* Header Profile Hero Card */}
-        <div className="p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-slate-900/80 border border-slate-800 shadow-card flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+        <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
-            <Avatar name={user?.name || 'Student'} size="xl" className="border-2 border-brand-500/40" />
+            <Avatar name={user?.name || 'Student'} size="xl" className="border-2 border-brand-500" />
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">{user?.name}</h1>
+                <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">{user?.name}</h1>
                 <Badge variant={user?.isVerified ? 'success' : 'neutral'} size="sm">
                   {user?.isVerified ? 'Verified Student' : 'Unverified Email'}
                 </Badge>
               </div>
-              <p className="text-xs sm:text-sm text-brand-300 font-medium">
+              <p className="text-xs sm:text-sm text-brand-600 font-medium">
                 {formData.headline || 'Add a headline (e.g. CS Sophomore @ Stanford)'}
               </p>
-              <div className="flex items-center gap-3 text-xs text-slate-400 pt-0.5">
+              <div className="flex items-center gap-3 text-xs text-slate-500 pt-0.5">
                 <span className="flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5 text-slate-500" />
+                  <MapPin className="w-3.5 h-3.5 text-slate-400" />
                   {formData.location.city ? `${formData.location.city}, ${formData.location.country}` : 'Location unset'}
                 </span>
                 <span>•</span>
@@ -327,11 +327,11 @@ export function StudentProfilePage() {
         </div>
 
         {/* 1. Basic Information Card */}
-        <Card className="border-slate-800 bg-slate-900/80">
-          <CardHeader className="pb-3 border-b border-slate-800">
+        <Card className="border-slate-200 bg-white shadow-sm">
+          <CardHeader className="pb-3 border-b border-slate-100">
             <div className="flex items-center gap-2">
-              <User className="w-4 h-4 text-brand-400" />
-              <CardTitle className="text-sm font-bold text-white">Personal Information</CardTitle>
+              <User className="w-4 h-4 text-brand-600" />
+              <CardTitle className="text-sm font-bold text-slate-900">Personal Information</CardTitle>
             </div>
           </CardHeader>
           <CardContent className="p-6 space-y-4">
@@ -384,14 +384,14 @@ export function StudentProfilePage() {
         </Card>
 
         {/* 2. Technical Skills Card */}
-        <Card className="border-slate-800 bg-slate-900/80">
-          <CardHeader className="pb-3 border-b border-slate-800">
+        <Card className="border-slate-200 bg-white shadow-sm">
+          <CardHeader className="pb-3 border-b border-slate-100">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Tag className="w-4 h-4 text-brand-400" />
-                <CardTitle className="text-sm font-bold text-white">Technical Skills ({formData.skills.length})</CardTitle>
+                <Tag className="w-4 h-4 text-brand-600" />
+                <CardTitle className="text-sm font-bold text-slate-900">Technical Skills ({formData.skills.length})</CardTitle>
               </div>
-              <span className="text-xs text-slate-400">Aim for at least 3 skills for optimal matching</span>
+              <span className="text-xs text-slate-500">Aim for at least 3 skills for optimal matching</span>
             </div>
           </CardHeader>
           <CardContent className="p-6 space-y-4">
@@ -419,13 +419,13 @@ export function StudentProfilePage() {
                 {formData.skills.map((skill) => (
                   <span
                     key={skill}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-brand-500/10 border border-brand-500/30 text-xs font-semibold text-brand-300"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700 shadow-xs"
                   >
                     <span>{skill}</span>
                     <button
                       type="button"
                       onClick={() => handleRemoveSkill(skill)}
-                      className="hover:text-red-400 transition-colors p-0.5"
+                      className="hover:text-red-600 transition-colors p-0.5"
                     >
                       ×
                     </button>
@@ -437,15 +437,15 @@ export function StudentProfilePage() {
             )}
 
             {/* Suggested Skills */}
-            <div className="pt-3 border-t border-slate-800 space-y-2">
-              <span className="text-xs font-semibold text-slate-400 block">Suggested Skills:</span>
+            <div className="pt-3 border-t border-slate-100 space-y-2">
+              <span className="text-xs font-semibold text-slate-600 block">Suggested Skills:</span>
               <div className="flex flex-wrap gap-1.5">
                 {SUGGESTED_SKILLS.filter((s) => !formData.skills.includes(s)).slice(0, 12).map((s) => (
                   <button
                     key={s}
                     type="button"
                     onClick={() => handleAddSkill(s)}
-                    className="text-[11px] px-2.5 py-1 rounded-md bg-slate-950 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 transition-colors"
+                    className="text-[11px] px-2.5 py-1 rounded-md bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
                   >
                     + {s}
                   </button>
@@ -456,11 +456,11 @@ export function StudentProfilePage() {
         </Card>
 
         {/* 3. Education Section */}
-        <Card className="border-slate-800 bg-slate-900/80">
-          <CardHeader className="pb-3 border-b border-slate-800 flex flex-row items-center justify-between">
+        <Card className="border-slate-200 bg-white shadow-sm">
+          <CardHeader className="pb-3 border-b border-slate-100 flex flex-row items-center justify-between">
             <div className="flex items-center gap-2">
-              <GraduationCap className="w-4 h-4 text-brand-400" />
-              <CardTitle className="text-sm font-bold text-white">Education</CardTitle>
+              <GraduationCap className="w-4 h-4 text-brand-600" />
+              <CardTitle className="text-sm font-bold text-slate-900">Education</CardTitle>
             </div>
             <Button
               variant="outline"
@@ -479,14 +479,14 @@ export function StudentProfilePage() {
               formData.education.map((edu, idx) => (
                 <div
                   key={edu._id || idx}
-                  className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 flex items-start justify-between gap-4"
+                  className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start justify-between gap-4"
                 >
                   <div className="space-y-1">
-                    <h4 className="text-sm font-bold text-white">{edu.institution}</h4>
-                    <p className="text-xs text-brand-300 font-medium">
+                    <h4 className="text-sm font-bold text-slate-900">{edu.institution}</h4>
+                    <p className="text-xs text-brand-600 font-medium">
                       {edu.degree} {edu.fieldOfStudy && `in ${edu.fieldOfStudy}`}
                     </p>
-                    <p className="text-[11px] text-slate-400">
+                    <p className="text-[11px] text-slate-500">
                       {edu.startDate ? new Date(edu.startDate).getFullYear() : ''} -{' '}
                       {edu.current ? 'Present' : edu.endDate ? new Date(edu.endDate).getFullYear() : 'Present'}
                       {edu.gpa && ` • GPA: ${edu.gpa}`}
@@ -499,14 +499,14 @@ export function StudentProfilePage() {
                         setEditingEducation(edu);
                         setEducationModalOpen(true);
                       }}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
                     >
                       <Edit2 className="w-3.5 h-3.5" />
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDeleteEducation(idx)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-danger-400 hover:bg-slate-800 transition-colors"
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-danger-600 hover:bg-slate-200 transition-colors"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -522,11 +522,11 @@ export function StudentProfilePage() {
         </Card>
 
         {/* 4. Experience Section */}
-        <Card className="border-slate-800 bg-slate-900/80">
-          <CardHeader className="pb-3 border-b border-slate-800 flex flex-row items-center justify-between">
+        <Card className="border-slate-200 bg-white shadow-sm">
+          <CardHeader className="pb-3 border-b border-slate-100 flex flex-row items-center justify-between">
             <div className="flex items-center gap-2">
-              <Briefcase className="w-4 h-4 text-brand-400" />
-              <CardTitle className="text-sm font-bold text-white">Work Experience</CardTitle>
+              <Briefcase className="w-4 h-4 text-brand-600" />
+              <CardTitle className="text-sm font-bold text-slate-900">Work Experience</CardTitle>
             </div>
             <Button
               variant="outline"
@@ -545,17 +545,17 @@ export function StudentProfilePage() {
               formData.experience.map((exp, idx) => (
                 <div
                   key={exp._id || idx}
-                  className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 flex items-start justify-between gap-4"
+                  className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start justify-between gap-4"
                 >
                   <div className="space-y-1">
-                    <h4 className="text-sm font-bold text-white">{exp.title}</h4>
-                    <p className="text-xs text-brand-300 font-medium">{exp.company} {exp.location && `• ${exp.location}`}</p>
-                    <p className="text-[11px] text-slate-400">
+                    <h4 className="text-sm font-bold text-slate-900">{exp.title}</h4>
+                    <p className="text-xs text-brand-600 font-medium">{exp.company} {exp.location && `• ${exp.location}`}</p>
+                    <p className="text-[11px] text-slate-500">
                       {exp.startDate ? new Date(exp.startDate).toLocaleDateString(undefined, { year: 'numeric', month: 'short' }) : ''} -{' '}
                       {exp.current ? 'Present' : exp.endDate ? new Date(exp.endDate).toLocaleDateString(undefined, { year: 'numeric', month: 'short' }) : 'Present'}
                     </p>
                     {exp.description && (
-                      <p className="text-xs text-slate-300 pt-1 leading-relaxed whitespace-pre-line">
+                      <p className="text-xs text-slate-600 pt-1 leading-relaxed whitespace-pre-line">
                         {exp.description}
                       </p>
                     )}
@@ -567,14 +567,14 @@ export function StudentProfilePage() {
                         setEditingExperience(exp);
                         setExperienceModalOpen(true);
                       }}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
                     >
                       <Edit2 className="w-3.5 h-3.5" />
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDeleteExperience(idx)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-danger-400 hover:bg-slate-800 transition-colors"
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-danger-600 hover:bg-slate-200 transition-colors"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -590,11 +590,11 @@ export function StudentProfilePage() {
         </Card>
 
         {/* 5. Projects Section */}
-        <Card className="border-slate-800 bg-slate-900/80">
-          <CardHeader className="pb-3 border-b border-slate-800 flex flex-row items-center justify-between">
+        <Card className="border-slate-200 bg-white shadow-sm">
+          <CardHeader className="pb-3 border-b border-slate-100 flex flex-row items-center justify-between">
             <div className="flex items-center gap-2">
-              <FolderGit2 className="w-4 h-4 text-brand-400" />
-              <CardTitle className="text-sm font-bold text-white">Projects & Engineering Portfolio</CardTitle>
+              <FolderGit2 className="w-4 h-4 text-brand-600" />
+              <CardTitle className="text-sm font-bold text-slate-900">Projects & Engineering Portfolio</CardTitle>
             </div>
             <Button
               variant="outline"
@@ -613,17 +613,17 @@ export function StudentProfilePage() {
               formData.projects.map((proj, idx) => (
                 <div
                   key={proj._id || idx}
-                  className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 flex items-start justify-between gap-4"
+                  className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start justify-between gap-4"
                 >
                   <div className="space-y-1.5">
                     <div className="flex items-center gap-2">
-                      <h4 className="text-sm font-bold text-white">{proj.title}</h4>
+                      <h4 className="text-sm font-bold text-slate-900">{proj.title}</h4>
                       {proj.link && (
                         <a
                           href={proj.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-slate-400 hover:text-brand-300"
+                          className="text-slate-500 hover:text-brand-600"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
                         </a>
@@ -633,17 +633,17 @@ export function StudentProfilePage() {
                           href={proj.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-slate-400 hover:text-white"
+                          className="text-slate-500 hover:text-slate-900"
                         >
                           <Github className="w-3.5 h-3.5" />
                         </a>
                       )}
                     </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">{proj.description}</p>
+                    <p className="text-xs text-slate-600 leading-relaxed">{proj.description}</p>
                     {proj.technologies?.length > 0 && (
                       <div className="flex flex-wrap gap-1.5 pt-1">
                         {proj.technologies.map((t) => (
-                          <span key={t} className="px-2 py-0.5 rounded bg-slate-800 text-[10px] font-mono text-slate-300">
+                          <span key={t} className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700">
                             {t}
                           </span>
                         ))}
@@ -657,14 +657,14 @@ export function StudentProfilePage() {
                         setEditingProject(proj);
                         setProjectModalOpen(true);
                       }}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
                     >
                       <Edit2 className="w-3.5 h-3.5" />
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDeleteProject(idx)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-danger-400 hover:bg-slate-800 transition-colors"
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-danger-600 hover:bg-slate-200 transition-colors"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -680,11 +680,11 @@ export function StudentProfilePage() {
         </Card>
 
         {/* 6. Certifications Section */}
-        <Card className="border-slate-800 bg-slate-900/80">
-          <CardHeader className="pb-3 border-b border-slate-800 flex flex-row items-center justify-between">
+        <Card className="border-slate-200 bg-white shadow-sm">
+          <CardHeader className="pb-3 border-b border-slate-100 flex flex-row items-center justify-between">
             <div className="flex items-center gap-2">
-              <Award className="w-4 h-4 text-brand-400" />
-              <CardTitle className="text-sm font-bold text-white">Certifications & Licenses</CardTitle>
+              <Award className="w-4 h-4 text-brand-600" />
+              <CardTitle className="text-sm font-bold text-slate-900">Certifications & Licenses</CardTitle>
             </div>
             <Button
               variant="outline"
@@ -703,11 +703,11 @@ export function StudentProfilePage() {
               formData.certifications.map((cert, idx) => (
                 <div
                   key={cert._id || idx}
-                  className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 flex items-start justify-between gap-4"
+                  className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start justify-between gap-4"
                 >
                   <div className="space-y-1">
-                    <h4 className="text-sm font-bold text-white">{cert.name}</h4>
-                    <p className="text-xs text-brand-300">{cert.issuer}</p>
+                    <h4 className="text-sm font-bold text-slate-900">{cert.name}</h4>
+                    <p className="text-xs text-brand-600 font-medium">{cert.issuer}</p>
                     {cert.credentialId && (
                       <p className="text-[11px] font-mono text-slate-500">ID: {cert.credentialId}</p>
                     )}
@@ -719,14 +719,14 @@ export function StudentProfilePage() {
                         setEditingCert(cert);
                         setCertModalOpen(true);
                       }}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
                     >
                       <Edit2 className="w-3.5 h-3.5" />
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDeleteCert(idx)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-danger-400 hover:bg-slate-800 transition-colors"
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-danger-600 hover:bg-slate-200 transition-colors"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -742,11 +742,11 @@ export function StudentProfilePage() {
         </Card>
 
         {/* 7. Social & Online Links */}
-        <Card className="border-slate-800 bg-slate-900/80">
-          <CardHeader className="pb-3 border-b border-slate-800">
+        <Card className="border-slate-200 bg-white shadow-sm">
+          <CardHeader className="pb-3 border-b border-slate-100">
             <div className="flex items-center gap-2">
-              <Globe className="w-4 h-4 text-brand-400" />
-              <CardTitle className="text-sm font-bold text-white">Online Profiles & Social Links</CardTitle>
+              <Globe className="w-4 h-4 text-brand-600" />
+              <CardTitle className="text-sm font-bold text-slate-900">Online Profiles & Social Links</CardTitle>
             </div>
           </CardHeader>
           <CardContent className="p-6 space-y-4">

@@ -52,28 +52,28 @@ export function CalendarView({
   const selectedDayInterviews = interviewsByDay[selectedDay] || [];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-slate-900/80 border border-slate-800 rounded-2xl sm:rounded-3xl p-3.5 sm:p-7 shadow-card">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-white border border-slate-200 rounded-2xl sm:rounded-3xl p-3.5 sm:p-7 shadow-sm">
       {/* Left Column: Calendar Grid */}
       <div className="lg:col-span-7 space-y-4">
         {/* Calendar Header */}
-        <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+        <div className="flex items-center justify-between pb-2 border-b border-slate-100">
           <div className="flex items-center gap-2">
-            <CalendarIcon className="w-4 h-4 sm:w-5 sm:h-5 text-brand-400" />
-            <h2 className="text-sm sm:text-lg font-bold text-white tracking-tight">
+            <CalendarIcon className="w-4 h-4 sm:w-5 sm:h-5 text-brand-600" />
+            <h2 className="text-sm sm:text-lg font-bold text-slate-900 tracking-tight">
               {monthName}
             </h2>
           </div>
           <div className="flex items-center gap-1.5">
             <button
               onClick={prevMonth}
-              className="p-1.5 sm:p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
+              className="p-1.5 sm:p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
               title="Previous Month"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={nextMonth}
-              className="p-1.5 sm:p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
+              className="p-1.5 sm:p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
               title="Next Month"
             >
               <ChevronRight className="w-4 h-4" />
@@ -82,7 +82,7 @@ export function CalendarView({
         </div>
 
         {/* Weekday headers */}
-        <div className="grid grid-cols-7 gap-1 text-center text-[10px] sm:text-xs font-semibold text-slate-400 uppercase py-1">
+        <div className="grid grid-cols-7 gap-1 text-center text-[10px] sm:text-xs font-semibold text-slate-500 uppercase py-1">
           {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
             <div key={day} className="truncate">{day}</div>
           ))}
@@ -92,7 +92,7 @@ export function CalendarView({
         <div className="grid grid-cols-7 gap-1 sm:gap-2">
           {/* Empty prefix slots */}
           {Array.from({ length: firstDayIndex }).map((_, i) => (
-            <div key={`empty-${i}`} className="h-10 sm:h-16 rounded-xl bg-slate-950/20" />
+            <div key={`empty-${i}`} className="h-10 sm:h-16 rounded-xl bg-slate-50" />
           ))}
 
           {/* Month Day Slots */}
@@ -112,12 +112,12 @@ export function CalendarView({
                 onClick={() => setSelectedDay(dayNum)}
                 className={`h-10 sm:h-16 rounded-xl sm:rounded-2xl p-1 sm:p-2 flex flex-col justify-between items-center transition-all relative border ${
                   isSelected
-                    ? 'bg-brand-600 text-white border-brand-400 shadow-md shadow-brand-500/20 scale-[1.02]'
+                    ? 'bg-brand-600 text-white border-brand-600 shadow-md shadow-brand-500/20 scale-[1.02]'
                     : isToday
-                    ? 'bg-slate-800 text-brand-300 border-brand-500/40'
+                    ? 'bg-brand-50 text-brand-700 border-brand-300'
                     : hasEvents
-                    ? 'bg-slate-950 hover:bg-slate-800/80 text-slate-200 border-slate-700/80'
-                    : 'bg-slate-950/60 hover:bg-slate-800/40 text-slate-400 border-slate-800/60'
+                    ? 'bg-slate-50 hover:bg-slate-100 text-slate-800 border-slate-200'
+                    : 'bg-white hover:bg-slate-50 text-slate-600 border-slate-100'
                 }`}
               >
                 <span className="text-[11px] sm:text-sm font-bold">{dayNum}</span>
@@ -127,13 +127,13 @@ export function CalendarView({
                   <div className="flex items-center gap-0.5 sm:gap-1 justify-center">
                     <span
                       className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${
-                        isSelected ? 'bg-white' : 'bg-brand-400 ring-2 ring-brand-500/30'
+                        isSelected ? 'bg-white' : 'bg-brand-600 ring-2 ring-brand-200'
                       }`}
                     />
                     {dayEvents.length > 1 && (
                       <span
                         className={`text-[8px] sm:text-[9px] font-bold ${
-                          isSelected ? 'text-white' : 'text-brand-300'
+                          isSelected ? 'text-white' : 'text-brand-600'
                         }`}
                       >
                         +{dayEvents.length - 1}
@@ -148,17 +148,17 @@ export function CalendarView({
       </div>
 
       {/* Right Column: Selected Day Schedule / Agenda */}
-      <div className="lg:col-span-5 border-t lg:border-t-0 lg:border-l border-slate-800 pt-5 lg:pt-0 lg:pl-6 space-y-4 flex flex-col">
-        <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+      <div className="lg:col-span-5 border-t lg:border-t-0 lg:border-l border-slate-100 pt-5 lg:pt-0 lg:pl-6 space-y-4 flex flex-col">
+        <div className="flex items-center justify-between pb-2 border-b border-slate-100">
           <div>
-            <h3 className="text-sm font-bold text-white">
+            <h3 className="text-sm font-bold text-slate-900">
               Schedule for {currentDate.toLocaleString('default', { month: 'short' })} {selectedDay}
             </h3>
-            <p className="text-[11px] text-slate-400">
+            <p className="text-[11px] text-slate-500">
               {selectedDayInterviews.length} interview(s) booked
             </p>
           </div>
-          <span className="text-xs font-mono text-brand-400 font-semibold uppercase">
+          <span className="text-xs font-mono text-brand-600 font-semibold uppercase">
             Agenda
           </span>
         </div>
@@ -167,9 +167,9 @@ export function CalendarView({
         <div className="flex-1 space-y-3 overflow-y-auto max-h-[380px] no-scrollbar">
           {selectedDayInterviews.length === 0 ? (
             <div className="py-12 text-center text-xs text-slate-500 space-y-2">
-              <CalendarIcon className="w-8 h-8 text-slate-700 mx-auto" />
+              <CalendarIcon className="w-8 h-8 text-slate-300 mx-auto" />
               <p>No interviews scheduled for this date.</p>
-              <p className="text-[11px] text-slate-600">
+              <p className="text-[11px] text-slate-400">
                 Select a highlighted date on the calendar to view agenda details.
               </p>
             </div>
@@ -179,17 +179,17 @@ export function CalendarView({
               return (
                 <div
                   key={item._id}
-                  className="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-brand-500/40 transition-all space-y-3 shadow-md"
+                  className="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-brand-300 transition-all space-y-3 shadow-xs"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <h4 className="text-sm font-bold text-white">
+                      <h4 className="text-sm font-bold text-slate-900">
                         {isRecruiter
                           ? item.studentId?.name || 'Candidate'
                           : item.internshipId?.title || 'Internship Interview'}
                       </h4>
-                      <p className="text-xs text-slate-400 flex items-center gap-1.5 mt-0.5">
-                        <Building2 className="w-3.5 h-3.5 text-slate-500" />
+                      <p className="text-xs text-slate-600 flex items-center gap-1.5 mt-0.5">
+                        <Building2 className="w-3.5 h-3.5 text-slate-400" />
                         {isRecruiter
                           ? item.internshipId?.title
                           : item.companyId?.name || 'Hiring Organization'}
@@ -213,8 +213,8 @@ export function CalendarView({
                   </div>
 
                   {/* Time & Duration Chip */}
-                  <div className="flex items-center gap-2 text-xs font-mono text-brand-300 bg-brand-500/10 px-3 py-1.5 rounded-xl w-fit">
-                    <Clock className="w-3.5 h-3.5 text-brand-400" />
+                  <div className="flex items-center gap-2 text-xs font-mono text-brand-700 bg-brand-50 border border-brand-200 px-3 py-1.5 rounded-xl w-fit">
+                    <Clock className="w-3.5 h-3.5 text-brand-600" />
                     <span>
                       {itemDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} •{' '}
                       {item.durationMinutes || item.duration || 45} mins
@@ -223,8 +223,8 @@ export function CalendarView({
 
                   {/* Recruiter / Prep Notes */}
                   {item.notes && (
-                    <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 space-y-1">
-                      <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider block">
+                    <div className="p-2.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-700 space-y-1">
+                      <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider block">
                         Preparation Notes
                       </span>
                       <p className="text-xs leading-relaxed">{item.notes}</p>
@@ -232,7 +232,7 @@ export function CalendarView({
                   )}
 
                   {/* Actions (Join Call / Reschedule / Cancel) */}
-                  <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800/80">
+                  <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-200">
                     {item.meetingLink || item.meetingUrl ? (
                       <a
                         href={item.meetingLink || item.meetingUrl}
@@ -268,7 +268,7 @@ export function CalendarView({
                             variant="ghost"
                             size="xs"
                             onClick={() => onCancel(item)}
-                            className="text-red-400 hover:bg-red-500/10"
+                            className="text-red-600 hover:bg-red-50"
                           >
                             Cancel
                           </Button>

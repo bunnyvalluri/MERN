@@ -134,22 +134,22 @@ export function RecruiterApplicationsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-brand-500/20 selection:text-brand-300">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col selection:bg-brand-500/20 selection:text-brand-700">
       <RecruiterNav />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         {/* Header Title */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-slate-900 to-slate-900/60 p-6 rounded-2xl border border-slate-800 shadow-card">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
                 Candidate Applications
               </h1>
               <Badge variant="primary" size="sm">
                 {stats.total} Total Applicants
               </Badge>
             </div>
-            <p className="text-xs sm:text-sm text-slate-400">
+            <p className="text-xs sm:text-sm text-slate-500">
               Review student profiles, shortlist top talent, schedule technical interviews, and make offers.
             </p>
           </div>
@@ -163,34 +163,34 @@ export function RecruiterApplicationsPage() {
 
         {/* Stats Metrics Bar */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-            <p className="text-[11px] text-slate-400 font-medium">Total Applicants</p>
-            <p className="text-xl font-bold text-white">{stats.total}</p>
+          <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1 shadow-xs">
+            <p className="text-[11px] text-slate-500 font-medium">Total Applicants</p>
+            <p className="text-xl font-bold text-slate-900 font-mono">{stats.total}</p>
           </div>
-          <div className="p-3.5 rounded-xl bg-blue-500/5 border border-blue-500/20 space-y-1">
-            <p className="text-[11px] text-blue-400 font-medium">New Applied</p>
-            <p className="text-xl font-bold text-blue-300">{stats.applied}</p>
+          <div className="p-3.5 rounded-xl bg-blue-50 border border-blue-200 space-y-1">
+            <p className="text-[11px] text-blue-700 font-medium">New Applied</p>
+            <p className="text-xl font-bold text-blue-900 font-mono">{stats.applied}</p>
           </div>
-          <div className="p-3.5 rounded-xl bg-purple-500/5 border border-purple-500/20 space-y-1">
-            <p className="text-[11px] text-purple-400 font-medium">Under Review</p>
-            <p className="text-xl font-bold text-purple-300">{stats.underReview}</p>
+          <div className="p-3.5 rounded-xl bg-purple-50 border border-purple-200 space-y-1">
+            <p className="text-[11px] text-purple-700 font-medium">Under Review</p>
+            <p className="text-xl font-bold text-purple-900 font-mono">{stats.underReview}</p>
           </div>
-          <div className="p-3.5 rounded-xl bg-amber-500/5 border border-amber-500/20 space-y-1">
-            <p className="text-[11px] text-amber-400 font-medium">Shortlisted</p>
-            <p className="text-xl font-bold text-amber-300">{stats.shortlisted}</p>
+          <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 space-y-1">
+            <p className="text-[11px] text-amber-700 font-medium">Shortlisted</p>
+            <p className="text-xl font-bold text-amber-900 font-mono">{stats.shortlisted}</p>
           </div>
-          <div className="p-3.5 rounded-xl bg-teal-500/5 border border-teal-500/20 space-y-1">
-            <p className="text-[11px] text-teal-400 font-medium">Interviewing</p>
-            <p className="text-xl font-bold text-teal-300">{stats.interview}</p>
+          <div className="p-3.5 rounded-xl bg-teal-50 border border-teal-200 space-y-1">
+            <p className="text-[11px] text-teal-700 font-medium">Interviewing</p>
+            <p className="text-xl font-bold text-teal-900 font-mono">{stats.interview}</p>
           </div>
-          <div className="p-3.5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 space-y-1">
-            <p className="text-[11px] text-emerald-400 font-medium">Accepted</p>
-            <p className="text-xl font-bold text-emerald-300">{stats.selected}</p>
+          <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 space-y-1">
+            <p className="text-[11px] text-emerald-700 font-medium">Accepted</p>
+            <p className="text-xl font-bold text-emerald-900 font-mono">{stats.selected}</p>
           </div>
         </div>
 
         {/* Filters and Search Bar */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 flex-1">
             <div className="relative flex-1 min-w-[200px]">
               <Input
@@ -225,8 +225,8 @@ export function RecruiterApplicationsPage() {
               onClick={() => handleStatusChange(tab.key)}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
                 selectedStatus === tab.key
-                  ? 'bg-brand-500 text-white shadow-sm shadow-brand-500/20'
-                  : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700'
+                  ? 'bg-brand-600 text-white shadow-sm'
+                  : 'bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
               <span>{tab.label}</span>
@@ -242,10 +242,10 @@ export function RecruiterApplicationsPage() {
             ))}
           </div>
         ) : applications.length === 0 ? (
-          <Card className="border-slate-800 bg-slate-900/60 py-12">
+          <Card className="border-slate-200 bg-white py-12 shadow-sm">
             <CardContent>
               <EmptyState
-                icon={<Users className="w-12 h-12 text-slate-600 mx-auto" />}
+                icon={<Users className="w-12 h-12 text-slate-400 mx-auto" />}
                 title={
                   selectedStatus === 'ALL'
                     ? 'No candidates found'
@@ -265,7 +265,7 @@ export function RecruiterApplicationsPage() {
               return (
                 <div
                   key={app._id}
-                  className="bg-slate-900/90 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-2xl p-4 sm:p-5 transition-all shadow-card group"
+                  className="bg-white hover:bg-slate-50/80 border border-slate-200 hover:border-slate-300 rounded-2xl p-4 sm:p-5 transition-all shadow-sm group"
                 >
                   <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                     {/* Candidate Identity */}
@@ -280,7 +280,7 @@ export function RecruiterApplicationsPage() {
                         <div className="flex items-center gap-2 flex-wrap">
                           <Link
                             to={`/recruiter/applications/${app._id}`}
-                            className="text-base font-bold text-white hover:text-brand-300 transition-colors"
+                            className="text-base font-bold text-slate-900 hover:text-brand-600 transition-colors"
                           >
                             {student.name || 'Anonymous Student'}
                           </Link>
@@ -294,18 +294,18 @@ export function RecruiterApplicationsPage() {
                           </Badge>
                         </div>
 
-                        <p className="text-xs text-slate-400 font-mono">
+                        <p className="text-xs text-slate-500 font-mono">
                           {student.email}
                         </p>
 
-                        <div className="flex items-center gap-3 text-xs text-slate-400 pt-0.5 flex-wrap">
-                          <span className="flex items-center gap-1 text-brand-300 font-medium">
-                            <Briefcase className="w-3.5 h-3.5 text-brand-400" />
+                        <div className="flex items-center gap-3 text-xs text-slate-500 pt-0.5 flex-wrap">
+                          <span className="flex items-center gap-1 text-brand-600 font-medium">
+                            <Briefcase className="w-3.5 h-3.5 text-brand-600" />
                             {internship.title || 'Internship'}
                           </span>
-                          <span className="text-slate-600">•</span>
+                          <span className="text-slate-300">•</span>
                           <span className="flex items-center gap-1">
-                            <Clock className="w-3.5 h-3.5 text-slate-500" />
+                            <Clock className="w-3.5 h-3.5 text-slate-400" />
                             Applied {new Date(app.createdAt).toLocaleDateString()}
                           </span>
                         </div>
@@ -313,14 +313,14 @@ export function RecruiterApplicationsPage() {
                     </div>
 
                     {/* Quick Review Actions & Link */}
-                    <div className="flex flex-wrap items-center gap-2 pt-3 lg:pt-0 border-t lg:border-t-0 border-slate-800">
+                    <div className="flex flex-wrap items-center gap-2 pt-3 lg:pt-0 border-t lg:border-t-0 border-slate-100">
                       {/* Quick Status Buttons */}
                       {app.status === 'APPLIED' && (
                         <Button
                           variant="outline"
                           size="xs"
                           onClick={() => handleQuickStatusUpdate(app._id, 'UNDER_REVIEW')}
-                          leftIcon={<Eye className="w-3.5 h-3.5 text-purple-400" />}
+                          leftIcon={<Eye className="w-3.5 h-3.5 text-indigo-600" />}
                         >
                           Mark Review
                         </Button>
@@ -331,7 +331,7 @@ export function RecruiterApplicationsPage() {
                           variant="outline"
                           size="xs"
                           onClick={() => handleQuickStatusUpdate(app._id, 'SHORTLISTED')}
-                          leftIcon={<Sparkles className="w-3.5 h-3.5 text-amber-400" />}
+                          leftIcon={<Sparkles className="w-3.5 h-3.5 text-amber-600" />}
                         >
                           Shortlist
                         </Button>
@@ -342,7 +342,7 @@ export function RecruiterApplicationsPage() {
                           variant="outline"
                           size="xs"
                           onClick={() => handleQuickStatusUpdate(app._id, 'SELECTED')}
-                          leftIcon={<UserCheck className="w-3.5 h-3.5 text-emerald-400" />}
+                          leftIcon={<UserCheck className="w-3.5 h-3.5 text-emerald-600" />}
                         >
                           Accept
                         </Button>

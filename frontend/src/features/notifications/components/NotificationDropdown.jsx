@@ -25,20 +25,20 @@ const getNotificationIcon = (type) => {
   switch (type) {
     case 'REGISTRATION_WELCOME':
     case 'EMAIL_VERIFIED':
-      return <Sparkles className="w-4 h-4 text-brand-400" />;
+      return <Sparkles className="w-4 h-4 text-brand-600" />;
     case 'APPLICATION_SUBMITTED':
     case 'NEW_APPLICATION_RECEIVED':
     case 'APPLICATION_REVIEWED':
     case 'APPLICATION_SHORTLISTED':
     case 'APPLICATION_SELECTED':
     case 'APPLICATION_REJECTED':
-      return <Briefcase className="w-4 h-4 text-blue-400" />;
+      return <Briefcase className="w-4 h-4 text-blue-600" />;
     case 'INTERVIEW_SCHEDULED':
     case 'INTERVIEW_RESCHEDULED':
     case 'INTERVIEW_CANCELLED':
-      return <Calendar className="w-4 h-4 text-teal-400" />;
+      return <Calendar className="w-4 h-4 text-teal-600" />;
     default:
-      return <Bell className="w-4 h-4 text-slate-400" />;
+      return <Bell className="w-4 h-4 text-slate-500" />;
   }
 };
 
@@ -83,16 +83,16 @@ export function NotificationDropdown({ onClose }) {
 
   return (
     <div
-      className="absolute right-0 mt-2 w-[calc(100vw-2rem)] max-w-sm sm:w-96 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl z-50 overflow-hidden animate-scale-in"
+      className="absolute right-0 mt-2 w-[calc(100vw-2rem)] max-w-sm sm:w-96 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 overflow-hidden animate-scale-in"
       onClick={(e) => e.stopPropagation()}
     >
       {/* Dropdown Header */}
-      <div className="p-3.5 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+      <div className="p-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
         <div className="flex items-center gap-2">
-          <Bell className="w-4 h-4 text-brand-400" />
-          <span className="text-xs font-bold text-white">Notifications</span>
+          <Bell className="w-4 h-4 text-brand-600" />
+          <span className="text-xs font-bold text-slate-900">Notifications</span>
           {unreadCount > 0 && (
-            <span className="px-1.5 py-0.2 rounded-full bg-brand-500 text-[10px] font-bold text-white font-mono">
+            <span className="px-1.5 py-0.2 rounded-full bg-brand-600 text-[10px] font-bold text-white font-mono">
               {unreadCount}
             </span>
           )}
@@ -101,7 +101,7 @@ export function NotificationDropdown({ onClose }) {
         {unreadCount > 0 && (
           <button
             onClick={handleMarkAllRead}
-            className="text-[11px] font-semibold text-brand-400 hover:text-brand-300 flex items-center gap-1 transition-colors"
+            className="text-[11px] font-semibold text-brand-600 hover:text-brand-700 flex items-center gap-1 transition-colors"
           >
             <CheckCheck className="w-3.5 h-3.5" />
             Mark all read
@@ -110,10 +110,10 @@ export function NotificationDropdown({ onClose }) {
       </div>
 
       {/* Notifications List */}
-      <div className="max-h-80 overflow-y-auto no-scrollbar divide-y divide-slate-800/60">
+      <div className="max-h-80 overflow-y-auto no-scrollbar divide-y divide-slate-100">
         {list.length === 0 ? (
-          <div className="py-10 text-center text-xs text-slate-500 space-y-1">
-            <Bell className="w-6 h-6 text-slate-700 mx-auto" />
+          <div className="py-10 text-center text-xs text-slate-400 space-y-1">
+            <Bell className="w-6 h-6 text-slate-300 mx-auto" />
             <p>No notifications yet</p>
           </div>
         ) : (
@@ -121,27 +121,27 @@ export function NotificationDropdown({ onClose }) {
             <div
               key={item._id}
               onClick={() => handleNotificationClick(item)}
-              className={`p-3.5 hover:bg-slate-800/60 transition-all cursor-pointer flex items-start justify-between gap-3 ${
-                !item.read ? 'bg-brand-500/5' : ''
+              className={`p-3.5 hover:bg-slate-50/80 transition-all cursor-pointer flex items-start justify-between gap-3 ${
+                !item.read ? 'bg-brand-50/40' : ''
               }`}
             >
               <div className="flex items-start gap-2.5 flex-1 min-w-0">
-                <div className="p-1.5 rounded-xl bg-slate-950 border border-slate-800 shrink-0 mt-0.5">
+                <div className="p-1.5 rounded-xl bg-slate-50 border border-slate-200 shrink-0 mt-0.5">
                   {getNotificationIcon(item.type)}
                 </div>
                 <div className="space-y-0.5 flex-1 min-w-0">
                   <div className="flex items-center gap-1.5">
                     {!item.read && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-brand-400 shrink-0" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-brand-600 shrink-0" />
                     )}
-                    <h4 className="text-xs font-bold text-white truncate">
+                    <h4 className="text-xs font-bold text-slate-900 truncate">
                       {item.title}
                     </h4>
                   </div>
-                  <p className="text-[11px] text-slate-300 line-clamp-2 leading-relaxed">
+                  <p className="text-[11px] text-slate-600 line-clamp-2 leading-relaxed">
                     {item.message}
                   </p>
-                  <span className="text-[10px] text-slate-500 font-mono block pt-0.5">
+                  <span className="text-[10px] text-slate-400 font-mono block pt-0.5">
                     {getTimeAgo(item.createdAt)}
                   </span>
                 </div>
@@ -150,7 +150,7 @@ export function NotificationDropdown({ onClose }) {
               <div className="flex items-center gap-1 shrink-0">
                 <button
                   onClick={(e) => handleDelete(e, item._id)}
-                  className="p-1 text-slate-500 hover:text-red-400 rounded transition-colors"
+                  className="p-1 text-slate-400 hover:text-red-600 rounded transition-colors"
                   title="Delete"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
@@ -162,13 +162,13 @@ export function NotificationDropdown({ onClose }) {
       </div>
 
       {/* Dropdown Footer */}
-      <div className="p-2.5 border-t border-slate-800 text-center bg-slate-950/60">
+      <div className="p-2.5 border-t border-slate-100 text-center bg-slate-50">
         <Link
           to="/notifications"
           onClick={() => {
             if (onClose) onClose();
           }}
-          className="text-xs font-bold text-brand-400 hover:text-brand-300 block py-1 transition-colors"
+          className="text-xs font-bold text-brand-600 hover:text-brand-700 block py-1 transition-colors"
         >
           View All in Notification Center →
         </Link>

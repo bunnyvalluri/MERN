@@ -67,7 +67,7 @@ export function Modal({
     >
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-slate-900/30 backdrop-blur-sm transition-opacity"
         onClick={closeOnBackdrop ? onClose : undefined}
         aria-hidden="true"
       />
@@ -75,14 +75,14 @@ export function Modal({
       {/* Modal Dialog Box */}
       <div
         ref={modalRef}
-        className={`relative w-full max-w-[calc(100vw-1.5rem)] ${sizeClasses[size] || sizeClasses.md} bg-slate-900 border border-slate-800 rounded-2xl shadow-modal z-10 flex flex-col max-h-[90vh] sm:max-h-[85vh] overflow-hidden animate-scale-in ${className}`}
+        className={`relative w-full max-w-[calc(100vw-1.5rem)] ${sizeClasses[size] || sizeClasses.md} bg-white border border-slate-200 rounded-2xl shadow-modal z-10 flex flex-col max-h-[90vh] sm:max-h-[85vh] overflow-hidden animate-scale-in text-slate-800 ${className}`}
       >
         {showCloseButton && (
           <button
             type="button"
             onClick={onClose}
             aria-label="Close dialog"
-            className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 p-1.5 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition-colors z-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+            className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors z-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
           >
             <X className="w-5 h-5" />
           </button>
@@ -111,7 +111,7 @@ export function Modal({
 
 export function ModalHeader({ className = '', children, ...props }) {
   return (
-    <div className={`p-6 pb-4 border-b border-slate-800/80 ${className}`} {...props}>
+    <div className={`p-6 pb-4 border-b border-slate-100 ${className}`} {...props}>
       {children}
     </div>
   );
@@ -119,7 +119,7 @@ export function ModalHeader({ className = '', children, ...props }) {
 
 export function ModalTitle({ className = '', children, ...props }) {
   return (
-    <h3 className={`text-lg sm:text-xl font-semibold text-slate-100 tracking-tight ${className}`} {...props}>
+    <h3 className={`text-lg sm:text-xl font-semibold text-slate-900 tracking-tight ${className}`} {...props}>
       {children}
     </h3>
   );
@@ -127,7 +127,7 @@ export function ModalTitle({ className = '', children, ...props }) {
 
 export function ModalDescription({ className = '', children, ...props }) {
   return (
-    <p className={`text-xs sm:text-sm text-slate-400 mt-1 ${className}`} {...props}>
+    <p className={`text-xs sm:text-sm text-slate-500 mt-1 ${className}`} {...props}>
       {children}
     </p>
   );
@@ -135,7 +135,7 @@ export function ModalDescription({ className = '', children, ...props }) {
 
 export function ModalBody({ className = '', children, ...props }) {
   return (
-    <div className={`p-6 overflow-y-auto flex-1 leading-relaxed text-sm text-slate-300 ${className}`} {...props}>
+    <div className={`p-6 overflow-y-auto flex-1 leading-relaxed text-sm text-slate-600 ${className}`} {...props}>
       {children}
     </div>
   );
@@ -146,7 +146,7 @@ export const ModalContent = ModalBody;
 export function ModalFooter({ className = '', children, ...props }) {
   return (
     <div
-      className={`p-6 pt-4 border-t border-slate-800/80 bg-slate-950/40 flex items-center justify-end gap-3 rounded-b-2xl ${className}`}
+      className={`p-6 pt-4 border-t border-slate-100 bg-slate-50/70 flex items-center justify-end gap-3 rounded-b-2xl ${className}`}
       {...props}
     >
       {children}

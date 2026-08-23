@@ -45,12 +45,12 @@ export const Switch = forwardRef(function Switch(
           {label && (
             <label
               htmlFor={id}
-              className="font-medium text-slate-200 cursor-pointer block"
+              className="font-medium text-slate-800 cursor-pointer block"
             >
               {label}
             </label>
           )}
-          {description && <p className="text-slate-400 mt-0.5">{description}</p>}
+          {description && <p className="text-slate-500 mt-0.5">{description}</p>}
         </div>
       )}
 
@@ -69,12 +69,12 @@ export const Switch = forwardRef(function Switch(
         />
         <label
           htmlFor={id}
-          className={`inline-flex items-center rounded-full transition-colors duration-200 ease-in-out cursor-pointer peer-focus-visible:ring-2 peer-focus-visible:ring-brand-500 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-slate-900 border ${
+          className={`inline-flex items-center rounded-full transition-colors duration-200 ease-in-out cursor-pointer peer-focus-visible:ring-2 peer-focus-visible:ring-brand-500 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white border ${
             trackSizes[size] || trackSizes.md
           } ${
             checked
-              ? 'bg-brand-600 border-brand-500'
-              : 'bg-slate-800 border-slate-700 hover:bg-slate-700'
+              ? 'bg-brand-600 border-brand-600'
+              : 'bg-slate-300 border-slate-300 hover:bg-slate-400'
           }`}
         >
           <span

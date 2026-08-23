@@ -43,7 +43,7 @@ export function CompanyDetailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-brand-500/20 selection:text-brand-300">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col selection:bg-brand-500/20 selection:text-brand-700">
       <SEOHead
         title={pageTitle}
         description={pageDescription}
@@ -63,7 +63,7 @@ export function CompanyDetailPage() {
         <div>
           <Link
             to="/companies"
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-slate-200 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 hover:text-slate-900 transition-colors"
             aria-label="Back to all companies"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
@@ -72,16 +72,16 @@ export function CompanyDetailPage() {
         </div>
 
         {/* Company header */}
-        <div className="p-8 rounded-2xl bg-slate-900/80 border border-slate-800 text-center space-y-4">
-          <div className="w-20 h-20 rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center mx-auto">
-            <Building2 className="w-10 h-10 text-brand-400" />
+        <div className="p-8 rounded-2xl bg-white border border-slate-200 text-center space-y-4 shadow-sm">
+          <div className="w-20 h-20 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center mx-auto">
+            <Building2 className="w-10 h-10 text-brand-600" />
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             {companyName}
           </h1>
 
-          <p className="text-slate-400 text-sm max-w-xl mx-auto">
+          <p className="text-slate-600 text-sm max-w-xl mx-auto">
             Full company profiles with culture insights, hiring history, and engineering team breakdowns
             are coming soon.
           </p>
@@ -105,15 +105,15 @@ export function CompanyDetailPage() {
         </div>
 
         {/* Redirect to internships section */}
-        <div className="p-6 rounded-2xl bg-slate-900/40 border border-slate-800 flex items-start gap-4">
-          <div className="w-10 h-10 rounded-xl bg-brand-600/15 border border-brand-500/30 flex items-center justify-center shrink-0">
-            <Briefcase className="w-5 h-5 text-brand-400" />
+        <div className="p-6 rounded-2xl bg-white border border-slate-200 flex items-start gap-4 shadow-sm">
+          <div className="w-10 h-10 rounded-xl bg-brand-50 border border-brand-200 flex items-center justify-center shrink-0">
+            <Briefcase className="w-5 h-5 text-brand-600" />
           </div>
           <div className="space-y-1">
-            <p className="text-sm font-semibold text-white">
+            <p className="text-sm font-semibold text-slate-900">
               Explore open roles at {companyName}
             </p>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-600">
               While full company profiles are being built, you can browse all internships and filter
               by company name in the search bar.
             </p>

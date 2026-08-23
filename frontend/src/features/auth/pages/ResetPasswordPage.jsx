@@ -83,9 +83,7 @@ export function ResetPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative selection:bg-brand-500/20 selection:text-brand-300">
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[300px] bg-brand-600/10 rounded-full blur-[120px] pointer-events-none" />
-
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative selection:bg-brand-500/20 selection:text-brand-700">
       <div className="sm:mx-auto sm:w-full sm:max-w-md z-10 space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
@@ -93,21 +91,21 @@ export function ResetPasswordPage() {
             to="/"
             className="inline-flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg p-1"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-xl tracking-tight text-white group-hover:text-brand-300 transition-colors">
+            <span className="font-bold text-xl tracking-tight text-slate-900 group-hover:text-brand-600 transition-colors">
               InternHub
             </span>
           </Link>
-          <h2 className="text-2xl font-bold tracking-tight text-white">Create new password</h2>
-          <p className="text-xs sm:text-sm text-slate-400">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">Create new password</h2>
+          <p className="text-xs sm:text-sm text-slate-600">
             Enter a strong, secure password for your account
           </p>
         </div>
 
         {/* Card */}
-        <Card className="border-slate-800 bg-slate-900/90 shadow-modal">
+        <Card className="border-slate-200 bg-white shadow-card">
           {!success ? (
             <form onSubmit={handleSubmit}>
               <CardContent className="space-y-4 pt-6">
@@ -141,21 +139,21 @@ export function ResetPasswordPage() {
                 />
 
                 {newPassword.length > 0 && (
-                  <div className="p-3 rounded-lg bg-slate-950/60 border border-slate-800 space-y-1.5 text-[11px] animate-fade-in">
-                    <span className="font-semibold text-slate-400 block mb-1">
+                  <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1.5 text-[11px] animate-fade-in">
+                    <span className="font-semibold text-slate-700 block mb-1">
                       Password Requirements:
                     </span>
                     {passwordCriteria.map((crit, idx) => (
                       <div
                         key={idx}
                         className={`flex items-center gap-1.5 ${
-                          crit.met ? 'text-emerald-400' : 'text-slate-500'
+                          crit.met ? 'text-emerald-700' : 'text-slate-400'
                         }`}
                       >
                         {crit.met ? (
-                          <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                          <CheckCircle2 className="w-3.5 h-3.5 shrink-0 text-emerald-600" />
                         ) : (
-                          <XCircle className="w-3.5 h-3.5 shrink-0" />
+                          <XCircle className="w-3.5 h-3.5 shrink-0 text-slate-400" />
                         )}
                         <span>{crit.label}</span>
                       </div>
@@ -192,10 +190,10 @@ export function ResetPasswordPage() {
                 </Button>
               </CardContent>
 
-              <CardFooter className="justify-center text-xs text-slate-400 border-t border-slate-800/80 bg-slate-950/40">
+              <CardFooter className="justify-center text-xs text-slate-600 border-t border-slate-100 bg-slate-50/70">
                 <Link
                   to="/login"
-                  className="font-medium text-slate-300 hover:text-white flex items-center gap-1.5 transition-colors"
+                  className="font-medium text-slate-700 hover:text-slate-900 flex items-center gap-1.5 transition-colors"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
                   Back to Sign In
@@ -204,11 +202,11 @@ export function ResetPasswordPage() {
             </form>
           ) : (
             <CardContent className="space-y-4 pt-6 text-center">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mx-auto text-emerald-400">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center mx-auto text-emerald-600">
                 <CheckCircle2 className="w-6 h-6" />
               </div>
-              <h3 className="text-base font-bold text-white">Password reset complete!</h3>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              <h3 className="text-base font-bold text-slate-900">Password reset complete!</h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                 Your password has been updated and all prior sessions have been revoked. Redirecting to
                 sign in...
               </p>

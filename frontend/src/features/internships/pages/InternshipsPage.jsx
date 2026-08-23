@@ -195,7 +195,7 @@ export function InternshipsPage() {
   }, [internships, pagination.total]);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-brand-500/20 selection:text-brand-300">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col selection:bg-brand-500/20 selection:text-brand-700">
       <SEOHead
         title="Tech Internships — Browse Verified Roles | InternHub"
         description="Browse and filter 2,000+ verified software engineering, AI/ML, design, and data science internships. Apply directly with your verified student profile."
@@ -207,13 +207,13 @@ export function InternshipsPage() {
 
       <main id="main-content" className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6" aria-label="Internship listings">
         {/* Page Title & Search Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight flex items-center gap-2.5">
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-2.5">
               <span>Explore Internships</span>
-              <Sparkles className="w-5 h-5 text-brand-400" />
+              <Sparkles className="w-5 h-5 text-brand-600" />
             </h1>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            <p className="text-xs sm:text-sm text-slate-600 mt-1">
               Find and apply to verified software, design, and engineering roles
             </p>
           </div>
@@ -232,7 +232,7 @@ export function InternshipsPage() {
 
             {/* Sort Dropdown */}
             <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold text-slate-400 hidden sm:inline">
+              <span className="text-xs font-semibold text-slate-600 hidden sm:inline">
                 Sort by:
               </span>
               <Select
@@ -258,13 +258,13 @@ export function InternshipsPage() {
             {activeFilterTags.map((tag) => (
               <span
                 key={tag.key}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-brand-500/10 border border-brand-500/30 text-brand-300 font-medium"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-brand-50 border border-brand-200 text-brand-700 font-medium shadow-sm"
               >
                 <span>{tag.label}</span>
                 <button
                   type="button"
                   onClick={() => removeTag(tag)}
-                  className="hover:text-red-400 transition-colors p-0.5"
+                  className="hover:text-red-600 transition-colors p-0.5"
                   aria-label={`Remove ${tag.label}`}
                 >
                   <X className="w-3 h-3" />
@@ -274,7 +274,7 @@ export function InternshipsPage() {
             <button
               type="button"
               onClick={handleResetFilters}
-              className="text-xs text-slate-400 hover:text-white underline ml-1"
+              className="text-xs text-slate-600 hover:text-slate-900 underline ml-1 font-medium"
             >
               Clear all
             </button>
@@ -294,7 +294,7 @@ export function InternshipsPage() {
 
           {/* Mobile Filter Drawer */}
           {mobileFilterOpen && (
-            <div className="lg:hidden p-4 rounded-2xl bg-slate-900 border border-slate-800 shadow-modal animate-slide-down">
+            <div className="lg:hidden p-4 rounded-2xl bg-white border border-slate-200 shadow-modal animate-slide-down">
               <InternshipFilters
                 filters={currentFilters}
                 onFilterChange={handleFilterChange}
@@ -308,7 +308,7 @@ export function InternshipsPage() {
           <div className="lg:col-span-3 space-y-6">
             {/* Results Count Bar */}
             <div
-              className="flex items-center justify-between text-xs text-slate-400"
+              className="flex items-center justify-between text-xs text-slate-500"
               aria-live="polite"
               aria-atomic="true"
             >
@@ -317,7 +317,7 @@ export function InternshipsPage() {
               ) : (
                 <span>
                   Showing{' '}
-                  <strong className="text-slate-200">
+                  <strong className="text-slate-800">
                     {pagination.total > 0
                       ? `${(pagination.page - 1) * pagination.limit + 1}-${Math.min(
                           pagination.page * pagination.limit,
@@ -325,7 +325,7 @@ export function InternshipsPage() {
                         )}`
                       : '0'}
                   </strong>{' '}
-                  of <strong className="text-slate-200">{pagination.total}</strong> open opportunities
+                  of <strong className="text-slate-800">{pagination.total}</strong> open opportunities
                 </span>
               )}
             </div>
@@ -336,7 +336,7 @@ export function InternshipsPage() {
                 {Array.from({ length: 6 }).map((_, i) => (
                   <div
                     key={i}
-                    className="p-5 rounded-2xl border border-slate-800 bg-slate-900/60 space-y-4"
+                    className="p-5 rounded-2xl border border-slate-200 bg-white shadow-sm space-y-4"
                   >
                     <div className="flex items-center gap-3">
                       <Skeleton className="w-12 h-12 rounded-xl" />
@@ -360,7 +360,7 @@ export function InternshipsPage() {
             ) : internships.length === 0 ? (
               /* Empty Results State */
               <EmptyState
-                icon={<Search className="w-8 h-8 text-brand-400" />}
+                icon={<Search className="w-8 h-8 text-brand-600" />}
                 title="No internships match your filters"
                 description="Try clearing some search criteria, broadening your location, or resetting the filters to discover more open roles."
                 action={
@@ -386,7 +386,7 @@ export function InternshipsPage() {
 
             {/* Pagination Controls */}
             {pagination.totalPages > 1 && (
-              <div className="pt-6 border-t border-slate-800/80 flex justify-center">
+              <div className="pt-6 border-t border-slate-200 flex justify-center">
                 <Pagination
                   currentPage={pagination.page}
                   totalPages={pagination.totalPages}

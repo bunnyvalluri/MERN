@@ -30,11 +30,11 @@ export function UserGrowthChart({ data = [] }) {
   const areaPath = `M 0,${chartHeight} L ${polylinePoints} L ${chartWidth},${chartHeight} Z`;
 
   return (
-    <Card className="border-slate-800 bg-slate-900/90 shadow-card">
-      <CardHeader className="pb-2 border-b border-slate-800 flex flex-row items-center justify-between">
+    <Card className="border-slate-200 bg-white shadow-sm">
+      <CardHeader className="pb-2 border-b border-slate-100 flex flex-row items-center justify-between">
         <div className="flex items-center gap-2">
-          <TrendingUp className="w-4 h-4 text-rose-400" />
-          <CardTitle className="text-sm font-bold text-white">Platform User Growth</CardTitle>
+          <TrendingUp className="w-4 h-4 text-rose-600" />
+          <CardTitle className="text-sm font-bold text-slate-900">Platform User Growth</CardTitle>
         </div>
         <Badge variant="primary" size="xs">
           Past 6 Months
@@ -49,8 +49,8 @@ export function UserGrowthChart({ data = [] }) {
               className="w-full h-44 overflow-visible"
             >
               <defs>
-                <linearGradient id="userGrowthGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#f43f5e" stopOpacity="0.35" />
+                <linearGradient id="userGrowthGradLight" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#f43f5e" stopOpacity="0.2" />
                   <stop offset="100%" stopColor="#f43f5e" stopOpacity="0.0" />
                 </linearGradient>
               </defs>
@@ -65,7 +65,7 @@ export function UserGrowthChart({ data = [] }) {
                     y1={y}
                     x2={chartWidth}
                     y2={y}
-                    stroke="#1e293b"
+                    stroke="#e2e8f0"
                     strokeDasharray="4 4"
                     strokeWidth="1"
                   />
@@ -73,7 +73,7 @@ export function UserGrowthChart({ data = [] }) {
               })}
 
               {/* Gradient Fill Area */}
-              <path d={areaPath} fill="url(#userGrowthGrad)" />
+              <path d={areaPath} fill="url(#userGrowthGradLight)" />
 
               {/* Primary Trajectory Line */}
               <polyline
@@ -92,14 +92,14 @@ export function UserGrowthChart({ data = [] }) {
                     cx={c.x}
                     cy={c.y}
                     r="5"
-                    className="fill-rose-500 stroke-slate-900 stroke-2 group-hover:r-7 transition-all"
+                    className="fill-rose-500 stroke-white stroke-2 group-hover:r-7 transition-all shadow-sm"
                   />
                   {/* Point Label */}
                   <text
                     x={c.x}
                     y={c.y - 10}
                     textAnchor="middle"
-                    className="fill-slate-200 text-[10px] font-mono font-bold"
+                    className="fill-slate-800 text-[10px] font-mono font-bold"
                   >
                     {c.count}
                   </text>
@@ -108,7 +108,7 @@ export function UserGrowthChart({ data = [] }) {
                     x={c.x}
                     y={chartHeight + 20}
                     textAnchor="middle"
-                    className="fill-slate-400 text-[10px] font-mono"
+                    className="fill-slate-500 text-[10px] font-mono"
                   >
                     {c.label}
                   </text>
@@ -135,24 +135,24 @@ export function StatusDistributionChart({ data = [] }) {
     INTERVIEW: 'bg-teal-500',
     SELECTED: 'bg-emerald-500',
     REJECTED: 'bg-rose-500',
-    WITHDRAWN: 'bg-slate-600',
+    WITHDRAWN: 'bg-slate-400',
   };
 
   return (
-    <Card className="border-slate-800 bg-slate-900/90 shadow-card">
-      <CardHeader className="pb-2 border-b border-slate-800 flex flex-row items-center justify-between">
+    <Card className="border-slate-200 bg-white shadow-sm">
+      <CardHeader className="pb-2 border-b border-slate-100 flex flex-row items-center justify-between">
         <div className="flex items-center gap-2">
-          <PieChart className="w-4 h-4 text-purple-400" />
-          <CardTitle className="text-sm font-bold text-white">Application Pipeline Breakdown</CardTitle>
+          <PieChart className="w-4 h-4 text-purple-600" />
+          <CardTitle className="text-sm font-bold text-slate-900">Application Pipeline Breakdown</CardTitle>
         </div>
-        <span className="text-xs text-slate-400 font-mono">
+        <span className="text-xs text-slate-500 font-mono">
           {total} Total Applications
         </span>
       </CardHeader>
 
       <CardContent className="p-6 space-y-4">
         {/* Multi-segment Progress Bar */}
-        <div className="h-3.5 w-full bg-slate-950 rounded-full overflow-hidden flex border border-slate-800">
+        <div className="h-3.5 w-full bg-slate-100 rounded-full overflow-hidden flex border border-slate-200">
           {data.map((item) => {
             const pct = (item.count / total) * 100;
             if (pct === 0) return null;
@@ -160,7 +160,7 @@ export function StatusDistributionChart({ data = [] }) {
               <div
                 key={item.status}
                 style={{ width: `${pct}%` }}
-                className={`${STATUS_COLORS[item.status] || 'bg-slate-500'} h-full transition-all`}
+                className={`${STATUS_COLORS[item.status] || 'bg-slate-400'} h-full transition-all`}
                 title={`${item.status.replace('_', ' ')}: ${item.count} (${pct.toFixed(1)}%)`}
               />
             );
@@ -174,20 +174,20 @@ export function StatusDistributionChart({ data = [] }) {
             return (
               <div
                 key={item.status}
-                className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80 space-y-1"
+                className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1"
               >
                 <div className="flex items-center gap-1.5">
                   <span
                     className={`w-2 h-2 rounded-full ${
-                      STATUS_COLORS[item.status] || 'bg-slate-500'
+                      STATUS_COLORS[item.status] || 'bg-slate-400'
                     }`}
                   />
-                  <span className="text-[11px] font-medium text-slate-300 truncate capitalize">
+                  <span className="text-[11px] font-medium text-slate-700 truncate capitalize">
                     {item.status.toLowerCase().replace('_', ' ')}
                   </span>
                 </div>
                 <div className="flex items-baseline justify-between">
-                  <span className="text-sm font-bold text-white font-mono">{item.count}</span>
+                  <span className="text-sm font-bold text-slate-900 font-mono">{item.count}</span>
                   <span className="text-[10px] text-slate-500 font-mono">{pct}%</span>
                 </div>
               </div>

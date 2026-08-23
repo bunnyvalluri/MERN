@@ -6,7 +6,7 @@ import { ChevronRight } from 'lucide-react';
  */
 export function Breadcrumbs({
   items = [],
-  separator = <ChevronRight className="w-3.5 h-3.5 text-slate-500 shrink-0" />,
+  separator = <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />,
   className = '',
   children,
 }) {
@@ -24,7 +24,7 @@ export function Breadcrumbs({
                   {isLast ? (
                     <span
                       aria-current="page"
-                      className="font-semibold text-slate-200 truncate max-w-[200px] sm:max-w-xs"
+                      className="font-semibold text-slate-900 truncate max-w-[200px] sm:max-w-xs"
                     >
                       {item.icon && <span className="mr-1.5 inline-flex">{item.icon}</span>}
                       {item.label}
@@ -33,13 +33,13 @@ export function Breadcrumbs({
                     <a
                       href={item.href || '#'}
                       onClick={item.onClick}
-                      className="font-medium text-slate-400 hover:text-slate-200 transition-colors inline-flex items-center"
+                      className="font-medium text-slate-500 hover:text-brand-600 transition-colors inline-flex items-center"
                     >
                       {item.icon && <span className="mr-1.5 inline-flex">{item.icon}</span>}
                       {item.label}
                     </a>
                   ) : (
-                    <span className="text-slate-400 inline-flex items-center">
+                    <span className="text-slate-500 inline-flex items-center">
                       {item.icon && <span className="mr-1.5 inline-flex">{item.icon}</span>}
                       {item.label}
                     </span>

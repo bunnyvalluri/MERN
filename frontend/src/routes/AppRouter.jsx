@@ -48,9 +48,9 @@ const NotificationCenterPage = lazy(() => import('../features/notifications/page
  */
 function RouteLoadingFallback() {
   return (
-    <div className="min-h-[70vh] w-full flex flex-col items-center justify-center gap-4 bg-slate-950 text-slate-400">
+    <div className="min-h-[70vh] w-full flex flex-col items-center justify-center gap-4 bg-slate-50 text-slate-600">
       <div className="relative flex items-center justify-center">
-        <div className="w-12 h-12 rounded-full border-2 border-brand-500/20 border-t-brand-500 animate-spin" />
+        <div className="w-12 h-12 rounded-full border-2 border-brand-200 border-t-brand-600 animate-spin" />
       </div>
       <p className="text-xs font-mono text-slate-500 animate-pulse">Loading module...</p>
     </div>

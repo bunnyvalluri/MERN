@@ -19,17 +19,17 @@ export function ErrorState({
   return (
     <div
       role="alert"
-      className={`rounded-2xl border border-danger-500/20 bg-danger-500/5 p-8 sm:p-12 flex flex-col items-center justify-center text-center animate-fade-in ${className}`}
+      className={`rounded-2xl border border-danger-200 bg-danger-50/50 p-8 sm:p-12 flex flex-col items-center justify-center text-center animate-fade-in ${className}`}
     >
-      <div className="w-12 h-12 rounded-2xl bg-danger-500/10 border border-danger-500/20 flex items-center justify-center text-danger-400 mb-4">
+      <div className="w-12 h-12 rounded-2xl bg-danger-100 border border-danger-200 flex items-center justify-center text-danger-600 mb-4">
         <AlertOctagon className="w-6 h-6" />
       </div>
 
-      <h4 className="text-base sm:text-lg font-semibold text-slate-100 tracking-tight">
+      <h4 className="text-base sm:text-lg font-semibold text-slate-900 tracking-tight">
         {title}
       </h4>
 
-      <p className="text-xs sm:text-sm text-slate-400 mt-1.5 max-w-md leading-relaxed">
+      <p className="text-xs sm:text-sm text-slate-600 mt-1.5 max-w-md leading-relaxed">
         {message}
       </p>
 
@@ -38,14 +38,14 @@ export function ErrorState({
           <button
             type="button"
             onClick={() => setShowDetails((p) => !p)}
-            className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 transition-colors mx-auto"
+            className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-800 transition-colors mx-auto"
           >
             <span>{showDetails ? 'Hide error details' : 'Show error details'}</span>
             {showDetails ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
           </button>
 
           {showDetails && (
-            <pre className="mt-3 p-3 rounded-lg bg-slate-900 border border-slate-800 text-[11px] font-mono text-danger-300 overflow-x-auto whitespace-pre-wrap max-h-40">
+            <pre className="mt-3 p-3 rounded-lg bg-white border border-danger-200 text-[11px] font-mono text-danger-700 overflow-x-auto whitespace-pre-wrap max-h-40 shadow-sm">
               {error.stack || error.message || String(error)}
             </pre>
           )}

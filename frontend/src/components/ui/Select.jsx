@@ -32,10 +32,10 @@ export const Select = forwardRef(function Select(
       {label && (
         <label
           htmlFor={id}
-          className="block text-xs font-medium text-slate-300 mb-1.5 select-none"
+          className="block text-xs font-medium text-slate-700 mb-1.5 select-none"
         >
           {label}
-          {required && <span className="text-danger-400 ml-1" aria-hidden="true">*</span>}
+          {required && <span className="text-danger-500 ml-1" aria-hidden="true">*</span>}
         </label>
       )}
 
@@ -48,15 +48,15 @@ export const Select = forwardRef(function Select(
           required={required}
           aria-invalid={Boolean(error)}
           aria-describedby={error ? errorId : helperText ? helperId : undefined}
-          className={`w-full appearance-none bg-slate-900/90 text-slate-100 text-sm rounded-lg border py-2.5 pl-3.5 pr-10 transition-all duration-150 disabled:bg-slate-900/40 disabled:text-slate-500 disabled:cursor-not-allowed cursor-pointer ${
+          className={`w-full appearance-none bg-white text-slate-900 text-sm rounded-lg border py-2.5 pl-3.5 pr-10 transition-all duration-150 disabled:bg-slate-100 disabled:text-slate-400 disabled:cursor-not-allowed cursor-pointer shadow-sm ${
             error
-              ? 'border-danger-500/80 focus:border-danger-500 focus:ring-2 focus:ring-danger-500/20'
-              : 'border-slate-700/80 hover:border-slate-600 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20'
+              ? 'border-danger-500 focus:border-danger-500 focus:ring-2 focus:ring-danger-500/20'
+              : 'border-slate-300 hover:border-slate-400 focus:border-brand-600 focus:ring-2 focus:ring-brand-500/20'
           } focus:outline-none ${className}`}
           {...props}
         >
           {placeholder && (
-            <option value="" disabled className="bg-slate-900 text-slate-500">
+            <option value="" disabled className="bg-white text-slate-400">
               {placeholder}
             </option>
           )}
@@ -73,7 +73,7 @@ export const Select = forwardRef(function Select(
                     key={optVal}
                     value={optVal}
                     disabled={optDisabled}
-                    className="bg-slate-900 text-slate-100 py-1"
+                    className="bg-white text-slate-900 py-1"
                   >
                     {optLabel}
                   </option>
@@ -82,19 +82,19 @@ export const Select = forwardRef(function Select(
             : children}
         </select>
 
-        <div className="absolute right-3 pointer-events-none text-slate-400">
+        <div className="absolute right-3 pointer-events-none text-slate-500">
           <ChevronDown className="w-4 h-4" />
         </div>
       </div>
 
       {error && (
-        <p id={errorId} className="mt-1.5 text-xs text-danger-400 font-medium animate-fade-in">
+        <p id={errorId} className="mt-1.5 text-xs text-danger-600 font-medium animate-fade-in">
           {error}
         </p>
       )}
 
       {!error && helperText && (
-        <p id={helperId} className="mt-1.5 text-xs text-slate-400">
+        <p id={helperId} className="mt-1.5 text-xs text-slate-500">
           {helperText}
         </p>
       )}

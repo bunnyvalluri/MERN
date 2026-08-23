@@ -115,23 +115,23 @@ export function CompanyProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-brand-500/20 selection:text-brand-300">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col selection:bg-brand-500/20 selection:text-brand-700">
       <RecruiterNav />
 
       <main className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
-            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
               Company Hiring Profile
             </h1>
-            <p className="text-xs sm:text-sm text-slate-400">
+            <p className="text-xs sm:text-sm text-slate-500">
               Information displayed to students across your job postings and company page.
             </p>
           </div>
 
           {company?.verified && (
             <Badge variant="primary" size="sm">
-              <ShieldCheck className="w-4 h-4 mr-1 text-brand-300" />
+              <ShieldCheck className="w-4 h-4 mr-1 text-brand-600" />
               Verified Employer
             </Badge>
           )}
@@ -139,11 +139,11 @@ export function CompanyProfilePage() {
 
         <form onSubmit={handleSave} className="space-y-8">
           {/* Identity & Branding */}
-          <Card className="border-slate-800 bg-slate-900/80">
-            <CardHeader className="pb-3 border-b border-slate-800">
+          <Card className="border-slate-200 bg-white shadow-sm">
+            <CardHeader className="pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2">
-                <Building2 className="w-4 h-4 text-brand-400" />
-                <CardTitle className="text-sm font-bold text-white">Company Identity</CardTitle>
+                <Building2 className="w-4 h-4 text-brand-600" />
+                <CardTitle className="text-sm font-bold text-slate-900">Company Identity</CardTitle>
               </div>
             </CardHeader>
             <CardContent className="p-6 space-y-4">
@@ -205,7 +205,7 @@ export function CompanyProfilePage() {
               <Input
                 label="Company Website"
                 placeholder="https://company.com"
-                leftIcon={<Globe className="w-4 h-4" />}
+                leftIcon={<Globe className="w-4 h-4 text-slate-400" />}
                 value={formData.website}
                 onChange={(e) => handleInputChange('website', e.target.value)}
               />
@@ -222,11 +222,11 @@ export function CompanyProfilePage() {
           </Card>
 
           {/* Location & Headquarters */}
-          <Card className="border-slate-800 bg-slate-900/80">
-            <CardHeader className="pb-3 border-b border-slate-800">
+          <Card className="border-slate-200 bg-white shadow-sm">
+            <CardHeader className="pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-brand-400" />
-                <CardTitle className="text-sm font-bold text-white">Headquarters & Location</CardTitle>
+                <MapPin className="w-4 h-4 text-brand-600" />
+                <CardTitle className="text-sm font-bold text-slate-900">Headquarters & Location</CardTitle>
               </div>
             </CardHeader>
             <CardContent className="p-6 space-y-4">

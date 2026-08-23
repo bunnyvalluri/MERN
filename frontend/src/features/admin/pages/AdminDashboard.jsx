@@ -234,7 +234,7 @@ export function AdminDashboard() {
   const pendingApprovals = metrics?.metrics?.pendingApprovals || 0;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex selection:bg-rose-500/20 selection:text-rose-300">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex selection:bg-rose-500/20 selection:text-rose-700">
       {/* Desktop Sidebar */}
       <AdminSidebar
         activeSection={activeSection}
@@ -249,15 +249,15 @@ export function AdminDashboard() {
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 md:hidden flex">
           <div
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/40 backdrop-blur-xs"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="relative w-72 bg-slate-900 h-full z-10 flex flex-col shadow-2xl">
-            <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-              <span className="font-bold text-sm text-white">Admin Navigation</span>
+          <div className="relative w-72 bg-white h-full z-10 flex flex-col shadow-2xl">
+            <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+              <span className="font-bold text-sm text-slate-900">Admin Navigation</span>
               <button
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-white"
+                className="p-1 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -275,21 +275,21 @@ export function AdminDashboard() {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-x-hidden">
         {/* Top Navbar */}
-        <header className="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+        <header className="bg-white/90 backdrop-blur-md border-b border-slate-200 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4 shadow-xs">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 md:hidden"
+              className="p-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 md:hidden"
               aria-label="Open navigation menu"
             >
               <Menu className="w-5 h-5" />
             </button>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs text-rose-400 uppercase tracking-wider font-bold hidden sm:inline font-mono">
+              <span className="text-xs text-rose-600 uppercase tracking-wider font-bold hidden sm:inline font-mono">
                 Admin /
               </span>
-              <h1 className="text-sm sm:text-base font-bold text-white capitalize">
+              <h1 className="text-sm sm:text-base font-bold text-slate-900 capitalize">
                 {activeSection.replace('-', ' ')}
               </h1>
             </div>
@@ -319,62 +319,62 @@ export function AdminDashboard() {
             <div className="space-y-8 animate-fade-in">
               {/* Header Title */}
               <div>
-                <h2 className="text-2xl font-black text-white tracking-tight">
+                <h2 className="text-2xl font-black text-slate-900 tracking-tight">
                   Platform Operations & Health
                 </h2>
-                <p className="text-xs sm:text-sm text-slate-400 mt-1">
+                <p className="text-xs sm:text-sm text-slate-500 mt-1">
                   Real-time MongoDB platform metrics, active accounts, and application lifecycle distribution.
                 </p>
               </div>
 
               {/* 8 Metric KPI Cards */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <Card className="border-slate-800 bg-slate-900/90 p-4 space-y-2">
-                  <div className="flex items-center justify-between text-slate-400">
+                <Card className="border-slate-200 bg-white shadow-sm p-4 space-y-2">
+                  <div className="flex items-center justify-between text-slate-500">
                     <span className="text-xs font-semibold">Total Users</span>
-                    <Users className="w-4 h-4 text-blue-400" />
+                    <Users className="w-4 h-4 text-blue-600" />
                   </div>
-                  <div className="text-2xl sm:text-3xl font-black text-white font-mono">
+                  <div className="text-2xl sm:text-3xl font-black text-slate-900 font-mono">
                     {metrics?.metrics?.totalUsers ?? '...'}
                   </div>
-                  <div className="text-[11px] text-emerald-400 font-medium">
+                  <div className="text-[11px] text-emerald-700 font-medium">
                     {metrics?.metrics?.activeUsers ?? 0} Active accounts
                   </div>
                 </Card>
 
-                <Card className="border-slate-800 bg-slate-900/90 p-4 space-y-2">
-                  <div className="flex items-center justify-between text-slate-400">
+                <Card className="border-slate-200 bg-white shadow-sm p-4 space-y-2">
+                  <div className="flex items-center justify-between text-slate-500">
                     <span className="text-xs font-semibold">Student Talent</span>
-                    <Users className="w-4 h-4 text-brand-400" />
+                    <Users className="w-4 h-4 text-brand-600" />
                   </div>
-                  <div className="text-2xl sm:text-3xl font-black text-white font-mono">
+                  <div className="text-2xl sm:text-3xl font-black text-slate-900 font-mono">
                     {metrics?.metrics?.studentsCount ?? '...'}
                   </div>
-                  <div className="text-[11px] text-slate-400">Registered candidates</div>
+                  <div className="text-[11px] text-slate-500">Registered candidates</div>
                 </Card>
 
-                <Card className="border-slate-800 bg-slate-900/90 p-4 space-y-2">
-                  <div className="flex items-center justify-between text-slate-400">
+                <Card className="border-slate-200 bg-white shadow-sm p-4 space-y-2">
+                  <div className="flex items-center justify-between text-slate-500">
                     <span className="text-xs font-semibold">Recruiters & Companies</span>
-                    <Building2 className="w-4 h-4 text-purple-400" />
+                    <Building2 className="w-4 h-4 text-purple-600" />
                   </div>
-                  <div className="text-2xl sm:text-3xl font-black text-white font-mono">
+                  <div className="text-2xl sm:text-3xl font-black text-slate-900 font-mono">
                     {metrics?.metrics?.companiesCount ?? '...'}
                   </div>
-                  <div className="text-[11px] text-purple-400 font-medium">
+                  <div className="text-[11px] text-purple-700 font-medium">
                     {metrics?.metrics?.recruitersCount ?? 0} Hiring managers
                   </div>
                 </Card>
 
-                <Card className="border-slate-800 bg-slate-900/90 p-4 space-y-2">
-                  <div className="flex items-center justify-between text-slate-400">
+                <Card className="border-slate-200 bg-white shadow-sm p-4 space-y-2">
+                  <div className="flex items-center justify-between text-slate-500">
                     <span className="text-xs font-semibold">Internship Postings</span>
-                    <FileCheck2 className="w-4 h-4 text-teal-400" />
+                    <FileCheck2 className="w-4 h-4 text-teal-600" />
                   </div>
-                  <div className="text-2xl sm:text-3xl font-black text-white font-mono">
+                  <div className="text-2xl sm:text-3xl font-black text-slate-900 font-mono">
                     {metrics?.metrics?.internshipsCount ?? '...'}
                   </div>
-                  <div className="text-[11px] text-teal-400 font-medium">
+                  <div className="text-[11px] text-teal-700 font-medium">
                     {metrics?.metrics?.applicationsCount ?? 0} Applications submitted
                   </div>
                 </Card>
@@ -387,11 +387,11 @@ export function AdminDashboard() {
               </div>
 
               {/* Recent Activity Audit Stream */}
-              <Card className="border-slate-800 bg-slate-900/90 shadow-card">
-                <CardHeader className="pb-3 border-b border-slate-800 flex flex-row items-center justify-between">
+              <Card className="border-slate-200 bg-white shadow-sm">
+                <CardHeader className="pb-3 border-b border-slate-100 flex flex-row items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <ShieldAlert className="w-4 h-4 text-rose-400" />
-                    <CardTitle className="text-sm font-bold text-white">Recent Security & Activity Trail</CardTitle>
+                    <ShieldAlert className="w-4 h-4 text-rose-600" />
+                    <CardTitle className="text-sm font-bold text-slate-900">Recent Security & Activity Trail</CardTitle>
                   </div>
                   <Button
                     variant="ghost"
@@ -403,24 +403,24 @@ export function AdminDashboard() {
                 </CardHeader>
 
                 <CardContent className="p-0">
-                  <div className="divide-y divide-slate-800/80">
+                  <div className="divide-y divide-slate-100">
                     {(metrics?.recentLogs || []).map((log) => (
                       <div
                         key={log._id}
-                        className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-800/40 transition-colors"
+                        className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/80 transition-colors"
                       >
                         <div className="flex items-center gap-3">
                           <Badge variant="outline" size="xs" className="font-mono">
                             {log.action}
                           </Badge>
-                          <span className="text-xs text-slate-300 font-medium">
+                          <span className="text-xs text-slate-800 font-medium">
                             {log.resource} ({log.resourceId ? log.resourceId.slice(-6) : 'system'})
                           </span>
                         </div>
 
-                        <div className="flex items-center gap-3 text-xs text-slate-400">
+                        <div className="flex items-center gap-3 text-xs text-slate-500">
                           <span>{log.userId?.name || 'System / Anonymous'}</span>
-                          <span className="font-mono text-[11px] text-slate-500">
+                          <span className="font-mono text-[11px] text-slate-400">
                             {new Date(log.createdAt).toLocaleString()}
                           </span>
                         </div>
@@ -439,10 +439,10 @@ export function AdminDashboard() {
             <div className="space-y-6 animate-fade-in">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h2 className="text-xl font-bold text-white capitalize">
+                  <h2 className="text-xl font-bold text-slate-900 capitalize">
                     {activeSection} Directory
                   </h2>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-slate-500">
                     Search, view, activate, or deactivate user accounts.
                   </p>
                 </div>
@@ -456,7 +456,7 @@ export function AdminDashboard() {
                       placeholder="Search name or email..."
                       value={userSearch}
                       onChange={(e) => setUserSearch(e.target.value)}
-                      className="w-full pl-9 pr-3 py-1.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-rose-500"
+                      className="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-rose-500 placeholder:text-slate-400"
                     />
                   </div>
 
@@ -464,7 +464,7 @@ export function AdminDashboard() {
                     <select
                       value={userRoleFilter}
                       onChange={(e) => setUserRoleFilter(e.target.value)}
-                      className="bg-slate-900 border border-slate-800 rounded-xl text-xs text-white px-3 py-1.5 focus:outline-none focus:border-rose-500"
+                      className="bg-white border border-slate-200 rounded-xl text-xs text-slate-800 px-3 py-1.5 focus:outline-none focus:border-rose-500"
                     >
                       <option value="ALL">All Roles</option>
                       <option value="STUDENT">Students</option>
@@ -476,10 +476,10 @@ export function AdminDashboard() {
               </div>
 
               {/* Users Table */}
-              <Card className="border-slate-800 bg-slate-900/90 shadow-card overflow-hidden">
+              <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-slate-950/80 border-b border-slate-800 text-slate-400 uppercase font-mono text-[10px]">
+                    <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-mono text-[10px]">
                       <tr>
                         <th className="p-4">User Details</th>
                         <th className="p-4">Role</th>
@@ -489,22 +489,22 @@ export function AdminDashboard() {
                         <th className="p-4 text-right">Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800/60">
+                    <tbody className="divide-y divide-slate-100">
                       {(users?.data || []).length === 0 ? (
                         <tr>
-                          <td colSpan="6" className="p-8 text-center text-slate-500">
+                          <td colSpan="6" className="p-8 text-center text-slate-400">
                             No users found matching query.
                           </td>
                         </tr>
                       ) : (
                         users.data.map((u) => (
-                          <tr key={u._id} className="hover:bg-slate-800/40 transition-colors">
+                          <tr key={u._id} className="hover:bg-slate-50/80 transition-colors">
                             <td className="p-4">
                               <div className="flex items-center gap-3">
                                 <Avatar name={u.name} size="sm" />
                                 <div>
-                                  <div className="font-bold text-white text-sm">{u.name}</div>
-                                  <div className="text-slate-400 font-mono text-[11px]">{u.email}</div>
+                                  <div className="font-bold text-slate-900 text-sm">{u.name}</div>
+                                  <div className="text-slate-500 font-mono text-[11px]">{u.email}</div>
                                 </div>
                               </div>
                             </td>
@@ -526,12 +526,12 @@ export function AdminDashboard() {
 
                             <td className="p-4">
                               {u.isActive ? (
-                                <span className="inline-flex items-center gap-1 text-emerald-400 font-semibold text-xs">
+                                <span className="inline-flex items-center gap-1 text-emerald-700 font-semibold text-xs">
                                   <CheckCircle2 className="w-3.5 h-3.5" />
                                   Active
                                 </span>
                               ) : (
-                                <span className="inline-flex items-center gap-1 text-rose-400 font-semibold text-xs">
+                                <span className="inline-flex items-center gap-1 text-rose-700 font-semibold text-xs">
                                   <XCircle className="w-3.5 h-3.5" />
                                   Deactivated
                                 </span>
@@ -540,13 +540,13 @@ export function AdminDashboard() {
 
                             <td className="p-4">
                               {u.isVerified ? (
-                                <span className="text-emerald-400 text-xs font-mono">Verified</span>
+                                <span className="text-emerald-700 text-xs font-mono font-medium">Verified</span>
                               ) : (
-                                <span className="text-amber-400 text-xs font-mono">Pending</span>
+                                <span className="text-amber-700 text-xs font-mono font-medium">Pending</span>
                               )}
                             </td>
 
-                            <td className="p-4 text-slate-400 font-mono text-[11px]">
+                            <td className="p-4 text-slate-500 font-mono text-[11px]">
                               {new Date(u.createdAt).toLocaleDateString()}
                             </td>
 
@@ -562,7 +562,7 @@ export function AdminDashboard() {
                                   })
                                 }
                               >
-                                {u.isActive ? 'Deactivate' : 'Activate'}
+                                {u.isActive ? 'Deactivate' : 'Reactivate'}
                               </Button>
                             </td>
                           </tr>
@@ -571,7 +571,34 @@ export function AdminDashboard() {
                     </tbody>
                   </table>
                 </div>
-              </Card>
+
+                {/* Users Pagination */}
+                {usersTotalPages > 1 && (
+                  <div className="p-4 border-t border-slate-200 flex items-center justify-between">
+                    <span className="text-xs text-slate-500 font-mono">
+                      Page {usersPage} of {usersTotalPages} ({usersTotal} users)
+                    </span>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="xs"
+                        disabled={usersPage <= 1}
+                        onClick={() => setUsersPage((p) => p - 1)}
+                      >
+                        Prev
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="xs"
+                        disabled={usersPage >= usersTotalPages}
+                        onClick={() => setUsersPage((p) => p + 1)}
+                      >
+                        Next
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
@@ -582,8 +609,8 @@ export function AdminDashboard() {
             <div className="space-y-6 animate-fade-in">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h2 className="text-xl font-bold text-white">Company Directory</h2>
-                  <p className="text-xs text-slate-400">
+                  <h2 className="text-xl font-bold text-slate-900">Company Directory</h2>
+                  <p className="text-xs text-slate-500">
                     Verify, review, or suspend hiring organizations.
                   </p>
                 </div>
@@ -596,14 +623,14 @@ export function AdminDashboard() {
                       placeholder="Search company or industry..."
                       value={companySearch}
                       onChange={(e) => setCompanySearch(e.target.value)}
-                      className="w-full pl-9 pr-3 py-1.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-rose-500"
+                      className="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-rose-500 placeholder:text-slate-400"
                     />
                   </div>
 
                   <select
                     value={companyVerifyFilter}
                     onChange={(e) => setCompanyVerifyFilter(e.target.value)}
-                    className="bg-slate-900 border border-slate-800 rounded-xl text-xs text-white px-3 py-1.5 focus:outline-none focus:border-rose-500"
+                    className="bg-white border border-slate-200 rounded-xl text-xs text-slate-800 px-3 py-1.5 focus:outline-none focus:border-rose-500"
                   >
                     <option value="ALL">All Statuses</option>
                     <option value="true">Verified Only</option>
@@ -613,10 +640,10 @@ export function AdminDashboard() {
               </div>
 
               {/* Companies Table */}
-              <Card className="border-slate-800 bg-slate-900/90 shadow-card overflow-hidden">
+              <Card className="border-slate-200 bg-white shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-slate-950/80 border-b border-slate-800 text-slate-400 uppercase font-mono text-[10px]">
+                    <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-mono text-[10px]">
                       <tr>
                         <th className="p-4">Company</th>
                         <th className="p-4">Industry</th>
@@ -626,47 +653,47 @@ export function AdminDashboard() {
                         <th className="p-4 text-right">Action</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800/60">
+                    <tbody className="divide-y divide-slate-100">
                       {(companies?.data || []).length === 0 ? (
                         <tr>
-                          <td colSpan="6" className="p-8 text-center text-slate-500">
+                          <td colSpan="6" className="p-8 text-center text-slate-400">
                             No companies found.
                           </td>
                         </tr>
                       ) : (
                         companies.data.map((c) => (
-                          <tr key={c._id} className="hover:bg-slate-800/40 transition-colors">
+                          <tr key={c._id} className="hover:bg-slate-50/80 transition-colors">
                             <td className="p-4">
                               <div className="flex items-center gap-3">
                                 {c.logo ? (
                                   <img
                                     src={c.logo}
                                     alt={c.name}
-                                    className="w-9 h-9 rounded-xl object-contain bg-white/5 border border-slate-800 p-1"
+                                    className="w-9 h-9 rounded-xl object-contain bg-slate-50 border border-slate-200 p-1"
                                   />
                                 ) : (
-                                  <div className="w-9 h-9 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-xs">
+                                  <div className="w-9 h-9 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-700 font-bold text-xs">
                                     {c.name.slice(0, 2).toUpperCase()}
                                   </div>
                                 )}
                                 <div>
-                                  <div className="font-bold text-white text-sm flex items-center gap-1.5">
+                                  <div className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
                                     {c.name}
                                     {c.verified && (
-                                      <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
+                                      <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
                                     )}
                                   </div>
-                                  <div className="text-slate-400 text-[11px] truncate max-w-xs">
+                                  <div className="text-slate-500 text-[11px] truncate max-w-xs">
                                     {c.location?.city ? `${c.location.city}, ${c.location.country}` : 'Global'}
                                   </div>
                                 </div>
                               </div>
                             </td>
 
-                            <td className="p-4 text-slate-300 font-medium">{c.industry}</td>
+                            <td className="p-4 text-slate-700 font-medium">{c.industry}</td>
 
                             <td className="p-4">
-                              <div className="text-white text-xs font-semibold">
+                              <div className="text-slate-900 text-xs font-semibold">
                                 {c.ownerId?.name || 'Recruiter'}
                               </div>
                               <div className="text-slate-500 text-[11px] font-mono">
@@ -674,7 +701,7 @@ export function AdminDashboard() {
                               </div>
                             </td>
 
-                            <td className="p-4 font-mono text-white text-sm">
+                            <td className="p-4 font-mono text-slate-900 text-sm">
                               {c.internshipsCount ?? 0}
                             </td>
 
@@ -722,8 +749,8 @@ export function AdminDashboard() {
             <div className="space-y-6 animate-fade-in">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h2 className="text-xl font-bold text-white">Internship Moderation</h2>
-                  <p className="text-xs text-slate-400">
+                  <h2 className="text-xl font-bold text-slate-900">Internship Moderation</h2>
+                  <p className="text-xs text-slate-500">
                     Review and moderate postings across all organizations.
                   </p>
                 </div>
@@ -736,14 +763,14 @@ export function AdminDashboard() {
                       placeholder="Search title..."
                       value={internshipSearch}
                       onChange={(e) => setInternshipSearch(e.target.value)}
-                      className="w-full pl-9 pr-3 py-1.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-rose-500"
+                      className="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-rose-500 placeholder:text-slate-400"
                     />
                   </div>
 
                   <select
                     value={internshipStatusFilter}
                     onChange={(e) => setInternshipStatusFilter(e.target.value)}
-                    className="bg-slate-900 border border-slate-800 rounded-xl text-xs text-white px-3 py-1.5 focus:outline-none focus:border-rose-500"
+                    className="bg-white border border-slate-200 rounded-xl text-xs text-slate-800 px-3 py-1.5 focus:outline-none focus:border-rose-500"
                   >
                     <option value="ALL">All Statuses</option>
                     <option value="PUBLISHED">Published</option>
@@ -755,10 +782,10 @@ export function AdminDashboard() {
               </div>
 
               {/* Internships Table */}
-              <Card className="border-slate-800 bg-slate-900/90 shadow-card overflow-hidden">
+              <Card className="border-slate-200 bg-white shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-slate-950/80 border-b border-slate-800 text-slate-400 uppercase font-mono text-[10px]">
+                    <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-mono text-[10px]">
                       <tr>
                         <th className="p-4">Internship</th>
                         <th className="p-4">Company</th>
@@ -768,28 +795,28 @@ export function AdminDashboard() {
                         <th className="p-4 text-right">Moderation Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800/60">
+                    <tbody className="divide-y divide-slate-100">
                       {(internships?.data || []).length === 0 ? (
                         <tr>
-                          <td colSpan="6" className="p-8 text-center text-slate-500">
+                          <td colSpan="6" className="p-8 text-center text-slate-400">
                             No internship postings found.
                           </td>
                         </tr>
                       ) : (
                         internships.data.map((i) => (
-                          <tr key={i._id} className="hover:bg-slate-800/40 transition-colors">
+                          <tr key={i._id} className="hover:bg-slate-50/80 transition-colors">
                             <td className="p-4">
-                              <div className="font-bold text-white text-sm">{i.title}</div>
+                              <div className="font-bold text-slate-900 text-sm">{i.title}</div>
                               <div className="text-slate-500 font-mono text-[11px]">
                                 {i.type} • {i.remote ? 'Remote' : 'Onsite'}
                               </div>
                             </td>
 
-                            <td className="p-4 text-slate-300 font-semibold">
+                            <td className="p-4 text-slate-700 font-semibold">
                               {i.companyId?.name || 'Company'}
                             </td>
 
-                            <td className="p-4 text-slate-400">{i.location || 'Remote'}</td>
+                            <td className="p-4 text-slate-500">{i.location || 'Remote'}</td>
 
                             <td className="p-4">
                               <Badge
@@ -806,7 +833,7 @@ export function AdminDashboard() {
                               </Badge>
                             </td>
 
-                            <td className="p-4 font-mono text-white text-sm">
+                            <td className="p-4 font-mono text-slate-900 text-sm">
                               {i.applicationsCount ?? 0}
                             </td>
 
@@ -822,7 +849,7 @@ export function AdminDashboard() {
                                       })
                                     )
                                   }
-                                  className="bg-slate-950 border border-slate-800 rounded-lg text-xs text-white px-2 py-1 focus:outline-none"
+                                  className="bg-white border border-slate-200 rounded-lg text-xs text-slate-800 px-2 py-1 focus:outline-none"
                                 >
                                   <option value="PUBLISHED">Publish</option>
                                   <option value="DRAFT">Draft</option>
@@ -837,7 +864,7 @@ export function AdminDashboard() {
                                       internship: i,
                                     })
                                   }
-                                  className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                                  className="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
                                   title="Delete posting"
                                 >
                                   <Trash2 className="w-3.5 h-3.5" />
@@ -860,16 +887,16 @@ export function AdminDashboard() {
           {activeSection === 'applications' && (
             <div className="space-y-6 animate-fade-in">
               <div>
-                <h2 className="text-xl font-bold text-white">Cross-Platform Applications</h2>
-                <p className="text-xs text-slate-400">
+                <h2 className="text-xl font-bold text-slate-900">Cross-Platform Applications</h2>
+                <p className="text-xs text-slate-500">
                   Global feed of candidate submissions and candidate pipeline updates.
                 </p>
               </div>
 
-              <Card className="border-slate-800 bg-slate-900/90 shadow-card overflow-hidden">
+              <Card className="border-slate-200 bg-white shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-slate-950/80 border-b border-slate-800 text-slate-400 uppercase font-mono text-[10px]">
+                    <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-mono text-[10px]">
                       <tr>
                         <th className="p-4">Candidate Student</th>
                         <th className="p-4">Target Internship</th>
@@ -878,18 +905,18 @@ export function AdminDashboard() {
                         <th className="p-4">Submission Date</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800/60">
+                    <tbody className="divide-y divide-slate-100">
                       {(applications?.data || []).length === 0 ? (
                         <tr>
-                          <td colSpan="5" className="p-8 text-center text-slate-500">
+                          <td colSpan="5" className="p-8 text-center text-slate-400">
                             No applications recorded yet.
                           </td>
                         </tr>
                       ) : (
                         applications.data.map((app) => (
-                          <tr key={app._id} className="hover:bg-slate-800/40 transition-colors">
+                          <tr key={app._id} className="hover:bg-slate-50/80 transition-colors">
                             <td className="p-4">
-                              <div className="font-bold text-white text-sm">
+                              <div className="font-bold text-slate-900 text-sm">
                                 {app.studentId?.name || 'Student'}
                               </div>
                               <div className="text-slate-500 font-mono text-[11px]">
@@ -897,11 +924,11 @@ export function AdminDashboard() {
                               </div>
                             </td>
 
-                            <td className="p-4 text-slate-300 font-medium">
+                            <td className="p-4 text-slate-700 font-medium">
                               {app.internshipId?.title || 'Internship'}
                             </td>
 
-                            <td className="p-4 text-slate-300 font-semibold">
+                            <td className="p-4 text-slate-700 font-semibold">
                               {app.companyId?.name || 'Company'}
                             </td>
 
@@ -922,7 +949,7 @@ export function AdminDashboard() {
                               </Badge>
                             </td>
 
-                            <td className="p-4 text-slate-400 font-mono text-[11px]">
+                            <td className="p-4 text-slate-500 font-mono text-[11px]">
                               {new Date(app.createdAt).toLocaleDateString()}
                             </td>
                           </tr>
@@ -942,8 +969,8 @@ export function AdminDashboard() {
             <div className="space-y-6 animate-fade-in">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h2 className="text-xl font-bold text-white">Security & Audit Log Explorer</h2>
-                  <p className="text-xs text-slate-400">
+                  <h2 className="text-xl font-bold text-slate-900">Security & Audit Log Explorer</h2>
+                  <p className="text-xs text-slate-500">
                     Immutable activity trail tracking administrative actions, user changes, and API events.
                   </p>
                 </div>
@@ -952,7 +979,7 @@ export function AdminDashboard() {
                   <select
                     value={auditActionFilter}
                     onChange={(e) => setAuditActionFilter(e.target.value)}
-                    className="bg-slate-900 border border-slate-800 rounded-xl text-xs text-white px-3 py-1.5 focus:outline-none focus:border-rose-500"
+                    className="bg-white border border-slate-200 rounded-xl text-xs text-slate-800 px-3 py-1.5 focus:outline-none focus:border-rose-500"
                   >
                     <option value="ALL">All Actions</option>
                     <option value="USER_ACTIVATED">USER_ACTIVATED</option>
@@ -966,10 +993,10 @@ export function AdminDashboard() {
               </div>
 
               {/* Audit Logs Table */}
-              <Card className="border-slate-800 bg-slate-900/90 shadow-card overflow-hidden">
+              <Card className="border-slate-200 bg-white shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-slate-950/80 border-b border-slate-800 text-slate-400 uppercase font-mono text-[10px]">
+                    <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-mono text-[10px]">
                       <tr>
                         <th className="p-4">Action</th>
                         <th className="p-4">Actor User</th>
@@ -979,16 +1006,16 @@ export function AdminDashboard() {
                         <th className="p-4 text-right">Details</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800/60">
+                    <tbody className="divide-y divide-slate-100">
                       {(auditLogs?.data || []).length === 0 ? (
                         <tr>
-                          <td colSpan="6" className="p-8 text-center text-slate-500">
+                          <td colSpan="6" className="p-8 text-center text-slate-400">
                             No audit logs found.
                           </td>
                         </tr>
                       ) : (
                         auditLogs.data.map((log) => (
-                          <tr key={log._id} className="hover:bg-slate-800/40 transition-colors">
+                          <tr key={log._id} className="hover:bg-slate-50/80 transition-colors">
                             <td className="p-4">
                               <Badge variant="outline" size="xs" className="font-mono">
                                 {log.action}
@@ -996,7 +1023,7 @@ export function AdminDashboard() {
                             </td>
 
                             <td className="p-4">
-                              <div className="text-white font-semibold">
+                              <div className="text-slate-900 font-semibold">
                                 {log.userId?.name || 'System'}
                               </div>
                               <div className="text-slate-500 font-mono text-[10px]">
@@ -1004,16 +1031,16 @@ export function AdminDashboard() {
                               </div>
                             </td>
 
-                            <td className="p-4 text-slate-300 font-medium">
+                            <td className="p-4 text-slate-700 font-medium">
                               {log.resource}
                               {log.resourceId && (
-                                <span className="text-slate-500 text-[10px] block font-mono">
+                                <span className="text-slate-400 text-[10px] block font-mono">
                                   #{log.resourceId.slice(-6)}
                                 </span>
                               )}
                             </td>
 
-                            <td className="p-4 text-slate-400 font-mono text-[11px]">
+                            <td className="p-4 text-slate-500 font-mono text-[11px]">
                               {new Date(log.createdAt).toLocaleString()}
                             </td>
 
@@ -1047,17 +1074,17 @@ export function AdminDashboard() {
           {activeSection === 'notifications' && (
             <div className="max-w-2xl mx-auto space-y-6 animate-fade-in">
               <div>
-                <h2 className="text-xl font-bold text-white">System Broadcast Notification</h2>
-                <p className="text-xs text-slate-400">
+                <h2 className="text-xl font-bold text-slate-900">System Broadcast Notification</h2>
+                <p className="text-xs text-slate-500">
                   Dispatch instant in-app alerts and notifications to students, recruiters, or all platform users.
                 </p>
               </div>
 
-              <Card className="border-slate-800 bg-slate-900/90 shadow-card">
+              <Card className="border-slate-200 bg-white shadow-sm">
                 <CardContent className="p-6">
                   <form onSubmit={handleBroadcastSubmit} className="space-y-4">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-300 mb-1">
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">
                         Target Audience
                       </label>
                       <select
@@ -1065,7 +1092,7 @@ export function AdminDashboard() {
                         onChange={(e) =>
                           setBroadcastForm({ ...broadcastForm, targetRole: e.target.value })
                         }
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-rose-500"
+                        className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-rose-500"
                       >
                         <option value="ALL">All Platform Users (Students & Recruiters)</option>
                         <option value="STUDENT">Students Only</option>
@@ -1074,7 +1101,7 @@ export function AdminDashboard() {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-slate-300 mb-1">
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">
                         Notification Title *
                       </label>
                       <Input
@@ -1088,7 +1115,7 @@ export function AdminDashboard() {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-slate-300 mb-1">
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">
                         Notification Message *
                       </label>
                       <Textarea
@@ -1103,7 +1130,7 @@ export function AdminDashboard() {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-slate-300 mb-1">
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">
                         Optional Action Link
                       </label>
                       <Input
@@ -1120,7 +1147,7 @@ export function AdminDashboard() {
                         type="submit"
                         variant="primary"
                         size="md"
-                        className="w-full bg-rose-600 hover:bg-rose-500"
+                        className="w-full bg-rose-600 hover:bg-rose-700"
                         leftIcon={<Send className="w-4 h-4" />}
                       >
                         Dispatch Broadcast Notification
@@ -1138,33 +1165,33 @@ export function AdminDashboard() {
           {activeSection === 'settings' && (
             <div className="max-w-2xl mx-auto space-y-6 animate-fade-in">
               <div>
-                <h2 className="text-xl font-bold text-white">Platform System Settings</h2>
-                <p className="text-xs text-slate-400">
+                <h2 className="text-xl font-bold text-slate-900">Platform System Settings</h2>
+                <p className="text-xs text-slate-500">
                   Global system parameters, security policies, and maintenance toggles.
                 </p>
               </div>
 
-              <Card className="border-slate-800 bg-slate-900/90 p-6 space-y-5">
-                <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+              <Card className="border-slate-200 bg-white shadow-sm p-6 space-y-5">
+                <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                   <div>
-                    <h4 className="text-sm font-bold text-white">Public Student Registrations</h4>
-                    <p className="text-xs text-slate-400">Allow new students to create accounts.</p>
+                    <h4 className="text-sm font-bold text-slate-900">Public Student Registrations</h4>
+                    <p className="text-xs text-slate-500">Allow new students to create accounts.</p>
                   </div>
                   <Badge variant="success" size="sm">Enabled</Badge>
                 </div>
 
-                <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+                <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                   <div>
-                    <h4 className="text-sm font-bold text-white">Recruiter Company Auto-Approval</h4>
-                    <p className="text-xs text-slate-400">Require manual admin verification for new recruiters.</p>
+                    <h4 className="text-sm font-bold text-slate-900">Recruiter Company Auto-Approval</h4>
+                    <p className="text-xs text-slate-500">Require manual admin verification for new recruiters.</p>
                   </div>
                   <Badge variant="warning" size="sm">Manual Review</Badge>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="text-sm font-bold text-white">System Maintenance Mode</h4>
-                    <p className="text-xs text-slate-400">Prevent non-admin logins during database migrations.</p>
+                    <h4 className="text-sm font-bold text-slate-900">System Maintenance Mode</h4>
+                    <p className="text-xs text-slate-500">Prevent non-admin logins during database migrations.</p>
                   </div>
                   <Badge variant="secondary" size="sm">Disabled</Badge>
                 </div>
@@ -1263,7 +1290,7 @@ export function AdminDashboard() {
         size="md"
       >
         <ModalBody>
-          <pre className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-[11px] text-emerald-400 font-mono overflow-x-auto max-h-72">
+          <pre className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-800 font-mono overflow-x-auto max-h-72">
             {JSON.stringify(selectedAuditLog, null, 2)}
           </pre>
         </ModalBody>

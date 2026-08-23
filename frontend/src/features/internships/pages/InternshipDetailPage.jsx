@@ -147,7 +147,7 @@ export function InternshipDetailPage() {
 
   if (loading || (!internship && !error)) {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+      <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col">
         <Navbar />
         <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
           <Skeleton className="h-6 w-32" />
@@ -164,7 +164,7 @@ export function InternshipDetailPage() {
 
   if (error || !internship) {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+      <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col">
         <Navbar />
         <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-16 text-center">
           <ErrorState
@@ -281,7 +281,7 @@ export function InternshipDetailPage() {
     : `Apply to ${internship.title} at ${company.name}. View responsibilities, requirements, and compensation on InternHub.`;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-brand-500/20 selection:text-brand-300">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col selection:bg-brand-500/20 selection:text-brand-700">
       <SEOHead
         title={pageTitle}
         description={pageDescription}
@@ -297,7 +297,7 @@ export function InternshipDetailPage() {
         <div>
           <Link
             to="/internships"
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-slate-200 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 hover:text-slate-900 transition-colors"
             aria-label="Back to all internships"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
@@ -306,11 +306,11 @@ export function InternshipDetailPage() {
         </div>
 
         {/* Hero Header Card */}
-        <div className="p-4 sm:p-8 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-slate-900/80 border border-slate-800 shadow-card">
+        <div className="p-4 sm:p-8 rounded-2xl bg-white border border-slate-200 shadow-sm">
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-5 sm:gap-6">
             {/* Company Logo & Role Title */}
             <div className="flex flex-col xs:flex-row items-start gap-3.5 sm:gap-4 min-w-0">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-slate-800/90 border border-slate-700/60 p-2 sm:p-2.5 flex items-center justify-center shrink-0 shadow-sm overflow-hidden">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-slate-50 border border-slate-200 p-2 sm:p-2.5 flex items-center justify-center shrink-0 shadow-sm overflow-hidden">
                 {company.logo ? (
                   <img
                     src={company.logo}
@@ -321,47 +321,47 @@ export function InternshipDetailPage() {
                     loading="eager"
                   />
                 ) : (
-                  <Building2 className="w-7 h-7 sm:w-8 sm:h-8 text-brand-400" />
+                  <Building2 className="w-7 h-7 sm:w-8 sm:h-8 text-brand-600" />
                 )}
               </div>
 
               <div className="space-y-1.5 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-sm font-semibold text-slate-300">
+                  <span className="text-sm font-semibold text-slate-600">
                     {company.name || 'Company'}
                   </span>
                   {isCompanyVerified && (
                     <Badge variant="primary" size="sm">
-                      <ShieldCheck className="w-3.5 h-3.5 mr-1 text-brand-300" />
+                      <ShieldCheck className="w-3.5 h-3.5 mr-1 text-brand-700" />
                       Verified Partner
                     </Badge>
                   )}
                   {company.industry && (
-                    <span className="text-xs text-slate-500">• {company.industry}</span>
+                    <span className="text-xs text-slate-400">• {company.industry}</span>
                   )}
                 </div>
 
-                <h1 className="text-xl sm:text-3xl font-bold text-white tracking-tight break-words">
+                <h1 className="text-xl sm:text-3xl font-bold text-slate-900 tracking-tight break-words">
                   {internship.title}
                 </h1>
 
                 {/* Quick Metadata Bar */}
-                <div className="flex items-center gap-3 sm:gap-4 flex-wrap text-xs text-slate-400 pt-1">
+                <div className="flex items-center gap-3 sm:gap-4 flex-wrap text-xs text-slate-500 pt-1">
                   <span className="flex items-center gap-1">
-                    <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                    <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                     <span className="truncate max-w-[150px]">{locationText}</span>
                   </span>
                   <span className="flex items-center gap-1">
-                    <Laptop className="w-3.5 h-3.5 text-brand-400 shrink-0" />
+                    <Laptop className="w-3.5 h-3.5 text-brand-600 shrink-0" />
                     {internship.remote || 'Remote'}
                   </span>
                   <span className="flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <Clock className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                     {internship.duration || '3 Months'}
                   </span>
                   <span className="flex items-center gap-1">
-                    <DollarSign className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                    <strong className="text-white">{stipendText}</strong>
+                    <DollarSign className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <strong className="text-slate-900">{stipendText}</strong>
                   </span>
                 </div>
               </div>
@@ -398,12 +398,12 @@ export function InternshipDetailPage() {
           {/* Main Details (Left 2 Cols) */}
           <div className="lg:col-span-2 space-y-6">
             {/* About the Role */}
-            <Card className="border-slate-800 bg-slate-900/80">
-              <CardHeader className="pb-3 border-b border-slate-800">
-                <CardTitle className="text-base font-bold text-white">About the Internship</CardTitle>
+            <Card className="border-slate-200 bg-white shadow-sm">
+              <CardHeader className="pb-3 border-b border-slate-100">
+                <CardTitle className="text-base font-bold text-slate-900">About the Internship</CardTitle>
               </CardHeader>
               <CardContent className="p-6 space-y-4">
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed whitespace-pre-line">
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed whitespace-pre-line">
                   {internship.description}
                 </p>
               </CardContent>
@@ -411,16 +411,16 @@ export function InternshipDetailPage() {
 
             {/* Key Responsibilities */}
             {Array.isArray(internship.responsibilities) && internship.responsibilities.length > 0 && (
-              <Card className="border-slate-800 bg-slate-900/80">
-                <CardHeader className="pb-3 border-b border-slate-800">
-                  <CardTitle className="text-base font-bold text-white">
+              <Card className="border-slate-200 bg-white shadow-sm">
+                <CardHeader className="pb-3 border-b border-slate-100">
+                  <CardTitle className="text-base font-bold text-slate-900">
                     What You Will Do (Responsibilities)
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 space-y-2.5">
                   {internship.responsibilities.map((resp, idx) => (
-                    <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-300">
-                      <CheckCircle2 className="w-4 h-4 text-brand-400 shrink-0 mt-0.5" />
+                    <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-600">
+                      <CheckCircle2 className="w-4 h-4 text-brand-600 shrink-0 mt-0.5" />
                       <span>{resp}</span>
                     </div>
                   ))}
@@ -430,14 +430,14 @@ export function InternshipDetailPage() {
 
             {/* Requirements & Qualifications */}
             {Array.isArray(internship.requirements) && internship.requirements.length > 0 && (
-              <Card className="border-slate-800 bg-slate-900/80">
-                <CardHeader className="pb-3 border-b border-slate-800">
-                  <CardTitle className="text-base font-bold text-white">Requirements & Qualifications</CardTitle>
+              <Card className="border-slate-200 bg-white shadow-sm">
+                <CardHeader className="pb-3 border-b border-slate-100">
+                  <CardTitle className="text-base font-bold text-slate-900">Requirements & Qualifications</CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 space-y-2.5">
                   {internship.requirements.map((req, idx) => (
-                    <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-300">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-600">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                       <span>{req}</span>
                     </div>
                   ))}
@@ -447,16 +447,16 @@ export function InternshipDetailPage() {
 
             {/* Skills Required */}
             {Array.isArray(internship.skills) && internship.skills.length > 0 && (
-              <Card className="border-slate-800 bg-slate-900/80">
-                <CardHeader className="pb-3 border-b border-slate-800">
-                  <CardTitle className="text-base font-bold text-white">Desired Technical Skills</CardTitle>
+              <Card className="border-slate-200 bg-white shadow-sm">
+                <CardHeader className="pb-3 border-b border-slate-100">
+                  <CardTitle className="text-base font-bold text-slate-900">Desired Technical Skills</CardTitle>
                 </CardHeader>
                 <CardContent className="p-6">
                   <div className="flex flex-wrap gap-2">
                     {internship.skills.map((skill) => (
                       <span
                         key={skill}
-                        className="px-3 py-1.5 rounded-lg bg-brand-500/10 border border-brand-500/30 text-xs font-semibold text-brand-300"
+                        className="px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700"
                       >
                         {skill}
                       </span>
@@ -468,14 +468,14 @@ export function InternshipDetailPage() {
 
             {/* About Company */}
             {company.description && (
-              <Card className="border-slate-800 bg-slate-900/80">
-                <CardHeader className="pb-3 border-b border-slate-800">
-                  <CardTitle className="text-base font-bold text-white">
+              <Card className="border-slate-200 bg-white shadow-sm">
+                <CardHeader className="pb-3 border-b border-slate-100">
+                  <CardTitle className="text-base font-bold text-slate-900">
                     About {company.name}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 space-y-3">
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                     {company.description}
                   </p>
                   {company.website && (
@@ -483,7 +483,7 @@ export function InternshipDetailPage() {
                       href={company.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs text-brand-400 hover:text-brand-300 font-semibold"
+                      className="inline-flex items-center gap-1 text-xs text-brand-600 hover:text-brand-700 font-semibold"
                     >
                       <span>Visit Company Website</span>
                       <ExternalLink className="w-3.5 h-3.5" />
@@ -496,9 +496,9 @@ export function InternshipDetailPage() {
 
           {/* Sticky Application Sidebar (Right Col) */}
           <div className="space-y-6 lg:sticky lg:top-24">
-            <Card className="border-slate-800 bg-slate-900/90 shadow-card">
-              <CardHeader className="pb-3 border-b border-slate-800">
-                <CardTitle className="text-sm font-bold text-white">Application Overview</CardTitle>
+            <Card className="border-slate-200 bg-white shadow-sm">
+              <CardHeader className="pb-3 border-b border-slate-100">
+                <CardTitle className="text-sm font-bold text-slate-900">Application Overview</CardTitle>
               </CardHeader>
               <CardContent className="p-5 space-y-4">
                 {/* Deadline countdown */}
@@ -506,18 +506,18 @@ export function InternshipDetailPage() {
                   <div
                     className={`p-3 rounded-xl border flex items-center gap-3 ${
                       daysUntilDeadline <= 3
-                        ? 'bg-red-500/10 border-red-500/30 text-red-300'
-                        : 'bg-slate-950 border-slate-800 text-slate-300'
+                        ? 'bg-rose-50 border-rose-200 text-rose-800'
+                        : 'bg-slate-50 border-slate-200 text-slate-700'
                     }`}
                   >
-                    <Calendar className="w-5 h-5 text-brand-400 shrink-0" />
+                    <Calendar className="w-5 h-5 text-brand-600 shrink-0" />
                     <div className="text-xs">
-                      <p className="font-semibold text-white">
+                      <p className="font-semibold text-slate-900">
                         {daysUntilDeadline > 0
                           ? `${daysUntilDeadline} days remaining`
                           : 'Deadline Today'}
                       </p>
-                      <p className="text-[11px] text-slate-400">
+                      <p className="text-[11px] text-slate-500">
                         Applications close {new Date(internship.applicationDeadline).toLocaleDateString()}
                       </p>
                     </div>
@@ -525,36 +525,36 @@ export function InternshipDetailPage() {
                 )}
 
                 {/* Info List */}
-                <div className="space-y-2.5 text-xs text-slate-300 border-t border-slate-800 pt-3">
+                <div className="space-y-2.5 text-xs text-slate-600 border-t border-slate-100 pt-3">
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Monthly Compensation:</span>
-                    <span className="font-semibold text-white font-mono">{stipendText}</span>
+                    <span className="text-slate-500">Monthly Compensation:</span>
+                    <span className="font-semibold text-slate-900 font-mono">{stipendText}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Workplace:</span>
-                    <span className="font-semibold text-white">{internship.remote || 'Remote'}</span>
+                    <span className="text-slate-500">Workplace:</span>
+                    <span className="font-semibold text-slate-900">{internship.remote || 'Remote'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Commitment:</span>
-                    <span className="font-semibold text-white">
+                    <span className="text-slate-500">Commitment:</span>
+                    <span className="font-semibold text-slate-900">
                       {internship.type === 'FULL_TIME' ? 'Full-Time' : 'Part-Time'}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Openings:</span>
-                    <span className="font-semibold text-white">{internship.openings || 1} position</span>
+                    <span className="text-slate-500">Openings:</span>
+                    <span className="font-semibold text-slate-900">{internship.openings || 1} position</span>
                   </div>
                 </div>
 
                 {/* Apply Button */}
-                <div className="pt-3 border-t border-slate-800 space-y-2">
+                <div className="pt-3 border-t border-slate-100 space-y-2">
                   {hasApplied ? (
-                    <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-center space-y-1">
-                      <p className="text-xs font-bold text-emerald-400 flex items-center justify-center gap-1.5">
+                    <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-center space-y-1">
+                      <p className="text-xs font-bold text-emerald-700 flex items-center justify-center gap-1.5">
                         <CheckCircle2 className="w-4 h-4" />
                         Application Submitted
                       </p>
-                      <p className="text-[11px] text-slate-400">
+                      <p className="text-[11px] text-slate-500">
                         Your resume has been shared with the recruiter.
                       </p>
                     </div>
@@ -589,19 +589,19 @@ export function InternshipDetailPage() {
       >
         <div className="space-y-4 pt-2">
           {/* Active resume banner */}
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between gap-3">
+          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 font-bold text-xs">
+              <div className="w-8 h-8 rounded-lg bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 font-bold text-xs">
                 PDF
               </div>
               <div className="text-xs">
-                <p className="font-semibold text-white truncate max-w-xs">
+                <p className="font-semibold text-slate-900 truncate max-w-xs">
                   {profile?.resume?.fileName || 'Verified Profile Resume.pdf'}
                 </p>
-                <p className="text-[11px] text-emerald-400">Attached to application</p>
+                <p className="text-[11px] text-emerald-600">Attached to application</p>
               </div>
             </div>
-            <Link to="/student/resume" className="text-xs text-brand-400 hover:text-brand-300">
+            <Link to="/student/resume" className="text-xs text-brand-600 hover:text-brand-700 font-semibold">
               Change
             </Link>
           </div>
@@ -615,7 +615,7 @@ export function InternshipDetailPage() {
             onChange={(e) => setCoverLetter(e.target.value)}
           />
 
-          <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-slate-800">
+          <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-slate-100">
             <Button variant="outline" onClick={() => setApplyModalOpen(false)}>
               Cancel
             </Button>

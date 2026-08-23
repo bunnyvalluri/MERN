@@ -7,7 +7,7 @@ export function Skeleton({ className = '', ...props }) {
   return (
     <div
       aria-hidden="true"
-      className={`relative overflow-hidden bg-slate-800/80 rounded-lg animate-shimmer ${className}`}
+      className={`relative overflow-hidden bg-slate-200 rounded-lg animate-shimmer ${className}`}
       {...props}
     />
   );
@@ -52,7 +52,7 @@ export function SkeletonAvatar({ size = 'md', className = '' }) {
 export function SkeletonCard({ className = '' }) {
   return (
     <div
-      className={`p-6 rounded-xl border border-slate-800 bg-slate-900/60 space-y-4 ${className}`}
+      className={`p-6 rounded-xl border border-slate-200 bg-white shadow-sm space-y-4 ${className}`}
       aria-hidden="true"
     >
       <div className="flex items-center gap-3">
@@ -74,7 +74,7 @@ export function SkeletonCard({ className = '' }) {
 export function SkeletonTable({ rows = 5, cols = 4, className = '' }) {
   return (
     <div className={`space-y-3 ${className}`} aria-hidden="true">
-      <div className="grid grid-cols-4 gap-4 p-4 bg-slate-900 rounded-lg border border-slate-800">
+      <div className="grid grid-cols-4 gap-4 p-4 bg-slate-50 rounded-lg border border-slate-200">
         {Array.from({ length: cols }).map((_, i) => (
           <Skeleton key={`head-${i}`} className="h-4 w-3/4" />
         ))}
@@ -82,7 +82,7 @@ export function SkeletonTable({ rows = 5, cols = 4, className = '' }) {
       {Array.from({ length: rows }).map((_, r) => (
         <div
           key={`row-${r}`}
-          className="grid grid-cols-4 gap-4 p-4 bg-slate-900/40 rounded-lg border border-slate-800/60"
+          className="grid grid-cols-4 gap-4 p-4 bg-white rounded-lg border border-slate-100"
         >
           {Array.from({ length: cols }).map((_, c) => (
             <Skeleton key={`cell-${r}-${c}`} className="h-3.5 w-full" />

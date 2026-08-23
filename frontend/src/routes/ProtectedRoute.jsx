@@ -25,9 +25,9 @@ export function ProtectedRoute({ allowedRoles = [], children }) {
 
   if (loading && !user) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center gap-3">
+      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center gap-3">
         <Spinner size="lg" color="primary" />
-        <p className="text-xs font-mono text-slate-400">Verifying session...</p>
+        <p className="text-xs font-mono text-slate-500">Verifying session...</p>
       </div>
     );
   }
@@ -42,15 +42,15 @@ export function ProtectedRoute({ allowedRoles = [], children }) {
     const currentRole = role || user.role;
     if (!allowedRoles.includes(currentRole)) {
       return (
-        <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-6 text-center">
-          <div className="max-w-md space-y-4">
-            <h2 className="text-xl font-bold text-white">403 — Access Forbidden</h2>
-            <p className="text-xs sm:text-sm text-slate-400">
+        <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 text-center">
+          <div className="max-w-md space-y-4 bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
+            <h2 className="text-xl font-bold text-slate-900">403 — Access Forbidden</h2>
+            <p className="text-xs sm:text-sm text-slate-600">
               Your account ({currentRole}) does not have permission to access this portal.
             </p>
             <a
               href="/"
-              className="inline-flex px-4 py-2 text-xs font-semibold rounded-lg bg-brand-600 text-white hover:bg-brand-500 transition-colors"
+              className="inline-flex px-4 py-2 text-xs font-semibold rounded-lg bg-brand-600 text-white hover:bg-brand-700 transition-colors shadow-sm"
             >
               Return to Home
             </a>

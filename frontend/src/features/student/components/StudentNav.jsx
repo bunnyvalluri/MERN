@@ -31,18 +31,18 @@ export function StudentNav() {
   ];
 
   return (
-    <nav className="bg-slate-900 border-b border-slate-800 sticky top-0 z-30">
+    <nav className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Header */}
-        <div className="flex items-center justify-between h-16 border-b border-slate-800/80">
+        <div className="flex items-center justify-between h-16 border-b border-slate-100">
           <div className="flex items-center gap-4">
             <Link to="/" className="flex items-center gap-2.5 group">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center shadow-sm">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center shadow-sm">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
-              <span className="font-bold text-lg text-white tracking-tight">InternHub</span>
+              <span className="font-bold text-lg text-slate-900 tracking-tight">InternHub</span>
             </Link>
-            <div className="h-4 w-px bg-slate-800 hidden sm:block" />
+            <div className="h-4 w-px bg-slate-200 hidden sm:block" />
             <Badge variant="primary" size="sm" className="hidden sm:inline-flex">
               Student Portal
             </Badge>
@@ -51,7 +51,7 @@ export function StudentNav() {
           <div className="flex items-center gap-3">
             <Link
               to="/"
-              className="text-xs text-slate-400 hover:text-slate-200 hidden md:flex items-center gap-1 transition-colors px-2.5 py-1.5 rounded-lg hover:bg-slate-800"
+              className="text-xs text-slate-600 hover:text-slate-900 hidden md:flex items-center gap-1 transition-colors px-2.5 py-1.5 rounded-lg hover:bg-slate-50 font-medium"
             >
               <span>Explore Internships</span>
               <ExternalLink className="w-3 h-3" />
@@ -59,11 +59,11 @@ export function StudentNav() {
 
             <NotificationBell />
 
-            <div className="flex items-center gap-2.5 pl-2 border-l border-slate-800">
+            <div className="flex items-center gap-2.5 pl-2 border-l border-slate-200">
               <Avatar name={user?.name || 'Student'} size="sm" />
               <div className="hidden sm:block text-left">
-                <p className="text-xs font-semibold text-white leading-tight">{user?.name}</p>
-                <p className="text-[11px] text-slate-400 leading-tight truncate max-w-[140px]">
+                <p className="text-xs font-semibold text-slate-900 leading-tight">{user?.name}</p>
+                <p className="text-[11px] text-slate-500 leading-tight truncate max-w-[140px]">
                   {user?.email}
                 </p>
               </div>
@@ -71,7 +71,7 @@ export function StudentNav() {
                 variant="ghost"
                 size="xs"
                 onClick={() => dispatch(logoutUser())}
-                className="text-slate-400 hover:text-danger-400 p-1.5"
+                className="text-slate-400 hover:text-danger-600 p-1.5"
                 title="Sign out"
               >
                 <LogOut className="w-4 h-4" />
@@ -91,8 +91,8 @@ export function StudentNav() {
                 className={({ isActive }) =>
                   `flex items-center gap-2 px-3.5 py-3 text-xs sm:text-sm font-medium border-b-2 whitespace-nowrap transition-all ${
                     isActive
-                      ? 'border-brand-500 text-brand-400 bg-brand-500/5'
-                      : 'border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700'
+                      ? 'border-brand-600 text-brand-600 bg-brand-50/50'
+                      : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
                   }`
                 }
               >
@@ -104,20 +104,20 @@ export function StudentNav() {
 
           {/* Mini completion pill */}
           <div className="hidden lg:flex items-center gap-2 py-2">
-            <span className="text-xs text-slate-400">Profile:</span>
-            <div className="w-24 bg-slate-800 h-2 rounded-full overflow-hidden">
+            <span className="text-xs text-slate-500 font-medium">Profile:</span>
+            <div className="w-24 bg-slate-100 h-2 rounded-full overflow-hidden border border-slate-200">
               <div
                 className={`h-full transition-all duration-500 rounded-full ${
                   completion.percentage >= 80
-                    ? 'bg-emerald-500'
+                    ? 'bg-emerald-600'
                     : completion.percentage >= 50
                     ? 'bg-amber-500'
-                    : 'bg-brand-500'
+                    : 'bg-brand-600'
                 }`}
                 style={{ width: `${completion.percentage}%` }}
               />
             </div>
-            <span className="text-xs font-mono font-bold text-slate-200">
+            <span className="text-xs font-mono font-bold text-slate-700">
               {completion.percentage}%
             </span>
           </div>

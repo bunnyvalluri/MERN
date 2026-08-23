@@ -65,7 +65,7 @@ export function StudentInterviewsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 selection:bg-brand-500/20 selection:text-brand-300">
+    <div className="min-h-screen bg-slate-50 text-slate-800 selection:bg-brand-500/20 selection:text-brand-700">
       <StudentNav />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
@@ -79,23 +79,23 @@ export function StudentInterviewsPage() {
           />
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
-                <Calendar className="w-7 h-7 text-teal-400" />
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
+                <Calendar className="w-7 h-7 text-teal-600" />
                 My Interview Schedule
               </h1>
-              <p className="text-sm text-slate-400 mt-1">
+              <p className="text-sm text-slate-600 mt-1">
                 View your upcoming technical interviews, video calls, meeting links, and recruiter notes.
               </p>
             </div>
 
             {/* View Mode Toggle */}
-            <div className="flex items-center gap-1.5 p-1 bg-slate-900 border border-slate-800 rounded-2xl">
+            <div className="flex items-center gap-1.5 p-1 bg-white border border-slate-200 rounded-2xl shadow-xs">
               <button
                 onClick={() => setViewMode('list')}
                 className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                   viewMode === 'list'
-                    ? 'bg-brand-500 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-brand-600 text-white shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 <List className="w-3.5 h-3.5" />
@@ -105,8 +105,8 @@ export function StudentInterviewsPage() {
                 onClick={() => setViewMode('calendar')}
                 className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                   viewMode === 'calendar'
-                    ? 'bg-brand-500 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-brand-600 text-white shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 <CalendarDays className="w-3.5 h-3.5" />
@@ -118,10 +118,10 @@ export function StudentInterviewsPage() {
 
         {/* Hero Spotlight: Next Immediate Interview */}
         {nextInterview && (
-          <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-teal-900/30 via-slate-900 to-slate-900 border border-teal-500/30 shadow-2xl relative overflow-hidden space-y-5">
+          <div className="p-6 sm:p-8 rounded-3xl bg-teal-50/80 border border-teal-200 shadow-sm relative overflow-hidden space-y-5">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-2">
-                <span className="px-3 py-1 rounded-full bg-teal-500/20 border border-teal-500/40 text-teal-300 font-bold text-xs flex items-center gap-1.5 animate-pulse">
+                <span className="px-3 py-1 rounded-full bg-teal-100 border border-teal-200 text-teal-800 font-bold text-xs flex items-center gap-1.5">
                   <Clock className="w-3.5 h-3.5" />
                   Upcoming Next: {getCountdownString(nextInterview.scheduledAt)}
                 </span>
@@ -130,18 +130,18 @@ export function StudentInterviewsPage() {
                 </Badge>
               </div>
 
-              <span className="text-xs font-mono text-slate-400">
+              <span className="text-xs font-mono text-slate-500">
                 {new Date(nextInterview.scheduledAt).toLocaleString()}
               </span>
             </div>
 
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div className="space-y-2">
-                <h2 className="text-xl sm:text-2xl font-black text-white">
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
                   {nextInterview.internshipId?.title || 'Technical Interview'}
                 </h2>
-                <div className="flex items-center gap-3 text-sm text-slate-300">
-                  <span className="font-semibold text-white flex items-center gap-1.5">
+                <div className="flex items-center gap-3 text-sm text-slate-600">
+                  <span className="font-semibold text-slate-800 flex items-center gap-1.5">
                     <Building2 className="w-4 h-4 text-slate-400" />
                     {nextInterview.companyId?.name || 'Company'}
                   </span>
@@ -161,21 +161,21 @@ export function StudentInterviewsPage() {
                       variant="primary"
                       size="lg"
                       leftIcon={<Video className="w-5 h-5" />}
-                      className="shadow-lg shadow-teal-500/20 bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold"
+                      className="bg-teal-600 hover:bg-teal-700 text-white font-bold"
                     >
                       Join Video Meeting
                     </Button>
                   </a>
                 ) : (
-                  <span className="text-xs text-slate-400 italic">Meeting link will appear prior to call</span>
+                  <span className="text-xs text-slate-500 italic">Meeting link will appear prior to call</span>
                 )}
               </div>
             </div>
 
             {/* Recruiter Preparation Notes */}
             {nextInterview.notes && (
-              <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800/80 text-xs text-slate-300 space-y-1">
-                <span className="text-[10px] text-teal-400 font-bold uppercase tracking-wider block">
+              <div className="p-4 rounded-2xl bg-white border border-teal-100 text-xs text-slate-700 space-y-1 shadow-xs">
+                <span className="text-[10px] text-teal-700 font-bold uppercase tracking-wider block">
                   Candidate Preparation Notes
                 </span>
                 <p className="leading-relaxed">{nextInterview.notes}</p>
@@ -185,7 +185,7 @@ export function StudentInterviewsPage() {
         )}
 
         {/* Timeframe Filter Tabs */}
-        <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
+        <div className="flex items-center gap-2 border-b border-slate-200 pb-3">
           {[
             { id: 'upcoming', label: 'Upcoming Interviews', count: studentInterviews?.upcomingCount },
             { id: 'past', label: 'Past Interviews', count: studentInterviews?.pastCount },
@@ -196,13 +196,13 @@ export function StudentInterviewsPage() {
               onClick={() => setTimeframe(tab.id)}
               className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
                 timeframe === tab.id
-                  ? 'bg-slate-800 text-white border border-slate-700 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-white text-slate-900 border border-slate-200 shadow-sm'
+                  : 'text-slate-500 hover:text-slate-800'
               }`}
             >
               {tab.label}
               {tab.count !== undefined && (
-                <span className="ml-1.5 px-1.5 py-0.5 rounded-full bg-slate-900 text-[10px] text-slate-400 font-mono">
+                <span className="ml-1.5 px-1.5 py-0.5 rounded-full bg-slate-100 text-[10px] text-slate-600 font-mono">
                   {tab.count}
                 </span>
               )}
@@ -220,10 +220,10 @@ export function StudentInterviewsPage() {
         ) : viewMode === 'calendar' ? (
           <CalendarView interviews={interviewsList} />
         ) : interviewsList.length === 0 ? (
-          <Card className="border-slate-800 bg-slate-900/60 py-16">
+          <Card className="border-slate-200 bg-white py-16 shadow-sm">
             <CardContent>
               <EmptyState
-                icon={<Calendar className="w-12 h-12 text-slate-600 mx-auto" />}
+                icon={<Calendar className="w-12 h-12 text-slate-400 mx-auto" />}
                 title={
                   timeframe === 'upcoming'
                     ? 'No upcoming interviews'
@@ -245,15 +245,15 @@ export function StudentInterviewsPage() {
             {interviewsList.map((item) => (
               <div
                 key={item._id}
-                className="p-5 sm:p-6 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 transition-all flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-card"
+                className="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 hover:border-slate-300 transition-all flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-sm"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center text-brand-400 shrink-0 font-bold">
+                  <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center text-brand-600 shrink-0 font-bold">
                     <Calendar className="w-6 h-6" />
                   </div>
                   <div className="space-y-1.5">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <h3 className="text-base font-bold text-white">
+                      <h3 className="text-base font-bold text-slate-900">
                         {item.internshipId?.title || 'Internship Interview'}
                       </h3>
                       <Badge
@@ -275,23 +275,23 @@ export function StudentInterviewsPage() {
                       </span>
                     </div>
 
-                    <p className="text-xs text-slate-400 flex items-center gap-1.5">
-                      <Building2 className="w-3.5 h-3.5 text-slate-500" />
+                    <p className="text-xs text-slate-600 flex items-center gap-1.5">
+                      <Building2 className="w-3.5 h-3.5 text-slate-400" />
                       {item.companyId?.name || 'Organization'} •{' '}
                       {item.durationMinutes || 45} mins
                     </p>
 
-                    <div className="flex items-center gap-2 text-xs font-mono text-teal-400 pt-0.5">
-                      <Clock className="w-3.5 h-3.5" />
+                    <div className="flex items-center gap-2 text-xs font-mono text-teal-700 pt-0.5">
+                      <Clock className="w-3.5 h-3.5 text-teal-600" />
                       <span>{new Date(item.scheduledAt).toLocaleString()}</span>
-                      <span className="text-slate-500">
+                      <span className="text-slate-400">
                         ({getCountdownString(item.scheduledAt)})
                       </span>
                     </div>
 
                     {item.notes && (
-                      <p className="text-xs text-slate-300 bg-slate-950 p-2.5 rounded-xl border border-slate-800/80 mt-2">
-                        <strong className="text-slate-400 block text-[10px] uppercase">
+                      <p className="text-xs text-slate-700 bg-slate-50 p-2.5 rounded-xl border border-slate-200 mt-2">
+                        <strong className="text-slate-500 block text-[10px] uppercase">
                           Preparation Notes:
                         </strong>
                         {item.notes}
@@ -318,7 +318,7 @@ export function StudentInterviewsPage() {
                   )}
 
                   <Link to={`/student/applications/${item.applicationId}`}>
-                    <Button variant="outline" size="sm" rightIcon={<ChevronRight className="w-3.5 h-3.5" />}>
+                    <Button variant="outline" size="sm" rightIcon={<ChevronRight className="w-4 h-4" />} className="border-slate-200 text-slate-700 hover:bg-slate-50">
                       Application
                     </Button>
                   </Link>

@@ -157,7 +157,7 @@ export function ScheduleInterviewModal({
           onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
         />
 
-        <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+        <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
           <Button
             variant="outline"
             type="button"

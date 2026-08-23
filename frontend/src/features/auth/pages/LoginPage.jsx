@@ -58,10 +58,7 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative selection:bg-brand-500/20 selection:text-brand-300">
-      {/* Background glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-brand-600/10 rounded-full blur-[120px] pointer-events-none" />
-
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative selection:bg-brand-500/20 selection:text-brand-700">
       <div className="sm:mx-auto sm:w-full sm:max-w-md z-10 space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
@@ -69,21 +66,21 @@ export function LoginPage() {
             to="/"
             className="inline-flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg p-1"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-xl tracking-tight text-white group-hover:text-brand-300 transition-colors">
+            <span className="font-bold text-xl tracking-tight text-slate-900 group-hover:text-brand-600 transition-colors">
               InternHub
             </span>
           </Link>
-          <h2 className="text-2xl font-bold tracking-tight text-white">Sign in to your account</h2>
-          <p className="text-xs sm:text-sm text-slate-400">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">Sign in to your account</h2>
+          <p className="text-xs sm:text-sm text-slate-600">
             Access your applications, interviews, and verified career profile
           </p>
         </div>
 
         {/* Login Card */}
-        <Card className="border-slate-800 bg-slate-900/90 shadow-modal">
+        <Card className="border-slate-200 bg-white shadow-card">
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4 pt-6">
               {error && (
@@ -109,10 +106,10 @@ export function LoginPage() {
 
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-medium text-slate-300">Password</label>
+                  <label className="text-xs font-medium text-slate-700">Password</label>
                   <Link
                     to="/forgot-password"
-                    className="text-xs text-brand-400 hover:text-brand-300 transition-colors"
+                    className="text-xs font-medium text-brand-600 hover:text-brand-700 transition-colors"
                   >
                     Forgot password?
                   </Link>
@@ -143,11 +140,11 @@ export function LoginPage() {
               </Button>
             </CardContent>
 
-            <CardFooter className="justify-center text-xs text-slate-400 border-t border-slate-800/80 bg-slate-950/40">
+            <CardFooter className="justify-center text-xs text-slate-600 border-t border-slate-100 bg-slate-50/70">
               <span>Don&apos;t have an account?</span>
               <Link
                 to="/register"
-                className="font-semibold text-brand-400 hover:text-brand-300 ml-1.5 transition-colors"
+                className="font-semibold text-brand-600 hover:text-brand-700 ml-1.5 transition-colors"
               >
                 Create Account
               </Link>
@@ -159,7 +156,7 @@ export function LoginPage() {
         <div className="text-center">
           <Link
             to="/"
-            className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-900 transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             Back to Home

@@ -39,7 +39,7 @@ export function NotificationBell({ className = '' }) {
     <div ref={containerRef} className={`relative inline-block ${className}`}>
       <button
         onClick={handleToggle}
-        className="relative p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500/40"
+        className="relative p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500/40"
         title="Notifications"
         aria-label="Notifications"
       >
@@ -47,7 +47,7 @@ export function NotificationBell({ className = '' }) {
 
         {/* Live Pulse Badge */}
         {unreadCount > 0 && (
-          <span className="absolute top-1 right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-black text-white bg-brand-500 rounded-full ring-2 ring-slate-900 shadow-sm animate-pulse">
+          <span className="absolute top-1 right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-black text-white bg-brand-600 rounded-full ring-2 ring-white shadow-xs animate-pulse">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}

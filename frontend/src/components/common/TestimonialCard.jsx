@@ -18,7 +18,7 @@ export function TestimonialCard({
 }) {
   return (
     <Card
-      className={`relative flex flex-col justify-between border-slate-800/80 bg-slate-900/60 p-6 sm:p-7 ${className}`}
+      className={`relative flex flex-col justify-between border-slate-200 bg-white shadow-sm p-6 sm:p-7 ${className}`}
     >
       <div className="space-y-4">
         {/* Rating Stars & Type Badge */}
@@ -34,21 +34,21 @@ export function TestimonialCard({
         </div>
 
         {/* Quote text */}
-        <p className="text-sm sm:text-base text-slate-200 leading-relaxed font-normal">
+        <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-normal">
           &ldquo;{quote}&rdquo;
         </p>
       </div>
 
       {/* Author Details */}
-      <div className="pt-6 border-t border-slate-800/80 flex items-center gap-3.5 mt-6">
+      <div className="pt-6 border-t border-slate-100 flex items-center gap-3.5 mt-6">
         <Avatar src={avatar} name={author} size="md" />
         <div className="min-w-0">
           <div className="flex items-center gap-1.5">
-            <h4 className="text-sm font-semibold text-slate-100 truncate">{author}</h4>
-            {verified && <CheckCircle2 className="w-3.5 h-3.5 text-brand-400 shrink-0" />}
+            <h4 className="text-sm font-semibold text-slate-900 truncate">{author}</h4>
+            {verified && <CheckCircle2 className="w-3.5 h-3.5 text-brand-600 shrink-0" />}
           </div>
-          <p className="text-xs text-slate-400 truncate">{role}</p>
-          <p className="text-[11px] font-medium text-brand-400 truncate">{affiliation}</p>
+          <p className="text-xs text-slate-500 truncate">{role}</p>
+          <p className="text-[11px] font-medium text-brand-600 truncate">{affiliation}</p>
         </div>
       </div>
     </Card>

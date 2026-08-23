@@ -54,7 +54,7 @@ export function Dropdown({
         <div
           role="menu"
           aria-orientation="vertical"
-          className={`absolute mt-2 min-w-[12rem] max-w-[calc(100vw-2rem)] bg-slate-900 border border-slate-800 rounded-xl shadow-dropdown py-1.5 z-40 focus:outline-none animate-scale-in ${
+          className={`absolute mt-2 min-w-[12rem] max-w-[calc(100vw-2rem)] bg-white border border-slate-200 rounded-xl shadow-dropdown py-1.5 z-40 focus:outline-none animate-scale-in text-slate-800 ${
             alignmentClasses[align] || alignmentClasses.right
           } ${menuClassName}`}
           onClick={() => setIsOpen(false)}
@@ -84,30 +84,30 @@ export function DropdownItem({
       onClick={onClick}
       className={`w-full flex items-center justify-between px-3.5 py-2 text-xs sm:text-sm font-medium transition-colors select-none text-left disabled:opacity-50 disabled:cursor-not-allowed ${
         danger
-          ? 'text-danger-400 hover:bg-danger-500/10 hover:text-danger-300'
-          : 'text-slate-200 hover:bg-slate-800 hover:text-slate-100'
+          ? 'text-danger-600 hover:bg-danger-50 hover:text-danger-700'
+          : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
       } ${className}`}
       {...props}
     >
       <div className="flex items-center gap-2.5 min-w-0">
-        {icon && <span className="shrink-0 text-slate-400">{icon}</span>}
+        {icon && <span className="shrink-0 text-slate-500">{icon}</span>}
         <span className="truncate">{children}</span>
       </div>
       {shortcut && (
-        <span className="text-[11px] text-slate-500 font-mono ml-3">{shortcut}</span>
+        <span className="text-[11px] text-slate-400 font-mono ml-3">{shortcut}</span>
       )}
     </button>
   );
 }
 
 export function DropdownDivider({ className = '' }) {
-  return <div className={`my-1 border-t border-slate-800 ${className}`} role="separator" />;
+  return <div className={`my-1 border-t border-slate-100 ${className}`} role="separator" />;
 }
 
 export function DropdownHeader({ className = '', children }) {
   return (
     <div
-      className={`px-3.5 py-1.5 text-[11px] font-semibold tracking-wider text-slate-400 uppercase select-none ${className}`}
+      className={`px-3.5 py-1.5 text-[11px] font-semibold tracking-wider text-slate-500 uppercase select-none ${className}`}
     >
       {children}
     </div>

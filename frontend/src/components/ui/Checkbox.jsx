@@ -36,12 +36,12 @@ export const Checkbox = forwardRef(function Checkbox(
         />
         <label
           htmlFor={id}
-          className={`w-4.5 h-4.5 rounded border flex items-center justify-center transition-all duration-150 cursor-pointer peer-focus-visible:ring-2 peer-focus-visible:ring-brand-500 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-slate-900 ${
+          className={`w-4.5 h-4.5 rounded border flex items-center justify-center transition-all duration-150 cursor-pointer peer-focus-visible:ring-2 peer-focus-visible:ring-brand-500 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white ${
             checked
-              ? 'bg-brand-600 border-brand-500 text-white'
+              ? 'bg-brand-600 border-brand-600 text-white'
               : error
-              ? 'bg-slate-900/90 border-danger-500 hover:border-danger-400'
-              : 'bg-slate-900/90 border-slate-700 hover:border-slate-600'
+              ? 'bg-white border-danger-500 hover:border-danger-600'
+              : 'bg-white border-slate-300 hover:border-slate-400'
           }`}
         >
           {checked && <Check className="w-3.5 h-3.5 stroke-[3]" />}
@@ -54,13 +54,13 @@ export const Checkbox = forwardRef(function Checkbox(
             <label
               htmlFor={id}
               className={`font-medium cursor-pointer block ${
-                error ? 'text-danger-400' : 'text-slate-200'
+                error ? 'text-danger-600' : 'text-slate-800'
               }`}
             >
               {label}
             </label>
           )}
-          {description && <p className="text-slate-400 mt-0.5">{description}</p>}
+          {description && <p className="text-slate-500 mt-0.5">{description}</p>}
         </div>
       )}
     </div>

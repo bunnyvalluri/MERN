@@ -110,22 +110,22 @@ export function StudentApplicationsPage() {
   const totalPages = studentApplications?.totalPages || 1;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-brand-500/20 selection:text-brand-300">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col selection:bg-brand-500/20 selection:text-brand-700">
       <StudentNav />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         {/* Header Banner */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-slate-900 to-slate-900/60 p-6 rounded-2xl border border-slate-800 shadow-card">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
                 My Applications
               </h1>
               <Badge variant="primary" size="sm">
                 {total} Total
               </Badge>
             </div>
-            <p className="text-xs sm:text-sm text-slate-400">
+            <p className="text-xs sm:text-sm text-slate-600">
               Track the real-time review progress, interview calls, and hiring decisions for your applications.
             </p>
           </div>
@@ -143,10 +143,10 @@ export function StudentApplicationsPage() {
             <button
               key={tab.key}
               onClick={() => handleStatusChange(tab.key)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 shadow-xs ${
                 selectedStatus === tab.key
-                  ? 'bg-brand-500 text-white shadow-sm shadow-brand-500/20'
-                  : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700'
+                  ? 'bg-brand-600 text-white shadow-sm'
+                  : 'bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
               <span>{tab.label}</span>
@@ -162,10 +162,10 @@ export function StudentApplicationsPage() {
             ))}
           </div>
         ) : applications.length === 0 ? (
-          <Card className="border-slate-800 bg-slate-900/60 py-12">
+          <Card className="border-slate-200 bg-white py-12 shadow-sm">
             <CardContent>
               <EmptyState
-                icon={<Briefcase className="w-12 h-12 text-slate-600 mx-auto" />}
+                icon={<Briefcase className="w-12 h-12 text-slate-400 mx-auto" />}
                 title={
                   selectedStatus === 'ALL'
                     ? 'No applications submitted yet'
@@ -206,12 +206,12 @@ export function StudentApplicationsPage() {
               return (
                 <div
                   key={app._id}
-                  className="bg-slate-900/90 hover:bg-slate-900 border border-slate-800 hover:border-slate-700/80 rounded-2xl p-5 sm:p-6 transition-all shadow-card group"
+                  className="bg-white hover:bg-slate-50/70 border border-slate-200 hover:border-slate-300 rounded-2xl p-5 sm:p-6 transition-all shadow-sm group"
                 >
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
                     {/* Left: Company & Role Details */}
                     <div className="flex items-start gap-4">
-                      <div className="w-14 h-14 rounded-xl bg-slate-800 border border-slate-700/60 p-2 flex items-center justify-center shrink-0 shadow-sm overflow-hidden">
+                      <div className="w-14 h-14 rounded-xl bg-slate-50 border border-slate-200 p-2 flex items-center justify-center shrink-0 shadow-xs overflow-hidden">
                         {company.logo ? (
                           <img
                             src={company.logo}
@@ -219,13 +219,13 @@ export function StudentApplicationsPage() {
                             className="w-full h-full object-contain rounded-lg"
                           />
                         ) : (
-                          <Building2 className="w-7 h-7 text-brand-400" />
+                          <Building2 className="w-7 h-7 text-brand-600" />
                         )}
                       </div>
 
                       <div className="space-y-1.5">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="text-xs font-semibold text-slate-300">
+                          <span className="text-xs font-semibold text-slate-600">
                             {company.name || 'Company'}
                           </span>
                           {company.verified && (
@@ -233,39 +233,39 @@ export function StudentApplicationsPage() {
                               Verified
                             </Badge>
                           )}
-                          <span className="text-slate-600">•</span>
-                          <span className="text-xs text-slate-400">
+                          <span className="text-slate-300">•</span>
+                          <span className="text-xs text-slate-500">
                             Applied on {new Date(app.createdAt).toLocaleDateString()}
                           </span>
                         </div>
 
                         <Link
                           to={`/student/applications/${app._id}`}
-                          className="text-base sm:text-lg font-bold text-white hover:text-brand-300 transition-colors inline-block"
+                          className="text-base sm:text-lg font-bold text-slate-900 hover:text-brand-600 transition-colors inline-block"
                         >
                           {internship.title || 'Internship Opportunity'}
                         </Link>
 
                         {/* Metadata pills */}
-                        <div className="flex items-center gap-3 flex-wrap text-xs text-slate-400 pt-0.5">
+                        <div className="flex items-center gap-3 flex-wrap text-xs text-slate-500 pt-0.5">
                           <span className="flex items-center gap-1">
-                            <MapPin className="w-3.5 h-3.5 text-slate-500" />
+                            <MapPin className="w-3.5 h-3.5 text-slate-400" />
                             {internship.remote || 'Remote'}
                           </span>
                           <span className="flex items-center gap-1">
-                            <Clock className="w-3.5 h-3.5 text-slate-500" />
+                            <Clock className="w-3.5 h-3.5 text-slate-400" />
                             {internship.duration || '3 Months'}
                           </span>
                           <span className="flex items-center gap-1">
-                            <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
-                            <strong className="text-slate-200">{stipendText}</strong>
+                            <DollarSign className="w-3.5 h-3.5 text-emerald-600" />
+                            <strong className="text-slate-900">{stipendText}</strong>
                           </span>
                         </div>
                       </div>
                     </div>
 
                     {/* Right: Status badge & Actions */}
-                    <div className="flex sm:flex-row md:flex-col items-start sm:items-center md:items-end justify-between gap-3 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-slate-800/80">
+                    <div className="flex sm:flex-row md:flex-col items-start sm:items-center md:items-end justify-between gap-3 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-slate-100">
                       <div className="flex items-center gap-2">
                         <Badge variant={badgeVariant} size="md">
                           {app.status.replace('_', ' ')}
@@ -278,7 +278,7 @@ export function StudentApplicationsPage() {
                             variant="ghost"
                             size="xs"
                             onClick={() => setWithdrawTargetId(app._id)}
-                            className="text-slate-400 hover:text-red-400"
+                            className="text-slate-500 hover:text-red-600"
                           >
                             Withdraw
                           </Button>

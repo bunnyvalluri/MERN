@@ -158,17 +158,17 @@ export function RecruiterInternshipsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-brand-500/20 selection:text-brand-300">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col selection:bg-brand-500/20 selection:text-brand-700">
       <RecruiterNav />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
               Manage Internship Postings
             </h1>
-            <p className="text-xs sm:text-sm text-slate-400">
+            <p className="text-xs sm:text-sm text-slate-500">
               Create, edit, publish, or close your company&apos;s internship listings.
             </p>
           </div>
@@ -181,7 +181,7 @@ export function RecruiterInternshipsPage() {
         </div>
 
         {/* Filter Tabs & Search Bar */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-slate-800">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-slate-200">
           {/* Status Tabs */}
           <div className="flex items-center gap-1.5 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
             {STATUS_TABS.map((tab) => {
@@ -194,7 +194,7 @@ export function RecruiterInternshipsPage() {
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
                     isSelected
                       ? 'bg-brand-600 text-white shadow-sm'
-                      : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-850'
+                      : 'bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
                 >
                   {tab.label}
@@ -207,7 +207,7 @@ export function RecruiterInternshipsPage() {
           <div className="w-full md:w-64">
             <Input
               placeholder="Search by role title..."
-              leftIcon={<Search className="w-4 h-4" />}
+              leftIcon={<Search className="w-4 h-4 text-slate-400" />}
               value={filters.search || ''}
               onChange={handleSearchChange}
             />
@@ -215,13 +215,13 @@ export function RecruiterInternshipsPage() {
         </div>
 
         {/* Table / List Container */}
-        <Card className="border-slate-800 bg-slate-900/90 shadow-card overflow-hidden">
-          <CardHeader className="p-4 border-b border-slate-800 flex flex-row items-center justify-between">
-            <CardTitle className="text-xs font-bold text-slate-300">
+        <Card className="border-slate-200 bg-white shadow-sm overflow-hidden">
+          <CardHeader className="p-4 border-b border-slate-100 flex flex-row items-center justify-between">
+            <CardTitle className="text-xs font-bold text-slate-700">
               Showing {internships.length} of {pagination.total} postings
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-0 divide-y divide-slate-800/80">
+          <CardContent className="p-0 divide-y divide-slate-100">
             {loading ? (
               <div className="p-6 space-y-3">
                 <Skeleton className="h-16 w-full rounded-xl" />
@@ -231,7 +231,7 @@ export function RecruiterInternshipsPage() {
             ) : internships.length === 0 ? (
               <div className="p-12 text-center">
                 <EmptyState
-                  icon={<Briefcase className="w-8 h-8 text-brand-400" />}
+                  icon={<Briefcase className="w-8 h-8 text-brand-600" />}
                   title="No internship postings found"
                   description="No listings match your selected status tab or search query."
                   action={
@@ -247,35 +247,35 @@ export function RecruiterInternshipsPage() {
               internships.map((item) => (
                 <div
                   key={item._id}
-                  className="p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 hover:bg-slate-850/50 transition-colors"
+                  className="p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 hover:bg-slate-50/80 transition-colors"
                 >
                   {/* Left Role Details */}
                   <div className="space-y-1.5 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <h3 className="text-sm font-bold text-white">{item.title}</h3>
+                      <h3 className="text-sm font-bold text-slate-900">{item.title}</h3>
                       {getStatusBadge(item)}
-                      <span className="text-xs text-slate-400 font-mono">
+                      <span className="text-xs text-slate-500 font-mono">
                         {item.remote || 'Remote'} • {item.type === 'FULL_TIME' ? 'Full-Time' : 'Part-Time'}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-4 text-xs text-slate-400 flex-wrap">
-                      <span className="flex items-center gap-1 text-purple-400 font-semibold">
+                    <div className="flex items-center gap-4 text-xs text-slate-500 flex-wrap">
+                      <span className="flex items-center gap-1 text-purple-700 font-semibold">
                         <Users className="w-3.5 h-3.5" />
                         {item.applicationsCount || 0} Candidates
                       </span>
-                      <span className="flex items-center gap-1 text-amber-400">
+                      <span className="flex items-center gap-1 text-amber-700">
                         <Eye className="w-3.5 h-3.5" />
                         {item.viewsCount || 0} Views
                       </span>
                       <span className="flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5 text-slate-500" />
+                        <Clock className="w-3.5 h-3.5 text-slate-400" />
                         Deadline:{' '}
                         {item.applicationDeadline
                           ? new Date(item.applicationDeadline).toLocaleDateString()
                           : 'N/A'}
                       </span>
-                      <span className="text-slate-500">
+                      <span className="text-slate-400">
                         Created: {new Date(item.createdAt).toLocaleDateString()}
                       </span>
                     </div>
@@ -328,7 +328,7 @@ export function RecruiterInternshipsPage() {
                       <Button
                         variant="ghost"
                         size="xs"
-                        className="text-amber-400 hover:text-amber-300"
+                        className="text-amber-700 hover:text-amber-800 hover:bg-amber-50"
                         leftIcon={<Lock className="w-3.5 h-3.5" />}
                         onClick={() => setCloseModal({ open: true, item })}
                       >
@@ -340,7 +340,7 @@ export function RecruiterInternshipsPage() {
                     <Button
                       variant="ghost"
                       size="xs"
-                      className="text-red-400 hover:text-red-300 hover:bg-red-950/20"
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
                       leftIcon={<Trash2 className="w-3.5 h-3.5" />}
                       onClick={() => setDeleteModal({ open: true, item })}
                     >
@@ -373,7 +373,7 @@ export function RecruiterInternshipsPage() {
         description={`Are you sure you want to close "${closeModal.item?.title}"? Closed internships will immediately stop accepting student applications.`}
         size="sm"
       >
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
           <Button variant="outline" onClick={() => setCloseModal({ open: false, item: null })}>
             Cancel
           </Button>
@@ -391,7 +391,7 @@ export function RecruiterInternshipsPage() {
         description={`Are you sure you want to permanently delete "${deleteModal.item?.title}"? This action cannot be undone and will be recorded in the audit log.`}
         size="sm"
       >
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
           <Button variant="outline" onClick={() => setDeleteModal({ open: false, item: null })}>
             Cancel
           </Button>

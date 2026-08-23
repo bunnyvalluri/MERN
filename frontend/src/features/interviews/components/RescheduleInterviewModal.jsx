@@ -59,18 +59,18 @@ export function RescheduleInterviewModal({
     <Modal isOpen={isOpen} onClose={onClose} size="md">
       <ModalHeader onClose={onClose}>
         <div className="flex items-center gap-2">
-          <Calendar className="w-5 h-5 text-amber-400" />
-          <ModalTitle className="text-white font-bold">Reschedule Interview</ModalTitle>
+          <Calendar className="w-5 h-5 text-amber-600" />
+          <ModalTitle className="text-slate-900 font-bold">Reschedule Interview</ModalTitle>
         </div>
       </ModalHeader>
 
       <form onSubmit={handleSubmit}>
         <ModalContent className="space-y-4">
-          <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-1">
-            <p className="text-xs text-slate-400">Candidate / Role:</p>
-            <p className="text-sm font-bold text-white">
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+            <p className="text-xs text-slate-500">Candidate / Role:</p>
+            <p className="text-sm font-bold text-slate-900">
               {interview.studentId?.name || 'Candidate'} •{' '}
-              <span className="text-brand-300 font-normal">
+              <span className="text-brand-600 font-normal">
                 {interview.internshipId?.title || 'Internship'}
               </span>
             </p>
@@ -80,8 +80,8 @@ export function RescheduleInterviewModal({
           </div>
 
           {error && (
-            <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-300 flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0" />
+            <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-800 flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
               <span>{error}</span>
             </div>
           )}
@@ -113,7 +113,7 @@ export function RescheduleInterviewModal({
             placeholder="https://meet.google.com/xxx-xxxx-xxx"
             value={meetingUrl}
             onChange={(e) => setMeetingUrl(e.target.value)}
-            leftIcon={<Video className="w-4 h-4" />}
+            leftIcon={<Video className="w-4 h-4 text-slate-400" />}
           />
 
           <Input
@@ -132,7 +132,7 @@ export function RescheduleInterviewModal({
           />
         </ModalContent>
 
-        <ModalFooter className="border-t border-slate-800 flex justify-end gap-2">
+        <ModalFooter className="border-t border-slate-100 flex justify-end gap-2">
           <Button variant="ghost" type="button" onClick={onClose} disabled={loading}>
             Cancel
           </Button>

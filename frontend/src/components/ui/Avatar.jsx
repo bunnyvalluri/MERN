@@ -67,9 +67,9 @@ export function Avatar({
   return (
     <div className={`relative inline-flex shrink-0 select-none ${className}`}>
       <div
-        className={`rounded-full overflow-hidden flex items-center justify-center font-semibold text-white border border-slate-700/60 shadow-sm ${
+        className={`rounded-full overflow-hidden flex items-center justify-center font-semibold text-white border border-slate-200 shadow-sm ${
           sizeClasses[size] || sizeClasses.md
-        } ${showFallback ? `bg-gradient-to-tr ${getGradientByName(name || alt)}` : 'bg-slate-800'}`}
+        } ${showFallback ? `bg-gradient-to-tr ${getGradientByName(name || alt)}` : 'bg-slate-200'}`}
       >
         {!showFallback ? (
           <img
@@ -87,7 +87,7 @@ export function Avatar({
 
       {status && statusColors[status] && (
         <span
-          className={`absolute bottom-0 right-0 rounded-full ring-slate-900 ${
+          className={`absolute bottom-0 right-0 rounded-full ring-white ${
             statusDotSizes[size] || statusDotSizes.md
           } ${statusColors[status]}`}
           aria-label={`Status: ${status}`}
@@ -119,7 +119,7 @@ export function AvatarGroup({ max = 4, size = 'md', className = '', children }) 
       {visibleAvatars.map((child, idx) => (
         <div
           key={idx}
-          className={`relative ring-2 ring-slate-950 rounded-full transition-transform hover:scale-110 hover:z-10 ${
+          className={`relative ring-2 ring-white rounded-full transition-transform hover:scale-110 hover:z-10 ${
             idx > 0 ? sizeClasses[size].split(' ').pop() : ''
           }`}
         >
@@ -129,7 +129,7 @@ export function AvatarGroup({ max = 4, size = 'md', className = '', children }) 
 
       {excess > 0 && (
         <div
-          className={`relative rounded-full bg-slate-800 border border-slate-700 text-slate-300 font-semibold ring-2 ring-slate-950 flex items-center justify-center select-none ${
+          className={`relative rounded-full bg-slate-100 border border-slate-200 text-slate-700 font-semibold ring-2 ring-white flex items-center justify-center select-none ${
             sizeClasses[size] || sizeClasses.md
           }`}
         >

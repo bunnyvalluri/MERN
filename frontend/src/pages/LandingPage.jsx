@@ -325,7 +325,7 @@ export function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-brand-500/20 selection:text-brand-300">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col selection:bg-brand-500/20 selection:text-brand-700">
       <SEOHead
         title="InternHub — Find the Right Internship. Build Your Future."
         description="Discover 2,000+ verified tech internships at top startups and Fortune 500 companies. Apply directly with your verified student profile and track every application in real time."
@@ -345,23 +345,23 @@ export function LandingPage() {
         {/* ========================================================================= */}
         <section aria-labelledby="hero-headline" className="relative pt-12 pb-20 sm:pt-20 sm:pb-28 overflow-hidden">
           {/* Subtle background glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[900px] h-[400px] bg-brand-600/10 rounded-full blur-[140px] pointer-events-none -z-10" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[900px] h-[400px] bg-brand-500/5 rounded-full blur-[140px] pointer-events-none -z-10" />
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
             {/* Top Announcement Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-brand-500/30 bg-brand-500/10 text-brand-300 text-xs sm:text-sm font-medium shadow-sm hover:bg-brand-500/15 transition-colors cursor-pointer" role="status" aria-live="polite">
-              <Sparkles className="w-4 h-4 text-brand-400" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-brand-200 bg-brand-50 text-brand-700 text-xs sm:text-sm font-medium shadow-sm hover:bg-brand-100 transition-colors cursor-pointer" role="status" aria-live="polite">
+              <Sparkles className="w-4 h-4 text-brand-600" />
               <span>Summer 2027 Cohort Applications Are Now Live</span>
               <ArrowRight className="w-3.5 h-3.5 ml-0.5" />
             </div>
 
             {/* Main Headline */}
             <div className="space-y-4 max-w-4xl mx-auto">
-              <h1 id="hero-headline" className="text-3xl xs:text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.15] sm:leading-[1.1]">
+              <h1 id="hero-headline" className="text-3xl xs:text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 leading-[1.15] sm:leading-[1.1]">
                 Find the right internship.{' '}
                 <span className="text-gradient block sm:inline">Build your future.</span>
               </h1>
-              <p className="text-sm sm:text-xl text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed">
+              <p className="text-sm sm:text-xl text-slate-600 max-w-2xl mx-auto font-normal leading-relaxed">
                 Discover curated opportunities at top tech companies, apply directly with a verified
                 academic profile, and track your career journey in one unified platform.
               </p>
@@ -369,19 +369,19 @@ export function LandingPage() {
 
             {/* Interactive Search Bar */}
             <div className="max-w-3xl mx-auto pt-2">
-              <div className="p-2 sm:p-2.5 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-modal backdrop-blur-md flex flex-col sm:flex-row items-center gap-2">
+              <div className="p-2 sm:p-2.5 rounded-2xl bg-white border border-slate-200 shadow-modal flex flex-col sm:flex-row items-center gap-2">
                 <div className="w-full sm:flex-1">
                   <Input
                     placeholder="Role, skill, or company (e.g. React, Python, Stripe)..."
                     leftIcon={<Search className="w-4 h-4 text-slate-400" />}
                     value={searchKeyword}
                     onChange={(e) => setSearchKeyword(e.target.value)}
-                    className="border-transparent bg-transparent focus:ring-0 focus:border-transparent"
+                    className="border-transparent bg-transparent focus:ring-0 focus:border-transparent shadow-none"
                     wrapperClassName="w-full"
                   />
                 </div>
 
-                <div className="w-full sm:w-44 border-t sm:border-t-0 sm:border-l border-slate-800 pt-2 sm:pt-0 sm:pl-2">
+                <div className="w-full sm:w-44 border-t sm:border-t-0 sm:border-l border-slate-200 pt-2 sm:pt-0 sm:pl-2">
                   <Select
                     options={[
                       { value: 'all', label: 'All Workplaces' },
@@ -391,7 +391,7 @@ export function LandingPage() {
                     ]}
                     value={searchLocation}
                     onChange={(e) => setSearchLocation(e.target.value)}
-                    className="border-transparent bg-transparent text-xs sm:text-sm py-2"
+                    className="border-transparent bg-transparent text-xs sm:text-sm py-2 shadow-none"
                   />
                 </div>
 
@@ -435,17 +435,17 @@ export function LandingPage() {
             </div>
 
             {/* Trust Badges */}
-            <div className="pt-6 flex items-center justify-center gap-6 sm:gap-10 text-xs text-slate-400 flex-wrap">
+            <div className="pt-6 flex items-center justify-center gap-6 sm:gap-10 text-xs text-slate-500 flex-wrap">
               <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
                 <span>100% Verified Employers</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-brand-400" />
+                <CheckCircle2 className="w-4 h-4 text-brand-600" />
                 <span>Zero Placement Fees</span>
               </div>
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-amber-400" />
+                <Sparkles className="w-4 h-4 text-amber-500" />
                 <span>Real-Time Status Tracking</span>
               </div>
             </div>
@@ -455,44 +455,44 @@ export function LandingPage() {
         {/* ========================================================================= */}
         {/* TRUST METRICS COUNTERS                                                   */}
         {/* ========================================================================= */}
-        <section aria-label="Platform statistics" className="border-y border-slate-800/80 bg-slate-900/40 py-8 sm:py-14">
+        <section aria-label="Platform statistics" className="border-y border-slate-200 bg-white py-8 sm:py-14 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 text-center">
               <div className="space-y-1">
-                <div className="text-2xl sm:text-4xl font-extrabold text-white font-mono tracking-tight">
+                <div className="text-2xl sm:text-4xl font-extrabold text-slate-900 font-mono tracking-tight">
                   10,000+
                 </div>
-                <div className="text-xs sm:text-sm font-semibold text-slate-300">
+                <div className="text-xs sm:text-sm font-semibold text-slate-700">
                   Active Students
                 </div>
                 <p className="text-[11px] text-slate-500">From 150+ accredited universities</p>
               </div>
 
               <div className="space-y-1">
-                <div className="text-2xl sm:text-4xl font-extrabold text-brand-400 font-mono tracking-tight">
+                <div className="text-2xl sm:text-4xl font-extrabold text-brand-600 font-mono tracking-tight">
                   500+
                 </div>
-                <div className="text-xs sm:text-sm font-semibold text-slate-300">
+                <div className="text-xs sm:text-sm font-semibold text-slate-700">
                   Verified Companies
                 </div>
                 <p className="text-[11px] text-slate-500">Startups to Fortune 500 tech teams</p>
               </div>
 
               <div className="space-y-1">
-                <div className="text-2xl sm:text-4xl font-extrabold text-white font-mono tracking-tight">
+                <div className="text-2xl sm:text-4xl font-extrabold text-slate-900 font-mono tracking-tight">
                   2,000+
                 </div>
-                <div className="text-xs sm:text-sm font-semibold text-slate-300">
+                <div className="text-xs sm:text-sm font-semibold text-slate-700">
                   Opportunities
                 </div>
                 <p className="text-[11px] text-slate-500">Updated hourly with verified stipends</p>
               </div>
 
               <div className="space-y-1">
-                <div className="text-2xl sm:text-4xl font-extrabold text-emerald-400 font-mono tracking-tight">
+                <div className="text-2xl sm:text-4xl font-extrabold text-emerald-600 font-mono tracking-tight">
                   100%
                 </div>
-                <div className="text-xs sm:text-sm font-semibold text-slate-300">
+                <div className="text-xs sm:text-sm font-semibold text-slate-700">
                   Application Tracking
                 </div>
                 <p className="text-[11px] text-slate-500">Zero ghosting with timeline updates</p>
@@ -505,22 +505,22 @@ export function LandingPage() {
         {/* FEATURED INTERNSHIPS & DISCOVERY                                         */}
         {/* ========================================================================= */}
         <section id="featured" aria-labelledby="featured-heading" className="py-20 sm:py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-800 pb-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-200 pb-6">
             <div>
               <Badge variant="primary" size="sm" className="mb-2">
                 Featured Opportunities
               </Badge>
-              <h2 id="featured-heading" className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+              <h2 id="featured-heading" className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
                 Explore Curated Tech Internships
               </h2>
-              <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-xl">
+              <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-xl">
                 High-growth engineering and product internships offering competitive compensation and
                 direct mentorship.
               </p>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-400 font-mono">
+              <span className="text-xs text-slate-500 font-mono">
                 Showing {filteredInternships.length} of {ALL_INTERNSHIPS.length} roles
               </span>
             </div>
@@ -535,10 +535,10 @@ export function LandingPage() {
                   key={cat.id}
                   type="button"
                   onClick={() => setActiveCategory(cat.id)}
-                  className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border ${
+                  className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border shadow-sm ${
                     isActive
-                      ? 'bg-brand-600 border-brand-500 text-white shadow-sm'
-                      : 'bg-slate-900/80 border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                      ? 'bg-brand-600 border-brand-600 text-white'
+                      : 'bg-white border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
                 >
                   <span>{cat.icon}</span>
@@ -585,34 +585,34 @@ export function LandingPage() {
         {/* ========================================================================= */}
         {/* HOW IT WORKS (4-STEP PROCESS)                                            */}
         {/* ========================================================================= */}
-        <section id="how-it-works" className="py-20 sm:py-28 border-t border-slate-800 bg-slate-900/30">
+        <section id="how-it-works" className="py-20 sm:py-28 border-t border-slate-200 bg-slate-100/50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
             <div className="text-center space-y-3 max-w-3xl mx-auto">
               <Badge variant="primary" size="sm">
                 Transparent Workflow
               </Badge>
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">
                 How InternHub Works
               </h2>
-              <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+              <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
                 From discovery to your first offer letter — streamlined in four simple steps.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* Step 01 */}
-              <Card className="border-slate-800/80 bg-slate-900/80 relative">
+              <Card className="border-slate-200 bg-white relative shadow-sm">
                 <CardHeader>
-                  <span className="text-4xl font-extrabold text-brand-500/30 font-mono block">
+                  <span className="text-4xl font-extrabold text-brand-600/20 font-mono block">
                     01
                   </span>
-                  <CardTitle className="mt-2 flex items-center gap-2">
-                    <Users className="w-5 h-5 text-brand-400" />
+                  <CardTitle className="mt-2 flex items-center gap-2 text-slate-900">
+                    <Users className="w-5 h-5 text-brand-600" />
                     Create Profile
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                     Set up your verified profile with university details, GitHub, projects, and target
                     engineering domains.
                   </p>
@@ -620,18 +620,18 @@ export function LandingPage() {
               </Card>
 
               {/* Step 02 */}
-              <Card className="border-slate-800/80 bg-slate-900/80 relative">
+              <Card className="border-slate-200 bg-white relative shadow-sm">
                 <CardHeader>
-                  <span className="text-4xl font-extrabold text-brand-500/30 font-mono block">
+                  <span className="text-4xl font-extrabold text-brand-600/20 font-mono block">
                     02
                   </span>
-                  <CardTitle className="mt-2 flex items-center gap-2">
-                    <Search className="w-5 h-5 text-brand-400" />
+                  <CardTitle className="mt-2 flex items-center gap-2 text-slate-900">
+                    <Search className="w-5 h-5 text-brand-600" />
                     Discover Roles
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                     Filter opportunities by transparent stipend rates, remote flexibility, tech stacks,
                     and verified hiring timelines.
                   </p>
@@ -639,18 +639,18 @@ export function LandingPage() {
               </Card>
 
               {/* Step 03 */}
-              <Card className="border-slate-800/80 bg-slate-900/80 relative">
+              <Card className="border-slate-200 bg-white relative shadow-sm">
                 <CardHeader>
-                  <span className="text-4xl font-extrabold text-brand-500/30 font-mono block">
+                  <span className="text-4xl font-extrabold text-brand-600/20 font-mono block">
                     03
                   </span>
-                  <CardTitle className="mt-2 flex items-center gap-2">
-                    <Briefcase className="w-5 h-5 text-brand-400" />
+                  <CardTitle className="mt-2 flex items-center gap-2 text-slate-900">
+                    <Briefcase className="w-5 h-5 text-brand-600" />
                     Apply Directly
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                     Submit customized applications with your Cloudinary-hosted resume in 1 click directly
                     to verified hiring managers.
                   </p>
@@ -658,18 +658,18 @@ export function LandingPage() {
               </Card>
 
               {/* Step 04 */}
-              <Card className="border-slate-800/80 bg-slate-900/80 relative">
+              <Card className="border-slate-200 bg-white relative shadow-sm">
                 <CardHeader>
-                  <span className="text-4xl font-extrabold text-brand-500/30 font-mono block">
+                  <span className="text-4xl font-extrabold text-brand-600/20 font-mono block">
                     04
                   </span>
-                  <CardTitle className="mt-2 flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5 text-brand-400" />
+                  <CardTitle className="mt-2 flex items-center gap-2 text-slate-900">
+                    <TrendingUp className="w-5 h-5 text-brand-600" />
                     Track Pipeline
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                     Receive real-time notifications on shortlists, schedule technical screens, and
                     manage offers without ever being ghosted.
                   </p>
@@ -687,10 +687,10 @@ export function LandingPage() {
             <Badge variant="primary" size="sm">
               Built for Students
             </Badge>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">
               Everything You Need to Land Your Dream Internship
             </h2>
-            <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
               InternHub replaces messy spreadsheets and ghosted job boards with a single, reliable
               career command center.
             </p>
@@ -698,36 +698,36 @@ export function LandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {/* Benefit 1 */}
-            <Card className="border-slate-800 bg-slate-900/60 p-6 space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-400">
+            <Card className="border-slate-200 bg-white shadow-sm p-6 space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-brand-50 border border-brand-200 flex items-center justify-center text-brand-600">
                 <TrendingUp className="w-5 h-5" />
               </div>
-              <h3 className="text-lg font-semibold text-white">Personalized Matches</h3>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              <h3 className="text-lg font-semibold text-slate-900">Personalized Matches</h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                 Smart recommendations based on your graduation year, programming languages, GPA, and
                 target location preferences.
               </p>
             </Card>
 
             {/* Benefit 2 */}
-            <Card className="border-slate-800 bg-slate-900/60 p-6 space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+            <Card className="border-slate-200 bg-white shadow-sm p-6 space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600">
                 <FileText className="w-5 h-5" />
               </div>
-              <h3 className="text-lg font-semibold text-white">Cloud Resume Management</h3>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              <h3 className="text-lg font-semibold text-slate-900">Cloud Resume Management</h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                 Securely store and update resume versions with instant Cloudinary CDN delivery to
                 recruiters.
               </p>
             </Card>
 
             {/* Benefit 3 */}
-            <Card className="border-slate-800 bg-slate-900/60 p-6 space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400">
+            <Card className="border-slate-200 bg-white shadow-sm p-6 space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-center text-sky-600">
                 <Bell className="w-5 h-5" />
               </div>
-              <h3 className="text-lg font-semibold text-white">Instant Notifications</h3>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              <h3 className="text-lg font-semibold text-slate-900">Instant Notifications</h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                 Real-time alerts whenever a recruiter reviews your resume, schedules an interview, or
                 updates your status.
               </p>
@@ -738,17 +738,17 @@ export function LandingPage() {
         {/* ========================================================================= */}
         {/* COMPANIES & RECRUITER SECTION                                            */}
         {/* ========================================================================= */}
-        <section id="companies" aria-labelledby="companies-heading" className="py-20 sm:py-28 border-t border-slate-800 bg-gradient-to-b from-slate-950 to-slate-900/80">
+        <section id="companies" aria-labelledby="companies-heading" className="py-20 sm:py-28 border-t border-slate-200 bg-gradient-to-b from-slate-50 to-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
               <div className="lg:col-span-6 space-y-6">
                 <Badge variant="success" size="sm">
                   For Hiring Teams & Recruiters
                 </Badge>
-                <h2 id="companies-heading" className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
+                <h2 id="companies-heading" className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 leading-tight">
                   Hire top engineering interns with zero friction.
                 </h2>
-                <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+                <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
                   Connect with verified undergraduate and graduate candidates from top engineering
                   programs. Filter by real technical skills, manage candidate pipelines, and schedule
                   interviews seamlessly.
@@ -756,36 +756,36 @@ export function LandingPage() {
 
                 <div className="space-y-3 pt-2">
                   <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                     <div>
-                      <span className="text-sm font-semibold text-white block">
+                      <span className="text-sm font-semibold text-slate-900 block">
                         Verified Student Talent
                       </span>
-                      <span className="text-xs text-slate-400">
+                      <span className="text-xs text-slate-500">
                         All applicants verify university enrollment and coursework.
                       </span>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                     <div>
-                      <span className="text-sm font-semibold text-white block">
+                      <span className="text-sm font-semibold text-slate-900 block">
                         Direct Pipeline Management
                       </span>
-                      <span className="text-xs text-slate-400">
+                      <span className="text-xs text-slate-500">
                         Shortlist, reject, or schedule interviews in 1 click without third-party tools.
                       </span>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                     <div>
-                      <span className="text-sm font-semibold text-white block">
+                      <span className="text-sm font-semibold text-slate-900 block">
                         University Analytics
                       </span>
-                      <span className="text-xs text-slate-400">
+                      <span className="text-xs text-slate-500">
                         Analyze applicant conversion rates and top engineering campuses.
                       </span>
                     </div>
@@ -806,15 +806,15 @@ export function LandingPage() {
 
               {/* Visual Preview Card */}
               <div className="lg:col-span-6">
-                <Card className="border-slate-800 bg-slate-900/90 shadow-2xl p-6 sm:p-8 space-y-6">
-                  <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+                <Card className="border-slate-200 bg-white shadow-xl p-6 sm:p-8 space-y-6">
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-brand-600/20 border border-brand-500/40 flex items-center justify-center text-brand-400">
+                      <div className="w-10 h-10 rounded-xl bg-brand-50 border border-brand-200 flex items-center justify-center text-brand-600">
                         <Building2 className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="text-sm font-bold text-white">Recruiter Command Center</h4>
-                        <p className="text-xs text-slate-400">Summer Engineering Hiring Cohort</p>
+                        <h4 className="text-sm font-bold text-slate-900">Recruiter Command Center</h4>
+                        <p className="text-xs text-slate-500">Summer Engineering Hiring Cohort</p>
                       </div>
                     </div>
                     <Badge variant="success" size="sm" dot pulse>
@@ -823,20 +823,20 @@ export function LandingPage() {
                   </div>
 
                   <div className="space-y-3">
-                    <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 flex items-center justify-between">
+                    <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                       <div className="text-xs">
-                        <span className="text-slate-400 block">Total Applicants</span>
-                        <span className="text-base font-bold text-white font-mono">148 Candidates</span>
+                        <span className="text-slate-500 block">Total Applicants</span>
+                        <span className="text-base font-bold text-slate-900 font-mono">148 Candidates</span>
                       </div>
                       <Badge variant="primary" size="sm">
                         +24 Today
                       </Badge>
                     </div>
 
-                    <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 flex items-center justify-between">
+                    <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                       <div className="text-xs">
-                        <span className="text-slate-400 block">Technical Screens Scheduled</span>
-                        <span className="text-base font-bold text-white font-mono">12 Completed</span>
+                        <span className="text-slate-500 block">Technical Screens Scheduled</span>
+                        <span className="text-base font-bold text-slate-900 font-mono">12 Completed</span>
                       </div>
                       <Badge variant="success" size="sm">
                         85% Pass Rate
@@ -857,10 +857,10 @@ export function LandingPage() {
             <Badge variant="primary" size="sm">
               Social Proof & Trust
             </Badge>
-            <h2 id="testimonials-heading" className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+            <h2 id="testimonials-heading" className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">
               Loved by Students & Engineering Leaders
             </h2>
-            <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
               Read how InternHub connects candidates to meaningful early-career tech experiences.
             </p>
           </div>
@@ -875,51 +875,51 @@ export function LandingPage() {
         {/* ========================================================================= */}
         {/* CAREER RESOURCES SECTION                                                 */}
         {/* ========================================================================= */}
-        <section id="resources" aria-labelledby="resources-heading" className="py-16 sm:py-24 border-t border-slate-800 bg-slate-900/30">
+        <section id="resources" aria-labelledby="resources-heading" className="py-16 sm:py-24 border-t border-slate-200 bg-slate-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-800 pb-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 pb-6">
               <div>
                 <Badge variant="primary" size="sm" className="mb-2">
                   Knowledge Hub
                 </Badge>
-                <h2 id="resources-heading" className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+                <h2 id="resources-heading" className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
                   Free Student Career Resources
                 </h2>
-                <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-xl">
+                <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-xl">
                   Handcrafted guides on technical interviewing, resume formatting, and internship compensation.
                 </p>
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card hoverable className="border-slate-800 bg-slate-900/60 p-6 space-y-3">
-                <span className="text-xs font-mono text-brand-400 font-semibold">GUIDE • 8 MIN READ</span>
-                <h3 className="text-base font-bold text-white">
+              <Card hoverable className="border-slate-200 bg-white shadow-sm p-6 space-y-3">
+                <span className="text-xs font-mono text-brand-600 font-semibold">GUIDE • 8 MIN READ</span>
+                <h3 className="text-base font-bold text-slate-900">
                   The Complete 2026 Tech Resume Blueprint
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                   How to highlight personal projects, open-source contributions, and relevant coursework
                   to pass automated ATS screenings.
                 </p>
               </Card>
 
-              <Card hoverable className="border-slate-800 bg-slate-900/60 p-6 space-y-3">
-                <span className="text-xs font-mono text-emerald-400 font-semibold">INTERVIEW PREP • 12 MIN READ</span>
-                <h3 className="text-base font-bold text-white">
+              <Card hoverable className="border-slate-200 bg-white shadow-sm p-6 space-y-3">
+                <span className="text-xs font-mono text-emerald-600 font-semibold">INTERVIEW PREP • 12 MIN READ</span>
+                <h3 className="text-base font-bold text-slate-900">
                   Cracking the Live Technical Coding Screen
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                   Essential algorithms, system design trade-offs, and communication strategies for 45-minute
                   live coding interviews.
                 </p>
               </Card>
 
-              <Card hoverable className="border-slate-800 bg-slate-900/60 p-6 space-y-3">
-                <span className="text-xs font-mono text-amber-400 font-semibold">INDEX • UPDATED WEEKLY</span>
-                <h3 className="text-base font-bold text-white">
+              <Card hoverable className="border-slate-200 bg-white shadow-sm p-6 space-y-3">
+                <span className="text-xs font-mono text-amber-600 font-semibold">INDEX • UPDATED WEEKLY</span>
+                <h3 className="text-base font-bold text-slate-900">
                   2026 Software Internship Stipend Index
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                   Transparent hourly rates, relocation benefits, and housing stipends across top tech hubs
                   including SF, NYC, and Seattle.
                 </p>
@@ -931,11 +931,9 @@ export function LandingPage() {
         {/* ========================================================================= */}
         {/* FINAL CALL TO ACTION                                                     */}
         {/* ========================================================================= */}
-        <section className="py-20 sm:py-28 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-brand-950/40 via-slate-900 to-indigo-950/40 -z-10" />
-
+        <section className="py-20 sm:py-28 relative overflow-hidden bg-gradient-to-r from-brand-600 to-indigo-600 text-white">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center mx-auto shadow-lg shadow-brand-600/30">
+            <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center mx-auto shadow-lg">
               <Sparkles className="w-7 h-7 text-white" />
             </div>
 
@@ -943,7 +941,7 @@ export function LandingPage() {
               <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
                 Ready to start your career?
               </h2>
-              <p className="text-base sm:text-lg text-slate-300 max-w-xl mx-auto leading-relaxed">
+              <p className="text-base sm:text-lg text-brand-100 max-w-xl mx-auto leading-relaxed">
                 Join over 10,000 students discovering curated opportunities and building verified career
                 profiles.
               </p>
@@ -951,22 +949,22 @@ export function LandingPage() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
               <Button
-                variant="primary"
+                variant="secondary"
                 size="lg"
                 rightIcon={<ArrowRight className="w-5 h-5" />}
                 onClick={() => setAuthModal({ isOpen: true, mode: 'register' })}
-                className="w-full sm:w-auto px-8 shadow-xl shadow-brand-600/25"
+                className="w-full sm:w-auto px-8 bg-white text-brand-700 hover:bg-brand-50 border-white shadow-xl"
               >
                 Create Your Profile
               </Button>
               <Button
-                variant="secondary"
+                variant="outline"
                 size="lg"
                 onClick={() => {
                   const el = document.getElementById('featured');
                   el?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="w-full sm:w-auto px-6"
+                className="w-full sm:w-auto px-6 text-white border-white/40 hover:bg-white/10 hover:text-white"
               >
                 Explore 2,000+ Internships
               </Button>
@@ -989,8 +987,8 @@ export function LandingPage() {
         >
           <ModalHeader>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-slate-800 p-2 flex items-center justify-center shrink-0 border border-slate-700">
-                <Building2 className="w-5 h-5 text-brand-400" />
+              <div className="w-10 h-10 rounded-xl bg-slate-100 p-2 flex items-center justify-center shrink-0 border border-slate-200">
+                <Building2 className="w-5 h-5 text-brand-600" />
               </div>
               <div>
                 <ModalTitle>{selectedInternship.title}</ModalTitle>
@@ -1002,34 +1000,34 @@ export function LandingPage() {
           </ModalHeader>
 
           <ModalBody className="space-y-6">
-            <div className="flex items-center gap-3 p-3.5 rounded-xl bg-slate-950/60 border border-slate-800">
+            <div className="flex items-center gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
               <div className="text-xs">
-                <span className="text-slate-400 block">Stipend Rate</span>
-                <span className="text-base font-bold text-emerald-400 font-mono">
+                <span className="text-slate-500 block">Stipend Rate</span>
+                <span className="text-base font-bold text-emerald-600 font-mono">
                   {selectedInternship.stipend}
                 </span>
               </div>
-              <div className="border-l border-slate-800 pl-4 text-xs">
-                <span className="text-slate-400 block">Category</span>
-                <span className="text-slate-200 font-semibold">{selectedInternship.category}</span>
+              <div className="border-l border-slate-200 pl-4 text-xs">
+                <span className="text-slate-500 block">Category</span>
+                <span className="text-slate-800 font-semibold">{selectedInternship.category}</span>
               </div>
             </div>
 
             <div className="space-y-2">
-              <h4 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
+              <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wider">
                 Role Overview
               </h4>
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                 {selectedInternship.description}
               </p>
             </div>
 
             {selectedInternship.responsibilities && (
               <div className="space-y-2">
-                <h4 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
+                <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wider">
                   Key Responsibilities
                 </h4>
-                <ul className="space-y-1.5 text-xs sm:text-sm text-slate-300 list-disc list-inside">
+                <ul className="space-y-1.5 text-xs sm:text-sm text-slate-600 list-disc list-inside">
                   {selectedInternship.responsibilities.map((r, i) => (
                     <li key={i}>{r}</li>
                   ))}
@@ -1039,10 +1037,10 @@ export function LandingPage() {
 
             {selectedInternship.requirements && (
               <div className="space-y-2">
-                <h4 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
+                <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wider">
                   Requirements & Qualifications
                 </h4>
-                <ul className="space-y-1.5 text-xs sm:text-sm text-slate-300 list-disc list-inside">
+                <ul className="space-y-1.5 text-xs sm:text-sm text-slate-600 list-disc list-inside">
                   {selectedInternship.requirements.map((req, i) => (
                     <li key={i}>{req}</li>
                   ))}
@@ -1051,14 +1049,14 @@ export function LandingPage() {
             )}
 
             <div className="space-y-2">
-              <h4 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
+              <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wider">
                 Required Tech Stack
               </h4>
               <div className="flex items-center gap-1.5 flex-wrap">
                 {selectedInternship.skills.map((s) => (
                   <span
                     key={s}
-                    className="px-2.5 py-1 rounded-md bg-slate-800 border border-slate-700 text-slate-200 font-mono text-xs"
+                    className="px-2.5 py-1 rounded-md bg-slate-100 border border-slate-200 text-slate-700 font-mono text-xs"
                   >
                     {s}
                   </span>
@@ -1122,10 +1120,10 @@ export function LandingPage() {
           <Input label="Password" type="password" placeholder="••••••••••••" required />
 
           {authModal.mode !== 'login' && (
-            <div className="text-xs text-slate-400">
+            <div className="text-xs text-slate-500">
               By creating an account, you agree to the InternHub{' '}
-              <a href="#" className="text-brand-400 underline">Terms</a> and{' '}
-              <a href="#" className="text-brand-400 underline">Privacy Policy</a>.
+              <a href="#" className="text-brand-600 underline">Terms</a> and{' '}
+              <a href="#" className="text-brand-600 underline">Privacy Policy</a>.
             </div>
           )}
         </ModalBody>

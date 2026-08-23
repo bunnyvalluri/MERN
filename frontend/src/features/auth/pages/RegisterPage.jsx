@@ -103,10 +103,7 @@ export function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative selection:bg-brand-500/20 selection:text-brand-300">
-      {/* Background glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-brand-600/10 rounded-full blur-[140px] pointer-events-none" />
-
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative selection:bg-brand-500/20 selection:text-brand-700">
       <div className="sm:mx-auto sm:w-full sm:max-w-lg z-10 space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
@@ -114,21 +111,21 @@ export function RegisterPage() {
             to="/"
             className="inline-flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg p-1"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-xl tracking-tight text-white group-hover:text-brand-300 transition-colors">
+            <span className="font-bold text-xl tracking-tight text-slate-900 group-hover:text-brand-600 transition-colors">
               InternHub
             </span>
           </Link>
-          <h2 className="text-2xl font-bold tracking-tight text-white">Create your account</h2>
-          <p className="text-xs sm:text-sm text-slate-400">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">Create your account</h2>
+          <p className="text-xs sm:text-sm text-slate-600">
             Join thousands of students and hiring teams building the future of tech internships
           </p>
         </div>
 
         {/* Register Card */}
-        <Card className="border-slate-800 bg-slate-900/90 shadow-modal">
+        <Card className="border-slate-200 bg-white shadow-card">
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-5 pt-6">
               {error && (
@@ -142,15 +139,15 @@ export function RegisterPage() {
 
               {/* Role Selection Tabs */}
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-300 block">I am joining as a:</label>
+                <label className="text-xs font-semibold text-slate-700 block">I am joining as a:</label>
                 <div className="grid grid-cols-2 gap-2 sm:gap-3">
                   <button
                     type="button"
                     onClick={() => setFormData((p) => ({ ...p, role: 'STUDENT' }))}
-                    className={`flex items-center justify-center gap-1.5 sm:gap-2.5 p-2.5 sm:p-3 rounded-xl border text-xs sm:text-sm font-semibold transition-all ${
+                    className={`flex items-center justify-center gap-1.5 sm:gap-2.5 p-2.5 sm:p-3 rounded-xl border text-xs sm:text-sm font-semibold transition-all shadow-sm ${
                       formData.role === 'STUDENT'
-                        ? 'bg-brand-600 border-brand-500 text-white shadow-sm ring-1 ring-brand-500'
-                        : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                        ? 'bg-brand-600 border-brand-600 text-white ring-1 ring-brand-500'
+                        : 'bg-white border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                     }`}
                   >
                     <GraduationCap className="w-4 h-4 shrink-0" />
@@ -160,10 +157,10 @@ export function RegisterPage() {
                   <button
                     type="button"
                     onClick={() => setFormData((p) => ({ ...p, role: 'RECRUITER' }))}
-                    className={`flex items-center justify-center gap-1.5 sm:gap-2.5 p-2.5 sm:p-3 rounded-xl border text-xs sm:text-sm font-semibold transition-all ${
+                    className={`flex items-center justify-center gap-1.5 sm:gap-2.5 p-2.5 sm:p-3 rounded-xl border text-xs sm:text-sm font-semibold transition-all shadow-sm ${
                       formData.role === 'RECRUITER'
-                        ? 'bg-brand-600 border-brand-500 text-white shadow-sm ring-1 ring-brand-500'
-                        : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                        ? 'bg-brand-600 border-brand-600 text-white ring-1 ring-brand-500'
+                        : 'bg-white border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                     }`}
                   >
                     <Building2 className="w-4 h-4 shrink-0" />
@@ -218,21 +215,21 @@ export function RegisterPage() {
 
                 {/* Password Criteria List */}
                 {formData.password.length > 0 && (
-                  <div className="p-3 rounded-lg bg-slate-950/60 border border-slate-800 space-y-1.5 text-[11px] animate-fade-in">
-                    <span className="font-semibold text-slate-400 block mb-1">
+                  <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1.5 text-[11px] animate-fade-in">
+                    <span className="font-semibold text-slate-700 block mb-1">
                       Password Requirements:
                     </span>
                     {passwordCriteria.map((crit, idx) => (
                       <div
                         key={idx}
                         className={`flex items-center gap-1.5 ${
-                          crit.met ? 'text-emerald-400' : 'text-slate-500'
+                          crit.met ? 'text-emerald-700' : 'text-slate-400'
                         }`}
                       >
                         {crit.met ? (
-                          <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                          <CheckCircle2 className="w-3.5 h-3.5 shrink-0 text-emerald-600" />
                         ) : (
-                          <XCircle className="w-3.5 h-3.5 shrink-0" />
+                          <XCircle className="w-3.5 h-3.5 shrink-0 text-slate-400" />
                         )}
                         <span>{crit.label}</span>
                       </div>
@@ -263,11 +260,11 @@ export function RegisterPage() {
               </Button>
             </CardContent>
 
-            <CardFooter className="justify-center text-xs text-slate-400 border-t border-slate-800/80 bg-slate-950/40">
+            <CardFooter className="justify-center text-xs text-slate-600 border-t border-slate-100 bg-slate-50/70">
               <span>Already have an account?</span>
               <Link
                 to="/login"
-                className="font-semibold text-brand-400 hover:text-brand-300 ml-1.5 transition-colors"
+                className="font-semibold text-brand-600 hover:text-brand-700 ml-1.5 transition-colors"
               >
                 Sign In
               </Link>
@@ -279,7 +276,7 @@ export function RegisterPage() {
         <div className="text-center">
           <Link
             to="/"
-            className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-900 transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             Back to Home

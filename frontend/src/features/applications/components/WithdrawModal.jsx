@@ -19,8 +19,8 @@ export function WithdrawModal({ isOpen, onClose, onConfirm, isSubmitting }) {
       size="md"
     >
       <form onSubmit={handleSubmit} className="space-y-4 pt-2">
-        <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs flex items-start gap-2.5">
-          <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+        <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-start gap-2.5">
+          <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5 text-amber-600" />
           <span>
             Withdrawing will cancel your candidacy for this position. The hiring team will be notified of your decision.
           </span>
@@ -34,7 +34,7 @@ export function WithdrawModal({ isOpen, onClose, onConfirm, isSubmitting }) {
           onChange={(e) => setNote(e.target.value)}
         />
 
-        <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+        <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
           <Button variant="outline" type="button" onClick={onClose} disabled={isSubmitting}>
             Keep Application
           </Button>

@@ -25,10 +25,10 @@ export function Spinner({
   };
 
   const colorClasses = {
-    primary: 'text-brand-500',
+    primary: 'text-brand-600',
     white: 'text-white',
     current: 'text-current',
-    slate: 'text-slate-400',
+    slate: 'text-slate-500',
   };
 
   return (

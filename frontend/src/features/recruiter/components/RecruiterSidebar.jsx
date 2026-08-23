@@ -37,22 +37,22 @@ export function RecruiterSidebar({
 }) {
   return (
     <aside
-      className={`bg-slate-900 border-r border-slate-800 transition-all duration-300 flex flex-col shrink-0 ${
+      className={`bg-white border-r border-slate-200 transition-all duration-300 flex flex-col shrink-0 ${
         collapsed ? 'w-20' : 'w-64'
       } ${className}`}
     >
       {/* Portal Header Branding */}
-      <div className="p-4 border-b border-slate-800/80 flex items-center justify-between h-16">
+      <div className="p-4 border-b border-slate-100 flex items-center justify-between h-16">
         <Link to="/recruiter" className="flex items-center gap-2.5 overflow-hidden">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center shrink-0 shadow-sm">
+          <div className="w-8 h-8 rounded-xl bg-emerald-600 flex items-center justify-center shrink-0 shadow-xs">
             <Building2 className="w-4 h-4 text-white" />
           </div>
           {!collapsed && (
             <div className="truncate">
-              <span className="font-bold text-sm text-white tracking-tight block">
+              <span className="font-bold text-sm text-slate-900 tracking-tight block">
                 InternHub
               </span>
-              <span className="text-[10px] text-emerald-400 font-semibold uppercase tracking-wider block">
+              <span className="text-[10px] text-emerald-600 font-semibold uppercase tracking-wider block">
                 Recruiter Portal
               </span>
             </div>
@@ -63,7 +63,7 @@ export function RecruiterSidebar({
         {onToggleCollapse && (
           <button
             onClick={onToggleCollapse}
-            className="hidden lg:flex p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
+            className="hidden lg:flex p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
             title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
             {collapsed ? (
@@ -85,8 +85,8 @@ export function RecruiterSidebar({
               onClick={() => onSelectSection(section.id)}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all relative ${
                 isActive
-                  ? 'bg-brand-500 text-white shadow-sm shadow-brand-500/20'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                  ? 'bg-brand-600 text-white shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               } ${collapsed ? 'justify-center px-2' : ''}`}
               title={collapsed ? section.label : undefined}
             >
@@ -100,8 +100,8 @@ export function RecruiterSidebar({
                 <span
                   className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${
                     isActive
-                      ? 'bg-white text-brand-600'
-                      : 'bg-brand-500 text-white'
+                      ? 'bg-white text-brand-700'
+                      : 'bg-brand-600 text-white'
                   } ${collapsed ? 'absolute top-1 right-1 px-1 text-[9px]' : ''}`}
                 >
                   {unreadNotifsCount}
@@ -113,12 +113,12 @@ export function RecruiterSidebar({
       </div>
 
       {/* Bottom Public Discovery Link */}
-      <div className="p-3 border-t border-slate-800/80">
+      <div className="p-3 border-t border-slate-100">
         <Link
           to="/internships"
           target="_blank"
           rel="noopener noreferrer"
-          className={`flex items-center gap-2 p-2 rounded-xl text-xs text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-colors ${
+          className={`flex items-center gap-2 p-2 rounded-xl text-xs text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors ${
             collapsed ? 'justify-center' : ''
           }`}
           title={collapsed ? 'Public Discovery' : undefined}

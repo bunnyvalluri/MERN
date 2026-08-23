@@ -38,13 +38,13 @@ export function WeeklyApplicationsChart({ data = [] }) {
   const areaD = `${pathD} L ${points[points.length - 1].x},${chartHeight - paddingY} L ${points[0].x},${chartHeight - paddingY} Z`;
 
   return (
-    <Card className="border-slate-800 bg-slate-900/80 shadow-card">
-      <CardHeader className="pb-2 border-b border-slate-800 flex flex-row items-center justify-between">
+    <Card className="border-slate-200 bg-white shadow-sm">
+      <CardHeader className="pb-2 border-b border-slate-100 flex flex-row items-center justify-between">
         <div className="flex items-center gap-2">
-          <TrendingUp className="w-4 h-4 text-brand-400" />
-          <CardTitle className="text-sm font-bold text-white">Application Volume Trend (Past 6 Weeks)</CardTitle>
+          <TrendingUp className="w-4 h-4 text-brand-600" />
+          <CardTitle className="text-sm font-bold text-slate-900">Application Volume Trend (Past 6 Weeks)</CardTitle>
         </div>
-        <span className="text-[11px] font-mono text-slate-400">Weekly Trajectory</span>
+        <span className="text-[11px] font-mono text-slate-500">Weekly Trajectory</span>
       </CardHeader>
       <CardContent className="p-4 sm:p-6">
         <div className="relative w-full overflow-hidden">
@@ -53,13 +53,13 @@ export function WeeklyApplicationsChart({ data = [] }) {
             className="w-full h-48 sm:h-56 overflow-visible"
           >
             <defs>
-              <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.4" />
-                <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.0" />
+              <linearGradient id="areaGradientLight" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#2563EB" stopOpacity="0.2" />
+                <stop offset="100%" stopColor="#2563EB" stopOpacity="0.0" />
               </linearGradient>
-              <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor="#60A5FA" />
-                <stop offset="100%" stopColor="#818CF8" />
+              <linearGradient id="lineGradientLight" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#2563EB" />
+                <stop offset="100%" stopColor="#4F46E5" />
               </linearGradient>
             </defs>
 
@@ -74,14 +74,14 @@ export function WeeklyApplicationsChart({ data = [] }) {
                     y1={y}
                     x2={chartWidth - paddingX}
                     y2={y}
-                    stroke="#1E293B"
+                    stroke="#E2E8F0"
                     strokeDasharray="4 4"
                   />
                   <text
                     x={paddingX - 10}
                     y={y + 3}
                     textAnchor="end"
-                    className="text-[9px] fill-slate-500 font-mono"
+                    className="text-[9px] fill-slate-400 font-mono"
                   >
                     {val}
                   </text>
@@ -90,13 +90,13 @@ export function WeeklyApplicationsChart({ data = [] }) {
             })}
 
             {/* Filled Area */}
-            <path d={areaD} fill="url(#areaGradient)" />
+            <path d={areaD} fill="url(#areaGradientLight)" />
 
             {/* Connecting Line */}
             <path
               d={pathD}
               fill="none"
-              stroke="url(#lineGradient)"
+              stroke="url(#lineGradientLight)"
               strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -124,7 +124,7 @@ export function WeeklyApplicationsChart({ data = [] }) {
                     cx={pt.x}
                     cy={pt.y}
                     r={isHovered ? 4.5 : 3}
-                    className="fill-white stroke-brand-500 stroke-2 transition-all shadow-md"
+                    className="fill-white stroke-brand-600 stroke-2 transition-all shadow-sm"
                   />
 
                   {/* X-axis Week Label */}
@@ -133,7 +133,7 @@ export function WeeklyApplicationsChart({ data = [] }) {
                     y={chartHeight - 6}
                     textAnchor="middle"
                     className={`text-[10px] font-mono transition-colors ${
-                      isHovered ? 'fill-white font-bold' : 'fill-slate-400'
+                      isHovered ? 'fill-slate-900 font-bold' : 'fill-slate-500'
                     }`}
                   >
                     {pt.label || pt.week}
@@ -146,13 +146,13 @@ export function WeeklyApplicationsChart({ data = [] }) {
           {/* Interactive Tooltip Card */}
           {hoveredIdx !== null && points[hoveredIdx] && (
             <div
-              className="absolute top-2 left-1/2 -translate-x-1/2 bg-slate-950/95 border border-brand-500/40 p-2.5 rounded-xl shadow-lg pointer-events-none text-center space-y-0.5 z-10 backdrop-blur-md"
+              className="absolute top-2 left-1/2 -translate-x-1/2 bg-white border border-slate-200 p-2.5 rounded-xl shadow-lg pointer-events-none text-center space-y-0.5 z-10"
             >
-              <p className="text-[11px] font-semibold text-slate-400">
+              <p className="text-[11px] font-semibold text-slate-500">
                 {points[hoveredIdx].label} ({points[hoveredIdx].week})
               </p>
-              <p className="text-sm font-bold text-white">
-                <span className="text-brand-400 font-mono">{points[hoveredIdx].count}</span> application(s)
+              <p className="text-sm font-bold text-slate-900">
+                <span className="text-brand-600 font-mono">{points[hoveredIdx].count}</span> application(s)
               </p>
             </div>
           )}
@@ -168,11 +168,11 @@ export function WeeklyApplicationsChart({ data = [] }) {
 export function InternshipBreakdownChart({ data = [] }) {
   if (!data || data.length === 0) {
     return (
-      <Card className="border-slate-800 bg-slate-900/80 shadow-card">
-        <CardHeader className="pb-2 border-b border-slate-800">
+      <Card className="border-slate-200 bg-white shadow-sm">
+        <CardHeader className="pb-2 border-b border-slate-100">
           <div className="flex items-center gap-2">
-            <BarChart3 className="w-4 h-4 text-emerald-400" />
-            <CardTitle className="text-sm font-bold text-white">Applications by Internship</CardTitle>
+            <BarChart3 className="w-4 h-4 text-emerald-600" />
+            <CardTitle className="text-sm font-bold text-slate-900">Applications by Internship</CardTitle>
           </div>
         </CardHeader>
         <CardContent className="p-6 text-center text-xs text-slate-500">
@@ -185,13 +185,13 @@ export function InternshipBreakdownChart({ data = [] }) {
   const maxCount = Math.max(...data.map((d) => d.count), 1);
 
   return (
-    <Card className="border-slate-800 bg-slate-900/80 shadow-card">
-      <CardHeader className="pb-2 border-b border-slate-800 flex flex-row items-center justify-between">
+    <Card className="border-slate-200 bg-white shadow-sm">
+      <CardHeader className="pb-2 border-b border-slate-100 flex flex-row items-center justify-between">
         <div className="flex items-center gap-2">
-          <BarChart3 className="w-4 h-4 text-emerald-400" />
-          <CardTitle className="text-sm font-bold text-white">Top Roles by Candidate Volume</CardTitle>
+          <BarChart3 className="w-4 h-4 text-emerald-600" />
+          <CardTitle className="text-sm font-bold text-slate-900">Top Roles by Candidate Volume</CardTitle>
         </div>
-        <span className="text-[11px] font-mono text-slate-400">Top Postings</span>
+        <span className="text-[11px] font-mono text-slate-500">Top Postings</span>
       </CardHeader>
       <CardContent className="p-5 space-y-4">
         {data.map((item, idx) => {
@@ -199,21 +199,21 @@ export function InternshipBreakdownChart({ data = [] }) {
           return (
             <div key={item.internshipId || idx} className="space-y-1.5">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-semibold text-slate-200 truncate max-w-[200px] sm:max-w-xs flex items-center gap-1.5">
-                  <span className="w-4 h-4 rounded bg-slate-800 text-[10px] text-slate-400 flex items-center justify-center font-mono">
+                <span className="font-semibold text-slate-800 truncate max-w-[200px] sm:max-w-xs flex items-center gap-1.5">
+                  <span className="w-4 h-4 rounded bg-slate-100 text-[10px] text-slate-600 flex items-center justify-center font-mono">
                     {idx + 1}
                   </span>
                   {item.title}
                 </span>
-                <span className="font-bold text-white font-mono shrink-0">
+                <span className="font-bold text-slate-900 font-mono shrink-0">
                   {item.count} <span className="text-slate-500 font-normal text-[11px]">applicants</span>
                 </span>
               </div>
 
               {/* Animated Progress Track */}
-              <div className="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800">
+              <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden border border-slate-200">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-700 shadow-sm"
+                  className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-700 shadow-xs"
                   style={{ width: `${Math.max(5, pct)}%` }}
                 />
               </div>
@@ -231,11 +231,11 @@ export function InternshipBreakdownChart({ data = [] }) {
 export function StatusDistributionChart({ data = [] }) {
   if (!data || data.length === 0) {
     return (
-      <Card className="border-slate-800 bg-slate-900/80 shadow-card">
-        <CardHeader className="pb-2 border-b border-slate-800">
+      <Card className="border-slate-200 bg-white shadow-sm">
+        <CardHeader className="pb-2 border-b border-slate-100">
           <div className="flex items-center gap-2">
-            <PieChart className="w-4 h-4 text-purple-400" />
-            <CardTitle className="text-sm font-bold text-white">Status Distribution</CardTitle>
+            <PieChart className="w-4 h-4 text-purple-600" />
+            <CardTitle className="text-sm font-bold text-slate-900">Status Distribution</CardTitle>
           </div>
         </CardHeader>
         <CardContent className="p-6 text-center text-xs text-slate-500">
@@ -248,17 +248,17 @@ export function StatusDistributionChart({ data = [] }) {
   const total = data.reduce((sum, d) => sum + (d.count || 0), 0);
 
   return (
-    <Card className="border-slate-800 bg-slate-900/80 shadow-card">
-      <CardHeader className="pb-2 border-b border-slate-800 flex flex-row items-center justify-between">
+    <Card className="border-slate-200 bg-white shadow-sm">
+      <CardHeader className="pb-2 border-b border-slate-100 flex flex-row items-center justify-between">
         <div className="flex items-center gap-2">
-          <PieChart className="w-4 h-4 text-purple-400" />
-          <CardTitle className="text-sm font-bold text-white">Application Pipeline Breakdown</CardTitle>
+          <PieChart className="w-4 h-4 text-purple-600" />
+          <CardTitle className="text-sm font-bold text-slate-900">Application Pipeline Breakdown</CardTitle>
         </div>
-        <span className="text-[11px] font-mono text-slate-400">{total} Total</span>
+        <span className="text-[11px] font-mono text-slate-500">{total} Total</span>
       </CardHeader>
       <CardContent className="p-5 space-y-5">
         {/* Multi-segment Combined Bar */}
-        <div className="w-full h-3.5 rounded-full overflow-hidden bg-slate-950 border border-slate-800 flex">
+        <div className="w-full h-3.5 rounded-full overflow-hidden bg-slate-100 border border-slate-200 flex">
           {data.map((seg, i) => {
             if (seg.count === 0 || total === 0) return null;
             const widthPct = (seg.count / total) * 100;
@@ -269,7 +269,7 @@ export function StatusDistributionChart({ data = [] }) {
                   width: `${widthPct}%`,
                   backgroundColor: seg.color || '#3B82F6',
                 }}
-                className="h-full transition-all duration-500 hover:brightness-125"
+                className="h-full transition-all duration-500 hover:brightness-110"
                 title={`${seg.label}: ${seg.count} (${widthPct.toFixed(1)}%)`}
               />
             );
@@ -283,17 +283,17 @@ export function StatusDistributionChart({ data = [] }) {
             return (
               <div
                 key={idx}
-                className="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800/80 space-y-0.5"
+                className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 space-y-0.5"
               >
                 <div className="flex items-center gap-2 text-xs">
                   <span
                     className="w-2.5 h-2.5 rounded-full shrink-0"
                     style={{ backgroundColor: item.color || '#3B82F6' }}
                   />
-                  <span className="text-slate-300 font-medium truncate">{item.label}</span>
+                  <span className="text-slate-700 font-medium truncate">{item.label}</span>
                 </div>
                 <div className="flex items-baseline justify-between pt-0.5">
-                  <span className="text-base font-bold text-white font-mono">{item.count}</span>
+                  <span className="text-base font-bold text-slate-900 font-mono">{item.count}</span>
                   <span className="text-[10px] text-slate-500 font-mono">{pct}%</span>
                 </div>
               </div>

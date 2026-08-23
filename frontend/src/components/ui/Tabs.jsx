@@ -38,8 +38,8 @@ export function TabList({ className = '', children, ...props }) {
   const { variant } = useContext(TabsContext);
 
   const variantClasses = {
-    line: 'border-b border-slate-800 gap-6',
-    pills: 'bg-slate-900 p-1 rounded-xl border border-slate-800/80 gap-1.5 inline-flex',
+    line: 'border-b border-slate-200 gap-6',
+    pills: 'bg-slate-100 p-1 rounded-xl border border-slate-200 gap-1.5 inline-flex',
   };
 
   return (
@@ -68,12 +68,12 @@ export function TabTrigger({
   const isActive = currentTab === value;
 
   const lineStyles = isActive
-    ? 'border-b-2 border-brand-500 text-brand-400 font-semibold pb-3 pt-1 -mb-[1px]'
-    : 'border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-medium pb-3 pt-1 -mb-[1px]';
+    ? 'border-b-2 border-brand-600 text-brand-600 font-semibold pb-3 pt-1 -mb-[1px]'
+    : 'border-b-2 border-transparent text-slate-500 hover:text-slate-900 font-medium pb-3 pt-1 -mb-[1px]';
 
   const pillStyles = isActive
-    ? 'bg-brand-600 text-white font-semibold rounded-lg shadow-sm'
-    : 'text-slate-400 hover:text-slate-200 font-medium hover:bg-slate-800/60 rounded-lg';
+    ? 'bg-white text-slate-900 font-semibold rounded-lg shadow-sm border border-slate-200/50'
+    : 'text-slate-600 hover:text-slate-900 font-medium hover:bg-slate-200/60 rounded-lg';
 
   return (
     <button
@@ -94,9 +94,9 @@ export function TabTrigger({
           className={`text-[11px] px-1.5 py-0.2 rounded-full font-mono font-medium ${
             isActive
               ? variant === 'pills'
-                ? 'bg-white/20 text-white'
-                : 'bg-brand-500/20 text-brand-300'
-              : 'bg-slate-800 text-slate-400'
+                ? 'bg-brand-50 text-brand-700'
+                : 'bg-brand-50 text-brand-700'
+              : 'bg-slate-200 text-slate-600'
           }`}
         >
           {badge}

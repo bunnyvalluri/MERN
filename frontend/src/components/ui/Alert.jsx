@@ -27,27 +27,27 @@ export function Alert({
 
   const variantStyles = {
     info: {
-      container: 'bg-info-500/10 border-info-500/30 text-info-200',
-      iconColor: 'text-info-400',
-      titleColor: 'text-info-100',
+      container: 'bg-sky-50 border-sky-200 text-sky-900',
+      iconColor: 'text-sky-600',
+      titleColor: 'text-sky-950',
       defaultIcon: <Info className="w-5 h-5" />,
     },
     success: {
-      container: 'bg-success-500/10 border-success-500/30 text-success-200',
-      iconColor: 'text-success-400',
-      titleColor: 'text-success-100',
+      container: 'bg-emerald-50 border-emerald-200 text-emerald-900',
+      iconColor: 'text-emerald-600',
+      titleColor: 'text-emerald-950',
       defaultIcon: <CheckCircle2 className="w-5 h-5" />,
     },
     warning: {
-      container: 'bg-warning-500/10 border-warning-500/30 text-warning-200',
-      iconColor: 'text-warning-400',
-      titleColor: 'text-warning-100',
+      container: 'bg-amber-50 border-amber-200 text-amber-900',
+      iconColor: 'text-amber-600',
+      titleColor: 'text-amber-950',
       defaultIcon: <AlertTriangle className="w-5 h-5" />,
     },
     danger: {
-      container: 'bg-danger-500/10 border-danger-500/30 text-danger-200',
-      iconColor: 'text-danger-400',
-      titleColor: 'text-danger-100',
+      container: 'bg-rose-50 border-rose-200 text-rose-900',
+      iconColor: 'text-rose-600',
+      titleColor: 'text-rose-950',
       defaultIcon: <AlertCircle className="w-5 h-5" />,
     },
   };

@@ -57,18 +57,18 @@ export function Footer() {
   };
 
   return (
-    <footer className="border-t border-slate-800 bg-slate-950 text-slate-400 text-xs sm:text-sm">
+    <footer className="border-t border-slate-200 bg-white text-slate-600 text-xs sm:text-sm">
       {/* Top Newsletter & Banner */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 border-b border-slate-800/80">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 border-b border-slate-100">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           <div className="lg:col-span-6 space-y-2">
             <Badge variant="primary" size="sm" className="mb-2">
               Weekly Internship Dispatch
             </Badge>
-            <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
               Get top internships delivered to your inbox
             </h3>
-            <p className="text-slate-400 text-sm max-w-md">
+            <p className="text-slate-600 text-sm max-w-md">
               Zero spam. Only hand-curated engineering, product, and design roles from verified
               companies.
             </p>
@@ -105,12 +105,12 @@ export function Footer() {
           {/* Brand Info */}
           <div className="sm:col-span-2 space-y-4">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center shadow-sm">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center shadow-sm">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
-              <span className="font-bold text-base tracking-tight text-white">InternHub</span>
+              <span className="font-bold text-base tracking-tight text-slate-900">InternHub</span>
             </div>
-            <p className="text-xs sm:text-sm text-slate-400 max-w-sm leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-600 max-w-sm leading-relaxed">
               InternHub is the next-generation internship discovery, tracking, and recruiter management
               platform built for students and high-growth tech engineering teams.
             </p>
@@ -125,7 +125,7 @@ export function Footer() {
           {/* Links Groups */}
           {Object.entries(footerLinks).map(([group, links]) => (
             <div key={group} className="space-y-3">
-              <h4 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
+              <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wider">
                 {group}
               </h4>
               <ul className="space-y-2 text-xs">
@@ -133,7 +133,7 @@ export function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-slate-400 hover:text-slate-200 transition-colors"
+                      className="text-slate-600 hover:text-slate-900 transition-colors"
                     >
                       {link.label}
                     </a>
@@ -146,20 +146,20 @@ export function Footer() {
       </div>
 
       {/* Bottom Bar & Copyright */}
-      <div className="border-t border-slate-800/80 bg-slate-950/80 py-6">
+      <div className="border-t border-slate-100 bg-slate-50/80 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <div>
             &copy; {new Date().getFullYear()} InternHub Platform, Inc. All rights reserved.
           </div>
 
           {/* Social Icons */}
-          <div className="flex items-center gap-4 text-slate-400">
+          <div className="flex items-center gap-4 text-slate-500">
             <a
               href="https://github.com/bunnyvalluri/MERN"
               target="_blank"
               rel="noreferrer"
               aria-label="InternHub GitHub Repository"
-              className="hover:text-white transition-colors p-1"
+              className="hover:text-slate-900 transition-colors p-1"
             >
               <Github className="w-4 h-4" />
             </a>
@@ -168,7 +168,7 @@ export function Footer() {
               target="_blank"
               rel="noreferrer"
               aria-label="InternHub Twitter"
-              className="hover:text-white transition-colors p-1"
+              className="hover:text-slate-900 transition-colors p-1"
             >
               <Twitter className="w-4 h-4" />
             </a>
@@ -177,7 +177,7 @@ export function Footer() {
               target="_blank"
               rel="noreferrer"
               aria-label="InternHub LinkedIn"
-              className="hover:text-white transition-colors p-1"
+              className="hover:text-slate-900 transition-colors p-1"
             >
               <Linkedin className="w-4 h-4" />
             </a>

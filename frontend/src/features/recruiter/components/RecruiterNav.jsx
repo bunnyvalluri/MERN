@@ -53,17 +53,17 @@ export function RecruiterNav() {
   ];
 
   return (
-    <div className="bg-slate-900 border-b border-slate-800 sticky top-0 z-30">
+    <div className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
       {/* Top Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 border-b border-slate-800/80">
+        <div className="flex items-center justify-between h-16 border-b border-slate-100">
           {/* Logo & Portal Badge */}
           <div className="flex items-center gap-3">
             <Link to="/recruiter/dashboard" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center shadow-sm">
+              <div className="w-8 h-8 rounded-xl bg-emerald-600 flex items-center justify-center shadow-xs">
                 <Building2 className="w-4 h-4 text-white" />
               </div>
-              <span className="font-bold text-base tracking-tight text-white">
+              <span className="font-bold text-base tracking-tight text-slate-900">
                 InternHub
               </span>
             </Link>
@@ -78,18 +78,18 @@ export function RecruiterNav() {
               to="/internships"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-1 text-xs text-slate-400 hover:text-slate-200 transition-colors"
+              className="hidden sm:inline-flex items-center gap-1 text-xs text-slate-500 hover:text-slate-800 transition-colors"
             >
               <span>Public Discovery</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </Link>
 
-            <div className="flex items-center gap-3 pl-4 border-l border-slate-800">
+            <div className="flex items-center gap-3 pl-4 border-l border-slate-200">
               <div className="text-right hidden sm:block">
-                <p className="text-xs font-semibold text-white truncate max-w-[140px]">
+                <p className="text-xs font-semibold text-slate-900 truncate max-w-[140px]">
                   {user?.name || 'Recruiter'}
                 </p>
-                <p className="text-[11px] text-slate-400 font-mono">
+                <p className="text-[11px] text-slate-500 font-mono">
                   {user?.email || 'recruiter@company.com'}
                 </p>
               </div>
@@ -98,7 +98,7 @@ export function RecruiterNav() {
                 variant="ghost"
                 size="sm"
                 onClick={handleLogout}
-                className="text-slate-400 hover:text-red-400"
+                className="text-slate-500 hover:text-red-600 hover:bg-red-50"
                 aria-label="Sign out"
               >
                 <LogOut className="w-4 h-4" />
@@ -116,8 +116,8 @@ export function RecruiterNav() {
               className={({ isActive }) =>
                 `inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
                   isActive
-                    ? 'bg-brand-500/10 text-brand-300 border border-brand-500/30'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                    ? 'bg-brand-50 text-brand-700 border border-brand-200'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`
               }
             >

@@ -6,7 +6,7 @@ import { ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
  */
 export function Table({ className = '', containerClassName = '', children, ...props }) {
   return (
-    <div className={`w-full overflow-x-auto rounded-xl border border-slate-800 bg-slate-900/60 ${containerClassName}`}>
+    <div className={`w-full overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm ${containerClassName}`}>
       <table className={`w-full text-left text-xs sm:text-sm border-collapse ${className}`} {...props}>
         {children}
       </table>
@@ -16,7 +16,7 @@ export function Table({ className = '', containerClassName = '', children, ...pr
 
 export function TableHeader({ className = '', children, ...props }) {
   return (
-    <thead className={`bg-slate-900/90 border-b border-slate-800 text-slate-400 select-none ${className}`} {...props}>
+    <thead className={`bg-slate-50 border-b border-slate-200 text-slate-700 select-none ${className}`} {...props}>
       {children}
     </thead>
   );
@@ -24,7 +24,7 @@ export function TableHeader({ className = '', children, ...props }) {
 
 export function TableBody({ className = '', children, ...props }) {
   return (
-    <tbody className={`divide-y divide-slate-800/60 ${className}`} {...props}>
+    <tbody className={`divide-y divide-slate-100 ${className}`} {...props}>
       {children}
     </tbody>
   );
@@ -32,7 +32,7 @@ export function TableBody({ className = '', children, ...props }) {
 
 export function TableFooter({ className = '', children, ...props }) {
   return (
-    <tfoot className={`bg-slate-900/90 border-t border-slate-800 font-medium text-slate-300 ${className}`} {...props}>
+    <tfoot className={`bg-slate-50 border-t border-slate-200 font-medium text-slate-700 ${className}`} {...props}>
       {children}
     </tfoot>
   );
@@ -49,9 +49,9 @@ export function TableRow({
     <tr
       className={`transition-colors ${
         selected
-          ? 'bg-brand-500/10'
+          ? 'bg-brand-50'
           : hoverable
-          ? 'hover:bg-slate-800/40'
+          ? 'hover:bg-slate-50/80'
           : ''
       } ${className}`}
       {...props}
@@ -79,7 +79,7 @@ export function TableHead({
   return (
     <th
       scope="col"
-      className={`py-3.5 px-4 font-semibold text-slate-300 text-xs tracking-wider uppercase ${
+      className={`py-3.5 px-4 font-semibold text-slate-700 text-xs tracking-wider uppercase ${
         alignClasses[align] || alignClasses.left
       } ${className}`}
       {...props}
@@ -88,14 +88,14 @@ export function TableHead({
         <button
           type="button"
           onClick={onSort}
-          className="inline-flex items-center gap-1.5 hover:text-slate-100 transition-colors uppercase tracking-wider font-semibold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-500 rounded"
+          className="inline-flex items-center gap-1.5 hover:text-slate-900 transition-colors uppercase tracking-wider font-semibold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-500 rounded"
         >
           <span>{children}</span>
-          <span className="text-slate-500">
+          <span className="text-slate-400">
             {sortDirection === 'asc' ? (
-              <ArrowUp className="w-3.5 h-3.5 text-brand-400" />
+              <ArrowUp className="w-3.5 h-3.5 text-brand-600" />
             ) : sortDirection === 'desc' ? (
-              <ArrowDown className="w-3.5 h-3.5 text-brand-400" />
+              <ArrowDown className="w-3.5 h-3.5 text-brand-600" />
             ) : (
               <ArrowUpDown className="w-3.5 h-3.5" />
             )}
@@ -117,7 +117,7 @@ export function TableCell({ align = 'left', className = '', children, ...props }
 
   return (
     <td
-      className={`py-3.5 px-4 text-slate-200 ${
+      className={`py-3.5 px-4 text-slate-700 ${
         alignClasses[align] || alignClasses.left
       } ${className}`}
       {...props}

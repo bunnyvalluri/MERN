@@ -15,14 +15,14 @@ export const Card = forwardRef(function Card(
   ref
 ) {
   const variantClasses = {
-    default: 'bg-slate-900/90 border-slate-800/90 shadow-card text-slate-100',
-    subtle: 'bg-slate-900/40 border-slate-800/50 text-slate-100',
-    outline: 'bg-transparent border-slate-800 text-slate-100',
-    glass: 'bg-slate-900/70 backdrop-blur-md border-slate-700/50 shadow-dropdown text-slate-100',
+    default: 'bg-white border-slate-200 shadow-card text-slate-800',
+    subtle: 'bg-slate-50/70 border-slate-200/80 text-slate-800',
+    outline: 'bg-transparent border-slate-200 text-slate-800',
+    glass: 'bg-white/80 backdrop-blur-md border-slate-200 shadow-dropdown text-slate-800',
   };
 
   const hoverClasses = hoverable
-    ? 'hover:border-slate-700 hover:shadow-card-hover transition-all duration-200'
+    ? 'hover:border-slate-300 hover:shadow-card-hover transition-all duration-200'
     : '';
 
   const clickClasses = clickable
@@ -42,7 +42,7 @@ export const Card = forwardRef(function Card(
 
 export function CardHeader({ className = '', children, ...props }) {
   return (
-    <div className={`p-5 sm:p-6 border-b border-slate-800/80 ${className}`} {...props}>
+    <div className={`p-5 sm:p-6 border-b border-slate-100 ${className}`} {...props}>
       {children}
     </div>
   );
@@ -50,7 +50,7 @@ export function CardHeader({ className = '', children, ...props }) {
 
 export function CardTitle({ className = '', children, as: Component = 'h3', ...props }) {
   return (
-    <Component className={`text-base sm:text-lg font-semibold text-slate-100 tracking-tight ${className}`} {...props}>
+    <Component className={`text-base sm:text-lg font-semibold text-slate-900 tracking-tight ${className}`} {...props}>
       {children}
     </Component>
   );
@@ -58,7 +58,7 @@ export function CardTitle({ className = '', children, as: Component = 'h3', ...p
 
 export function CardDescription({ className = '', children, ...props }) {
   return (
-    <p className={`text-xs sm:text-sm text-slate-400 mt-1 ${className}`} {...props}>
+    <p className={`text-xs sm:text-sm text-slate-500 mt-1 ${className}`} {...props}>
       {children}
     </p>
   );
@@ -75,7 +75,7 @@ export function CardContent({ className = '', children, ...props }) {
 export function CardFooter({ className = '', children, ...props }) {
   return (
     <div
-      className={`p-5 sm:p-6 border-t border-slate-800/80 bg-slate-950/30 flex items-center rounded-b-xl ${className}`}
+      className={`p-5 sm:p-6 border-t border-slate-100 bg-slate-50/50 flex items-center rounded-b-xl ${className}`}
       {...props}
     >
       {children}

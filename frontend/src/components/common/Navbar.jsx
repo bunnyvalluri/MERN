@@ -58,7 +58,7 @@ export function Navbar() {
     <header
       className={`sticky top-0 z-40 w-full transition-all duration-200 ${
         scrolled
-          ? 'bg-slate-950/85 backdrop-blur-md border-b border-slate-800/80 shadow-card'
+          ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm'
           : 'bg-transparent border-b border-transparent'
       }`}
     >
@@ -68,11 +68,11 @@ export function Navbar() {
           to="/"
           className="flex items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg p-1 shrink-0"
         >
-          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
             <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </div>
           <div className="flex items-center gap-1.5 sm:gap-2">
-            <span className="font-bold text-base sm:text-lg tracking-tight text-white group-hover:text-brand-300 transition-colors">
+            <span className="font-bold text-base sm:text-lg tracking-tight text-slate-900 group-hover:text-brand-600 transition-colors">
               InternHub
             </span>
             <Badge variant="primary" size="sm" className="hidden sm:inline-flex">
@@ -88,7 +88,7 @@ export function Navbar() {
               <Link
                 key={link.label}
                 to={link.to}
-                className="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-900/60 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+                className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
               >
                 {link.label}
               </Link>
@@ -96,7 +96,7 @@ export function Navbar() {
               <a
                 key={link.label}
                 href={link.href}
-                className="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-900/60 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+                className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
               >
                 {link.label}
               </a>
@@ -104,7 +104,7 @@ export function Navbar() {
           )}
           <Link
             to="/design-system"
-            className="px-3 py-2 text-xs font-mono text-slate-400 hover:text-brand-300 hover:bg-slate-900/60 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+            className="px-3 py-2 text-xs font-mono text-slate-500 hover:text-brand-600 hover:bg-slate-100 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
           >
             Design System
           </Link>
@@ -118,18 +118,18 @@ export function Navbar() {
                 <Button
                   variant="secondary"
                   size="sm"
-                  leftIcon={<LayoutDashboard className="w-4 h-4 text-brand-400" />}
+                  leftIcon={<LayoutDashboard className="w-4 h-4 text-brand-600" />}
                 >
                   Dashboard
                 </Button>
               </Link>
-              <div className="flex items-center gap-2 pl-2 border-l border-slate-800">
+              <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
                 <Avatar name={user?.name || 'User'} size="sm" />
                 <button
                   type="button"
                   onClick={() => dispatch(logoutUser())}
                   aria-label="Sign out"
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-danger-400 hover:bg-slate-800 transition-colors"
+                  className="p-1.5 rounded-lg text-slate-500 hover:text-danger-600 hover:bg-slate-100 transition-colors"
                 >
                   <LogOut className="w-4 h-4" />
                 </button>
@@ -174,7 +174,7 @@ export function Navbar() {
             onClick={() => setMobileMenuOpen((prev) => !prev)}
             aria-expanded={mobileMenuOpen}
             aria-label="Toggle navigation menu"
-            className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+            className="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -183,7 +183,7 @@ export function Navbar() {
 
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-slate-800 bg-slate-950/95 backdrop-blur-lg animate-slide-down px-4 py-6 space-y-4 shadow-modal">
+        <div className="md:hidden border-b border-slate-200 bg-white/95 backdrop-blur-lg animate-slide-down px-4 py-6 space-y-4 shadow-modal">
           <nav className="space-y-1.5" aria-label="Mobile Navigation">
             {navLinks.map((link) =>
               link.to ? (
@@ -191,9 +191,9 @@ export function Navbar() {
                   key={link.label}
                   to={link.to}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-200 hover:bg-slate-900 rounded-lg transition-colors"
+                  className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
                 >
-                  <span className="text-slate-400">{link.icon}</span>
+                  <span className="text-slate-500">{link.icon}</span>
                   {link.label}
                 </Link>
               ) : (
@@ -201,9 +201,9 @@ export function Navbar() {
                   key={link.label}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-200 hover:bg-slate-900 rounded-lg transition-colors"
+                  className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
                 >
-                  <span className="text-slate-400">{link.icon}</span>
+                  <span className="text-slate-500">{link.icon}</span>
                   {link.label}
                 </a>
               )
@@ -211,14 +211,14 @@ export function Navbar() {
             <Link
               to="/design-system"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-3 py-2.5 text-xs font-mono text-brand-300 hover:bg-slate-900 rounded-lg transition-colors"
+              className="flex items-center gap-3 px-3 py-2.5 text-xs font-mono text-brand-600 hover:bg-slate-100 rounded-lg transition-colors"
             >
-              <Sparkles className="w-4 h-4 text-brand-400" />
+              <Sparkles className="w-4 h-4 text-brand-600" />
               Design System Showcase
             </Link>
           </nav>
 
-          <div className="pt-4 border-t border-slate-800 space-y-2.5">
+          <div className="pt-4 border-t border-slate-200 space-y-2.5">
             {isAuthenticated ? (
               <>
                 <Link

@@ -34,22 +34,22 @@ export const Button = forwardRef(function Button(
   ref
 ) {
   const baseClasses =
-    'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-150 select-none disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900';
+    'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-150 select-none disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white';
 
   const variantClasses = {
     primary:
-      'bg-brand-600 hover:bg-brand-500 text-white shadow-sm hover:shadow focus-visible:ring-brand-500 border border-brand-500/30',
+      'bg-brand-600 hover:bg-brand-700 text-white shadow-sm hover:shadow focus-visible:ring-brand-500 border border-transparent',
     secondary:
-      'bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700/80 shadow-sm focus-visible:ring-slate-400',
+      'bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 border border-slate-200 shadow-sm focus-visible:ring-slate-400',
     outline:
-      'bg-transparent hover:bg-slate-800/80 text-slate-200 border border-slate-700 focus-visible:ring-brand-500',
+      'bg-transparent hover:bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200 focus-visible:ring-brand-500',
     ghost:
-      'bg-transparent hover:bg-slate-800 text-slate-300 hover:text-slate-100 border border-transparent focus-visible:ring-slate-400',
+      'bg-transparent hover:bg-slate-100 text-slate-600 hover:text-slate-900 border border-transparent focus-visible:ring-slate-400',
     danger:
-      'bg-danger-600 hover:bg-danger-500 text-white shadow-sm hover:shadow focus-visible:ring-danger-500 border border-danger-500/30',
+      'bg-danger-600 hover:bg-danger-700 text-white shadow-sm hover:shadow focus-visible:ring-danger-500 border border-transparent',
     success:
-      'bg-success-600 hover:bg-success-500 text-white shadow-sm hover:shadow focus-visible:ring-success-500 border border-success-500/30',
-    link: 'bg-transparent text-brand-400 hover:text-brand-300 underline-offset-4 hover:underline p-0 h-auto font-normal focus-visible:ring-brand-400',
+      'bg-success-600 hover:bg-success-700 text-white shadow-sm hover:shadow focus-visible:ring-success-500 border border-transparent',
+    link: 'bg-transparent text-brand-600 hover:text-brand-700 underline-offset-4 hover:underline p-0 h-auto font-normal focus-visible:ring-brand-500',
   };
 
   const sizeClasses = {

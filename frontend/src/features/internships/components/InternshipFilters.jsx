@@ -53,11 +53,11 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
     : [];
 
   return (
-    <aside className="w-full space-y-6 bg-slate-900/90 p-5 rounded-2xl border border-slate-800 shadow-card">
-      <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+    <aside className="w-full space-y-6 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex items-center justify-between pb-3 border-b border-slate-100">
         <div className="flex items-center gap-2">
-          <Filter className="w-4 h-4 text-brand-400" />
-          <h3 className="text-sm font-bold text-white tracking-tight">Filter Opportunities</h3>
+          <Filter className="w-4 h-4 text-brand-600" />
+          <h3 className="text-sm font-bold text-slate-900 tracking-tight">Filter Opportunities</h3>
         </div>
         <div className="flex items-center gap-1.5">
           <Button
@@ -65,7 +65,7 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
             size="xs"
             leftIcon={<RotateCcw className="w-3.5 h-3.5" />}
             onClick={onReset}
-            className="text-slate-400 hover:text-slate-200"
+            className="text-slate-500 hover:text-slate-900"
           >
             Reset
           </Button>
@@ -73,7 +73,7 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
             <button
               type="button"
               onClick={onClose}
-              className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
               aria-label="Close filters"
             >
               ✕
@@ -84,7 +84,7 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
 
       {/* Keyword Search */}
       <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-slate-300">Keyword / Role</label>
+        <label className="text-xs font-semibold text-slate-700">Keyword / Role</label>
         <Input
           placeholder="e.g. Software Engineer, React"
           leftIcon={<Search className="w-4 h-4" />}
@@ -95,7 +95,7 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
 
       {/* Location */}
       <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-slate-300">Location</label>
+        <label className="text-xs font-semibold text-slate-700">Location</label>
         <Input
           placeholder="City, state, or country"
           leftIcon={<MapPin className="w-4 h-4" />}
@@ -106,8 +106,8 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
 
       {/* Workplace Type (Remote/Hybrid/Onsite) */}
       <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-          <Laptop className="w-3.5 h-3.5 text-brand-400" />
+        <label className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+          <Laptop className="w-3.5 h-3.5 text-brand-600" />
           Workplace Type
         </label>
         <div className="grid grid-cols-2 gap-1.5">
@@ -123,10 +123,10 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
                 key={item.id}
                 type="button"
                 onClick={() => handleInputChange('remote', item.id)}
-                className={`px-3 py-2 rounded-lg text-xs font-medium border transition-colors text-center ${
+                className={`px-3 py-2 rounded-lg text-xs font-medium border transition-colors text-center shadow-sm ${
                   isSelected
-                    ? 'bg-brand-600 border-brand-500 text-white font-semibold shadow-sm'
-                    : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                    ? 'bg-brand-600 border-brand-600 text-white font-semibold'
+                    : 'bg-white border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`}
               >
                 {item.label}
@@ -138,7 +138,7 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
 
       {/* Employment Type */}
       <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-slate-300">Commitment</label>
+        <label className="text-xs font-semibold text-slate-700">Commitment</label>
         <Select
           value={filters.type || 'ALL'}
           onChange={(e) => handleInputChange('type', e.target.value)}
@@ -152,7 +152,7 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
 
       {/* Minimum Monthly Stipend */}
       <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-slate-300">Minimum Monthly Stipend ($)</label>
+        <label className="text-xs font-semibold text-slate-700">Minimum Monthly Stipend ($)</label>
         <Input
           type="number"
           placeholder="e.g. 1000"
@@ -165,7 +165,7 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
 
       {/* Date Posted */}
       <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-slate-300">Date Posted</label>
+        <label className="text-xs font-semibold text-slate-700">Date Posted</label>
         <Select
           value={filters.datePosted || 'all'}
           onChange={(e) => handleInputChange('datePosted', e.target.value)}
@@ -179,8 +179,8 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
       </div>
 
       {/* Popular Skills Chips */}
-      <div className="space-y-2 pt-2 border-t border-slate-800">
-        <label className="text-xs font-semibold text-slate-300 block">Skills Filter</label>
+      <div className="space-y-2 pt-2 border-t border-slate-100">
+        <label className="text-xs font-semibold text-slate-700 block">Skills Filter</label>
         <div className="flex flex-wrap gap-1.5">
           {COMMON_SKILLS.map((skill) => {
             const isSelected = selectedSkillsList.includes(skill);
@@ -191,8 +191,8 @@ export function InternshipFilters({ filters, onFilterChange, onReset, onClose })
                 onClick={() => handleSkillToggle(skill)}
                 className={`text-[11px] px-2.5 py-1 rounded-md border transition-colors ${
                   isSelected
-                    ? 'bg-brand-500/20 border-brand-500 text-brand-300 font-semibold'
-                    : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
+                    ? 'bg-brand-50 border-brand-300 text-brand-700 font-semibold'
+                    : 'bg-slate-50 border-slate-200 text-slate-600 hover:text-slate-900 hover:border-slate-300'
                 }`}
               >
                 {isSelected ? '✓ ' : '+ '}

@@ -26,23 +26,23 @@ export function Badge({
   ...props
 }) {
   const variantClasses = {
-    neutral: 'bg-slate-800/80 text-slate-300 border-slate-700/80',
-    primary: 'bg-brand-500/10 text-brand-300 border-brand-500/30',
-    success: 'bg-success-500/10 text-success-300 border-success-500/30',
-    warning: 'bg-warning-500/10 text-warning-300 border-warning-500/30',
-    danger: 'bg-danger-500/10 text-danger-300 border-danger-500/30',
-    info: 'bg-info-500/10 text-info-300 border-info-500/30',
-    purple: 'bg-purple-500/10 text-purple-300 border-purple-500/30',
+    neutral: 'bg-slate-100 text-slate-700 border-slate-200',
+    primary: 'bg-brand-50 text-brand-700 border-brand-200',
+    success: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    warning: 'bg-amber-50 text-amber-800 border-amber-200',
+    danger: 'bg-rose-50 text-rose-700 border-rose-200',
+    info: 'bg-sky-50 text-sky-700 border-sky-200',
+    purple: 'bg-purple-50 text-purple-700 border-purple-200',
   };
 
   const dotColors = {
-    neutral: 'bg-slate-400',
-    primary: 'bg-brand-400',
-    success: 'bg-success-400',
-    warning: 'bg-warning-400',
-    danger: 'bg-danger-400',
-    info: 'bg-info-400',
-    purple: 'bg-purple-400',
+    neutral: 'bg-slate-500',
+    primary: 'bg-brand-600',
+    success: 'bg-emerald-600',
+    warning: 'bg-amber-600',
+    danger: 'bg-rose-600',
+    info: 'bg-sky-600',
+    purple: 'bg-purple-600',
   };
 
   const sizeClasses = {

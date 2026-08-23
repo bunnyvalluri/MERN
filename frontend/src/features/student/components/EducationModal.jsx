@@ -132,7 +132,7 @@ export function EducationModal({ isOpen, onClose, onSave, initialData }) {
           </div>
         </div>
 
-        <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-800">
+        <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-100">
           <Button variant="outline" type="button" onClick={onClose}>
             Cancel
           </Button>

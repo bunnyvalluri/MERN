@@ -275,7 +275,7 @@ export function RecruiterDashboard() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex selection:bg-brand-500/20 selection:text-brand-300">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex selection:bg-brand-500/20 selection:text-brand-700">
       {/* Desktop Sidebar (Sidebar + Content layout) */}
       <RecruiterSidebar
         activeSection={activeSection}
@@ -290,15 +290,15 @@ export function RecruiterDashboard() {
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 md:hidden flex">
           <div
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/40 backdrop-blur-xs"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="relative w-72 bg-slate-900 h-full z-10 flex flex-col shadow-2xl">
-            <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-              <span className="font-bold text-sm text-white">Recruiter Menu</span>
+          <div className="relative w-72 bg-white h-full z-10 flex flex-col shadow-2xl">
+            <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+              <span className="font-bold text-sm text-slate-900">Recruiter Menu</span>
               <button
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-white"
+                className="p-1 rounded-lg text-slate-500 hover:text-slate-900"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -316,21 +316,21 @@ export function RecruiterDashboard() {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-x-hidden">
         {/* Top Navbar */}
-        <header className="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+        <header className="bg-white/90 backdrop-blur-md border-b border-slate-200 sticky top-0 z-20 px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 md:hidden"
+              className="p-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 md:hidden"
               aria-label="Open menu"
             >
               <Menu className="w-5 h-5" />
             </button>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-500 uppercase tracking-wider font-bold hidden sm:inline">
+              <span className="text-xs text-slate-400 uppercase tracking-wider font-bold hidden sm:inline">
                 Portal /
               </span>
-              <h1 className="text-sm sm:text-base font-bold text-white capitalize">
+              <h1 className="text-sm sm:text-base font-bold text-slate-900 capitalize">
                 {activeSection}
               </h1>
             </div>
@@ -351,13 +351,13 @@ export function RecruiterDashboard() {
             <NotificationBell />
 
             {/* User Profile Pill */}
-            <div className="flex items-center gap-2 pl-2 border-l border-slate-800">
+            <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
               <Avatar name={user?.name || 'Recruiter'} size="sm" />
               <div className="hidden lg:block text-left">
-                <p className="text-xs font-semibold text-white truncate max-w-[120px]">
+                <p className="text-xs font-semibold text-slate-900 truncate max-w-[120px]">
                   {user?.name || 'Recruiter'}
                 </p>
-                <p className="text-[10px] text-slate-400 truncate max-w-[120px]">
+                <p className="text-[10px] text-slate-500 truncate max-w-[120px]">
                   {company?.name || 'Company'}
                 </p>
               </div>
@@ -365,7 +365,7 @@ export function RecruiterDashboard() {
                 variant="ghost"
                 size="xs"
                 onClick={handleLogout}
-                className="text-slate-400 hover:text-red-400 p-1.5"
+                className="text-slate-500 hover:text-red-600 hover:bg-red-50 p-1.5"
                 title="Sign out"
               >
                 <LogOut className="w-4 h-4" />
@@ -378,13 +378,13 @@ export function RecruiterDashboard() {
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto space-y-6">
           {/* Error Banner with Recovery */}
           {error && (
-            <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-between gap-3 text-red-300 text-xs">
+            <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-between gap-3 text-rose-800 text-xs">
               <span>{error}</span>
               <Button
                 variant="outline"
                 size="xs"
                 onClick={() => dispatch(fetchDashboardAnalytics())}
-                className="border-red-500/40 text-red-300 hover:bg-red-500/20"
+                className="border-rose-300 text-rose-800 hover:bg-rose-100"
               >
                 Retry Loading
               </Button>
@@ -401,20 +401,20 @@ export function RecruiterDashboard() {
                 {/* 1. Active Internships */}
                 <div
                   onClick={() => handleSelectSection('internships')}
-                  className="p-4 rounded-2xl bg-slate-900/90 hover:bg-slate-900 border border-slate-800 hover:border-emerald-500/40 transition-all cursor-pointer shadow-card space-y-2 group"
+                  className="p-4 rounded-2xl bg-white hover:bg-slate-50/80 border border-slate-200 hover:border-emerald-500/40 transition-all cursor-pointer shadow-sm space-y-2 group"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-slate-400 group-hover:text-slate-200">
+                    <span className="text-xs font-semibold text-slate-600 group-hover:text-slate-900">
                       Active Internships
                     </span>
-                    <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400">
+                    <div className="p-1.5 rounded-lg bg-emerald-50 text-emerald-600">
                       <Briefcase className="w-4 h-4" />
                     </div>
                   </div>
-                  <p className="text-2xl font-bold text-white font-mono">
+                  <p className="text-2xl font-bold text-slate-900 font-mono">
                     {metrics.activeInternships}
                   </p>
-                  <p className="text-[11px] text-emerald-400 flex items-center gap-1 font-medium">
+                  <p className="text-[11px] text-emerald-600 flex items-center gap-1 font-medium">
                     <span>Live postings</span>
                     <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                   </p>
@@ -423,20 +423,20 @@ export function RecruiterDashboard() {
                 {/* 2. Total Applications */}
                 <div
                   onClick={() => handleSelectSection('applications')}
-                  className="p-4 rounded-2xl bg-slate-900/90 hover:bg-slate-900 border border-slate-800 hover:border-blue-500/40 transition-all cursor-pointer shadow-card space-y-2 group"
+                  className="p-4 rounded-2xl bg-white hover:bg-slate-50/80 border border-slate-200 hover:border-blue-500/40 transition-all cursor-pointer shadow-sm space-y-2 group"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-slate-400 group-hover:text-slate-200">
+                    <span className="text-xs font-semibold text-slate-600 group-hover:text-slate-900">
                       Total Applications
                     </span>
-                    <div className="p-1.5 rounded-lg bg-blue-500/10 text-blue-400">
+                    <div className="p-1.5 rounded-lg bg-blue-50 text-blue-600">
                       <Users className="w-4 h-4" />
                     </div>
                   </div>
-                  <p className="text-2xl font-bold text-white font-mono">
+                  <p className="text-2xl font-bold text-slate-900 font-mono">
                     {metrics.totalApplications}
                   </p>
-                  <p className="text-[11px] text-blue-400 flex items-center gap-1 font-medium">
+                  <p className="text-[11px] text-blue-600 flex items-center gap-1 font-medium">
                     <span>View all submissions</span>
                     <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                   </p>
@@ -445,20 +445,20 @@ export function RecruiterDashboard() {
                 {/* 3. Shortlisted Candidates */}
                 <div
                   onClick={() => handleSelectSection('candidates')}
-                  className="p-4 rounded-2xl bg-slate-900/90 hover:bg-slate-900 border border-slate-800 hover:border-amber-500/40 transition-all cursor-pointer shadow-card space-y-2 group"
+                  className="p-4 rounded-2xl bg-white hover:bg-slate-50/80 border border-slate-200 hover:border-amber-500/40 transition-all cursor-pointer shadow-sm space-y-2 group"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-slate-400 group-hover:text-slate-200">
+                    <span className="text-xs font-semibold text-slate-600 group-hover:text-slate-900">
                       Shortlisted
                     </span>
-                    <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-400">
+                    <div className="p-1.5 rounded-lg bg-amber-50 text-amber-600">
                       <Sparkles className="w-4 h-4" />
                     </div>
                   </div>
-                  <p className="text-2xl font-bold text-white font-mono">
+                  <p className="text-2xl font-bold text-slate-900 font-mono">
                     {metrics.shortlistedCandidates}
                   </p>
-                  <p className="text-[11px] text-amber-400 flex items-center gap-1 font-medium">
+                  <p className="text-[11px] text-amber-600 flex items-center gap-1 font-medium">
                     <span>Qualified talent</span>
                     <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                   </p>
@@ -467,20 +467,20 @@ export function RecruiterDashboard() {
                 {/* 4. Upcoming Interviews */}
                 <div
                   onClick={() => handleSelectSection('interviews')}
-                  className="p-4 rounded-2xl bg-slate-900/90 hover:bg-slate-900 border border-slate-800 hover:border-teal-500/40 transition-all cursor-pointer shadow-card space-y-2 group"
+                  className="p-4 rounded-2xl bg-white hover:bg-slate-50/80 border border-slate-200 hover:border-teal-500/40 transition-all cursor-pointer shadow-sm space-y-2 group"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-slate-400 group-hover:text-slate-200">
+                    <span className="text-xs font-semibold text-slate-600 group-hover:text-slate-900">
                       Interviews
                     </span>
-                    <div className="p-1.5 rounded-lg bg-teal-500/10 text-teal-400">
+                    <div className="p-1.5 rounded-lg bg-teal-50 text-teal-600">
                       <Calendar className="w-4 h-4" />
                     </div>
                   </div>
-                  <p className="text-2xl font-bold text-white font-mono">
+                  <p className="text-2xl font-bold text-slate-900 font-mono">
                     {metrics.upcomingInterviews}
                   </p>
-                  <p className="text-[11px] text-teal-400 flex items-center gap-1 font-medium">
+                  <p className="text-[11px] text-teal-600 flex items-center gap-1 font-medium">
                     <span>Scheduled calls</span>
                     <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                   </p>
@@ -489,20 +489,20 @@ export function RecruiterDashboard() {
                 {/* 5. Selected Candidates */}
                 <div
                   onClick={() => handleSelectSection('candidates')}
-                  className="p-4 rounded-2xl bg-slate-900/90 hover:bg-slate-900 border border-slate-800 hover:border-purple-500/40 transition-all cursor-pointer shadow-card space-y-2 group col-span-2 sm:col-span-1"
+                  className="p-4 rounded-2xl bg-white hover:bg-slate-50/80 border border-slate-200 hover:border-purple-500/40 transition-all cursor-pointer shadow-sm space-y-2 group col-span-2 sm:col-span-1"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-slate-400 group-hover:text-slate-200">
+                    <span className="text-xs font-semibold text-slate-600 group-hover:text-slate-900">
                       Accepted / Hired
                     </span>
-                    <div className="p-1.5 rounded-lg bg-purple-500/10 text-purple-400">
+                    <div className="p-1.5 rounded-lg bg-purple-50 text-purple-600">
                       <UserCheck className="w-4 h-4" />
                     </div>
                   </div>
-                  <p className="text-2xl font-bold text-white font-mono">
+                  <p className="text-2xl font-bold text-slate-900 font-mono">
                     {metrics.selectedCandidates}
                   </p>
-                  <p className="text-[11px] text-purple-400 flex items-center gap-1 font-medium">
+                  <p className="text-[11px] text-purple-600 flex items-center gap-1 font-medium">
                     <span>Offers accepted</span>
                     <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                   </p>
@@ -535,15 +535,15 @@ export function RecruiterDashboard() {
               {/* Streams Row: Upcoming Interviews & Recent Candidates */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Upcoming Interviews Widget */}
-                <Card className="border-slate-800 bg-slate-900/80 shadow-card">
-                  <CardHeader className="pb-3 border-b border-slate-800 flex flex-row items-center justify-between">
+                <Card className="border-slate-200 bg-white shadow-sm">
+                  <CardHeader className="pb-3 border-b border-slate-100 flex flex-row items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-teal-400" />
-                      <CardTitle className="text-sm font-bold text-white">Upcoming Interviews</CardTitle>
+                      <Calendar className="w-4 h-4 text-teal-600" />
+                      <CardTitle className="text-sm font-bold text-slate-900">Upcoming Interviews</CardTitle>
                     </div>
                     <button
                       onClick={() => handleSelectSection('interviews')}
-                      className="text-xs font-semibold text-teal-400 hover:text-teal-300"
+                      className="text-xs font-semibold text-teal-600 hover:text-teal-700"
                     >
                       View All
                     </button>
@@ -557,13 +557,13 @@ export function RecruiterDashboard() {
                       upcomingInterviews.map((int) => (
                         <div
                           key={int._id}
-                          className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between gap-3"
+                          className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3"
                         >
                           <div className="space-y-1">
-                            <p className="text-xs font-bold text-white">
+                            <p className="text-xs font-bold text-slate-900">
                               {int.studentId?.name || 'Candidate'}
                             </p>
-                            <p className="text-[11px] text-slate-400">
+                            <p className="text-[11px] text-slate-500">
                               {int.internshipId?.title || 'Internship'} • {new Date(int.scheduledAt).toLocaleString()}
                             </p>
                           </div>
@@ -585,15 +585,15 @@ export function RecruiterDashboard() {
                 </Card>
 
                 {/* Recent Candidates Widget */}
-                <Card className="border-slate-800 bg-slate-900/80 shadow-card">
-                  <CardHeader className="pb-3 border-b border-slate-800 flex flex-row items-center justify-between">
+                <Card className="border-slate-200 bg-white shadow-sm">
+                  <CardHeader className="pb-3 border-b border-slate-100 flex flex-row items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Users className="w-4 h-4 text-blue-400" />
-                      <CardTitle className="text-sm font-bold text-white">Recent Applicants</CardTitle>
+                      <Users className="w-4 h-4 text-brand-600" />
+                      <CardTitle className="text-sm font-bold text-slate-900">Recent Applicants</CardTitle>
                     </div>
                     <button
                       onClick={() => handleSelectSection('applications')}
-                      className="text-xs font-semibold text-brand-400 hover:text-brand-300"
+                      className="text-xs font-semibold text-brand-600 hover:text-brand-700"
                     >
                       View All
                     </button>
@@ -607,18 +607,18 @@ export function RecruiterDashboard() {
                       recentApplications.map((app) => (
                         <div
                           key={app._id}
-                          className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between gap-3"
+                          className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3"
                         >
                           <div className="flex items-center gap-2.5">
                             <Avatar name={app.studentId?.name || 'Student'} size="sm" />
                             <div className="space-y-0.5">
                               <Link
                                 to={`/recruiter/applications/${app._id}`}
-                                className="text-xs font-bold text-white hover:text-brand-300 transition-colors"
+                                className="text-xs font-bold text-slate-900 hover:text-brand-600 transition-colors"
                               >
                                 {app.studentId?.name || 'Anonymous Student'}
                               </Link>
-                              <p className="text-[10px] text-slate-400">
+                              <p className="text-[10px] text-slate-500">
                                 {app.internshipId?.title || 'Internship'}
                               </p>
                             </div>
@@ -638,7 +638,7 @@ export function RecruiterDashboard() {
                               {app.status.replace('_', ' ')}
                             </Badge>
                             <Link to={`/recruiter/applications/${app._id}`}>
-                              <ChevronRight className="w-4 h-4 text-slate-500 hover:text-white" />
+                              <ChevronRight className="w-4 h-4 text-slate-400 hover:text-slate-700" />
                             </Link>
                           </div>
                         </div>
@@ -655,18 +655,18 @@ export function RecruiterDashboard() {
           ══════════════════════════════════════════════════════════════════ */}
           {activeSection === 'company' && (
             <div className="max-w-4xl mx-auto space-y-6">
-              <Card className="border-slate-800 bg-slate-900/80 shadow-card">
-                <CardHeader className="pb-4 border-b border-slate-800">
+              <Card className="border-slate-200 bg-white shadow-sm">
+                <CardHeader className="pb-4 border-b border-slate-100">
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="text-base font-bold text-white">Company Profile & Branding</CardTitle>
-                      <p className="text-xs text-slate-400 mt-1">
+                      <CardTitle className="text-base font-bold text-slate-900">Company Profile & Branding</CardTitle>
+                      <p className="text-xs text-slate-500 mt-1">
                         Showcase your company brand to attract software engineering interns.
                       </p>
                     </div>
                     {company?.verified && (
                       <Badge variant="primary" size="md">
-                        <ShieldCheck className="w-4 h-4 mr-1 text-brand-300" />
+                        <ShieldCheck className="w-4 h-4 mr-1 text-brand-600" />
                         Verified Partner
                       </Badge>
                     )}
@@ -733,7 +733,7 @@ export function RecruiterDashboard() {
                       onChange={(e) => setCompanyForm({ ...companyForm, description: e.target.value })}
                     />
 
-                    <div className="pt-3 border-t border-slate-800 flex justify-end">
+                    <div className="pt-3 border-t border-slate-100 flex justify-end">
                       <Button
                         variant="primary"
                         type="submit"
@@ -764,8 +764,8 @@ export function RecruiterDashboard() {
                       onClick={() => setInternshipFilterStatus(st)}
                       className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
                         internshipFilterStatus === st
-                          ? 'bg-brand-500 text-white shadow-sm'
-                          : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200'
+                          ? 'bg-brand-600 text-white shadow-sm'
+                          : 'bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                       }`}
                     >
                       {st === 'ALL' ? 'All Roles' : st}
@@ -781,10 +781,10 @@ export function RecruiterDashboard() {
               </div>
 
               {filteredInternships.length === 0 ? (
-                <Card className="border-slate-800 bg-slate-900/60 py-12">
+                <Card className="border-slate-200 bg-white py-12 shadow-sm">
                   <CardContent>
                     <EmptyState
-                      icon={<Briefcase className="w-12 h-12 text-slate-600 mx-auto" />}
+                      icon={<Briefcase className="w-12 h-12 text-slate-400 mx-auto" />}
                       title="No internships found"
                       description="Create and publish your internship postings to receive applications."
                       action={
@@ -802,11 +802,11 @@ export function RecruiterDashboard() {
                   {filteredInternships.map((role) => (
                     <div
                       key={role._id}
-                      className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-card"
+                      className="p-5 rounded-2xl bg-white border border-slate-200 hover:border-slate-300 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm"
                     >
                       <div className="space-y-1">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <h2 className="text-base font-bold text-white">{role.title}</h2>
+                          <h2 className="text-base font-bold text-slate-900">{role.title}</h2>
                           <Badge
                             variant={
                               role.status === 'PUBLISHED'
@@ -823,7 +823,7 @@ export function RecruiterDashboard() {
                             {role.applicationsCount || 0} applicants
                           </span>
                         </div>
-                        <p className="text-xs text-slate-400">
+                        <p className="text-xs text-slate-500">
                           {role.remote || 'Remote'} • {role.duration || '3 Months'} • Deadline:{' '}
                           {new Date(role.applicationDeadline).toLocaleDateString()}
                         </p>
@@ -844,7 +844,7 @@ export function RecruiterDashboard() {
                             variant="ghost"
                             size="xs"
                             onClick={() => handleClosePosting(role._id)}
-                            className="text-red-400 hover:bg-red-500/10"
+                            className="text-red-600 hover:bg-red-50"
                           >
                             Close
                           </Button>
@@ -873,7 +873,7 @@ export function RecruiterDashboard() {
           {activeSection === 'applications' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-base font-bold text-white">All Candidate Applications</h2>
+                <h2 className="text-base font-bold text-slate-900">All Candidate Applications</h2>
                 <Link to="/recruiter/applications">
                   <Button variant="ghost" size="xs" rightIcon={<ExternalLink className="w-3.5 h-3.5" />}>
                     Open Full Review Board
@@ -882,10 +882,10 @@ export function RecruiterDashboard() {
               </div>
 
               {(recruiterApplications?.data || []).length === 0 ? (
-                <Card className="border-slate-800 bg-slate-900/60 py-12">
+                <Card className="border-slate-200 bg-white py-12 shadow-sm">
                   <CardContent>
                     <EmptyState
-                      icon={<Users className="w-12 h-12 text-slate-600 mx-auto" />}
+                      icon={<Users className="w-12 h-12 text-slate-400 mx-auto" />}
                       title="No applications received yet"
                       description="When students apply, their verified profiles will appear here for review."
                     />
@@ -896,21 +896,21 @@ export function RecruiterDashboard() {
                   {(recruiterApplications?.data || []).map((app) => (
                     <div
                       key={app._id}
-                      className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-card"
+                      className="p-4 rounded-2xl bg-white border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm"
                     >
                       <div className="flex items-start gap-3">
                         <Avatar name={app.studentId?.name || 'Applicant'} size="md" />
                         <div className="space-y-0.5">
                           <Link
                             to={`/recruiter/applications/${app._id}`}
-                            className="text-sm font-bold text-white hover:text-brand-300 transition-colors"
+                            className="text-sm font-bold text-slate-900 hover:text-brand-600 transition-colors"
                           >
                             {app.studentId?.name || 'Anonymous Student'}
                           </Link>
-                          <p className="text-xs text-slate-400">
-                            Applied for <strong className="text-slate-300">{app.internshipId?.title}</strong>
+                          <p className="text-xs text-slate-500">
+                            Applied for <strong className="text-slate-800">{app.internshipId?.title}</strong>
                           </p>
-                          <p className="text-[11px] text-slate-500 font-mono">
+                          <p className="text-[11px] text-slate-400 font-mono">
                             {app.studentId?.email} • {new Date(app.createdAt).toLocaleDateString()}
                           </p>
                         </div>
@@ -957,17 +957,17 @@ export function RecruiterDashboard() {
           {activeSection === 'candidates' && (
             <div className="space-y-6">
               <div className="space-y-1">
-                <h2 className="text-base font-bold text-white">Qualified Candidate Directory</h2>
-                <p className="text-xs text-slate-400">
+                <h2 className="text-base font-bold text-slate-900">Qualified Candidate Directory</h2>
+                <p className="text-xs text-slate-500">
                   Talent shortlisted, interviewing, or accepted for your internships.
                 </p>
               </div>
 
               {talentPool.length === 0 ? (
-                <Card className="border-slate-800 bg-slate-900/60 py-12">
+                <Card className="border-slate-200 bg-white py-12 shadow-sm">
                   <CardContent>
                     <EmptyState
-                      icon={<UserCheck className="w-12 h-12 text-slate-600 mx-auto" />}
+                      icon={<UserCheck className="w-12 h-12 text-slate-400 mx-auto" />}
                       title="No shortlisted candidates yet"
                       description="Shortlist candidates from your applications review board to build your active hiring pipeline."
                     />
@@ -978,17 +978,17 @@ export function RecruiterDashboard() {
                   {talentPool.map((app) => (
                     <div
                       key={app._id}
-                      className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 transition-all space-y-4 shadow-card flex flex-col justify-between"
+                      className="p-5 rounded-2xl bg-white border border-slate-200 hover:border-slate-300 transition-all space-y-4 shadow-sm flex flex-col justify-between"
                     >
                       <div className="space-y-3">
                         <div className="flex items-start justify-between gap-2">
                           <div className="flex items-center gap-3">
                             <Avatar name={app.studentId?.name || 'Candidate'} size="md" />
                             <div>
-                              <h3 className="text-sm font-bold text-white">
+                              <h3 className="text-sm font-bold text-slate-900">
                                 {app.studentId?.name}
                               </h3>
-                              <p className="text-[11px] text-slate-400 font-mono">
+                              <p className="text-[11px] text-slate-500 font-mono">
                                 {app.studentId?.email}
                               </p>
                             </div>
@@ -1001,21 +1001,21 @@ export function RecruiterDashboard() {
                           </Badge>
                         </div>
 
-                        <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1 text-xs">
-                          <span className="text-slate-400">Applied Role:</span>
-                          <p className="font-semibold text-brand-300 truncate">
+                        <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1 text-xs">
+                          <span className="text-slate-500">Applied Role:</span>
+                          <p className="font-semibold text-brand-600 truncate">
                             {app.internshipId?.title}
                           </p>
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between pt-3 border-t border-slate-800/80">
+                      <div className="flex items-center justify-between pt-3 border-t border-slate-100">
                         {app.resume?.url ? (
                           <a
                             href={app.resume.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-xs text-slate-400 hover:text-brand-300"
+                            className="text-xs text-slate-500 hover:text-brand-600"
                           >
                             Resume
                           </a>
@@ -1041,20 +1041,20 @@ export function RecruiterDashboard() {
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h2 className="text-base font-bold text-white">Interview Schedule</h2>
-                  <p className="text-xs text-slate-400 mt-0.5">
+                  <h2 className="text-base font-bold text-slate-900">Interview Schedule</h2>
+                  <p className="text-xs text-slate-500 mt-0.5">
                     Technical screens, video calls, and on-site interviews.
                   </p>
                 </div>
 
                 {/* View Mode Toggle */}
-                <div className="flex items-center gap-1.5 p-1 bg-slate-900 border border-slate-800 rounded-2xl self-start sm:self-auto">
+                <div className="flex items-center gap-1.5 p-1 bg-slate-100 border border-slate-200 rounded-2xl self-start sm:self-auto">
                   <button
                     onClick={() => setInterviewViewMode('list')}
                     className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                       interviewViewMode === 'list'
-                        ? 'bg-brand-500 text-white shadow-sm'
-                        : 'text-slate-400 hover:text-slate-200'
+                        ? 'bg-brand-600 text-white shadow-sm'
+                        : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
                     List View
@@ -1063,8 +1063,8 @@ export function RecruiterDashboard() {
                     onClick={() => setInterviewViewMode('calendar')}
                     className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                       interviewViewMode === 'calendar'
-                        ? 'bg-brand-500 text-white shadow-sm'
-                        : 'text-slate-400 hover:text-slate-200'
+                        ? 'bg-brand-600 text-white shadow-sm'
+                        : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
                     Calendar View
@@ -1080,10 +1080,10 @@ export function RecruiterDashboard() {
                   onCancel={handleOpenCancel}
                 />
               ) : interviews.length === 0 ? (
-                <Card className="border-slate-800 bg-slate-900/60 py-12">
+                <Card className="border-slate-200 bg-white py-12 shadow-sm">
                   <CardContent>
                     <EmptyState
-                      icon={<Calendar className="w-12 h-12 text-slate-600 mx-auto" />}
+                      icon={<Calendar className="w-12 h-12 text-slate-400 mx-auto" />}
                       title="No interviews scheduled yet"
                       description="To schedule an interview, open a candidate profile from Applications and click 'Schedule Interview'."
                     />
@@ -1094,15 +1094,15 @@ export function RecruiterDashboard() {
                   {interviews.map((int) => (
                     <div
                       key={int._id}
-                      className="p-5 rounded-2xl bg-slate-900/90 border border-teal-500/20 hover:border-teal-500/40 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-card"
+                      className="p-5 rounded-2xl bg-white border border-teal-200 hover:border-teal-300 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm"
                     >
                       <div className="flex items-start gap-3.5">
-                        <div className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/30 flex items-center justify-center text-teal-400 font-bold shrink-0">
+                        <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-600 font-bold shrink-0">
                           <Calendar className="w-5 h-5" />
                         </div>
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
-                            <h3 className="text-sm font-bold text-white">
+                            <h3 className="text-sm font-bold text-slate-900">
                               {int.studentId?.name || 'Candidate'}
                             </h3>
                             <Badge
@@ -1120,14 +1120,14 @@ export function RecruiterDashboard() {
                               {int.status}
                             </Badge>
                           </div>
-                          <p className="text-xs text-slate-300">
-                            Role: <strong>{int.internshipId?.title}</strong> • Duration: {int.durationMinutes || 45} mins
+                          <p className="text-xs text-slate-600">
+                            Role: <strong className="text-slate-900">{int.internshipId?.title}</strong> • Duration: {int.durationMinutes || 45} mins
                           </p>
-                          <p className="text-[11px] text-teal-300 font-mono">
+                          <p className="text-[11px] text-teal-700 font-mono font-semibold">
                             Scheduled: {new Date(int.scheduledAt).toLocaleString()}
                           </p>
                           {int.notes && (
-                            <p className="text-xs text-slate-400 bg-slate-950 p-2 rounded-lg border border-slate-800 mt-1">
+                            <p className="text-xs text-slate-600 bg-slate-50 p-2 rounded-lg border border-slate-200 mt-1">
                               Notes: {int.notes}
                             </p>
                           )}
@@ -1160,7 +1160,7 @@ export function RecruiterDashboard() {
                               variant="ghost"
                               size="xs"
                               onClick={() => handleOpenCancel(int)}
-                              className="text-red-400 hover:bg-red-500/10"
+                              className="text-red-600 hover:bg-red-50"
                             >
                               Cancel
                             </Button>
@@ -1209,9 +1209,9 @@ export function RecruiterDashboard() {
           ══════════════════════════════════════════════════════════════════ */}
           {activeSection === 'notifications' && (
             <div className="max-w-4xl mx-auto space-y-4">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-                <h2 className="text-base font-bold text-white flex items-center gap-2">
-                  <Bell className="w-4 h-4 text-brand-400" />
+              <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+                <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                  <Bell className="w-4 h-4 text-brand-600" />
                   Recruiter Alerts & Activity Feed
                 </h2>
                 {unreadNotifsCount > 0 && (
@@ -1222,10 +1222,10 @@ export function RecruiterDashboard() {
               </div>
 
               {notifications.length === 0 ? (
-                <Card className="border-slate-800 bg-slate-900/60 py-12">
+                <Card className="border-slate-200 bg-white py-12 shadow-sm">
                   <CardContent>
                     <EmptyState
-                      icon={<Bell className="w-12 h-12 text-slate-600 mx-auto" />}
+                      icon={<Bell className="w-12 h-12 text-slate-400 mx-auto" />}
                       title="No notifications"
                       description="You're all caught up! New applicant alerts and status triggers will appear here."
                     />
@@ -1236,25 +1236,25 @@ export function RecruiterDashboard() {
                   {notifications.map((n) => (
                     <div
                       key={n._id}
-                      className={`p-4 rounded-2xl border transition-all flex items-start justify-between gap-4 ${
+                      className={`p-4 rounded-2xl border transition-all flex items-start justify-between gap-4 shadow-xs ${
                         n.read
-                          ? 'bg-slate-900/60 border-slate-800'
-                          : 'bg-brand-500/5 border-brand-500/30'
+                          ? 'bg-white border-slate-200'
+                          : 'bg-brand-50/50 border-brand-200'
                       }`}
                     >
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
                           {!n.read && (
-                            <span className="w-2 h-2 rounded-full bg-brand-400" />
+                            <span className="w-2 h-2 rounded-full bg-brand-600" />
                           )}
-                          <h3 className="text-xs sm:text-sm font-bold text-white">
+                          <h3 className="text-xs sm:text-sm font-bold text-slate-900">
                             {n.title}
                           </h3>
                         </div>
-                        <p className="text-xs text-slate-300 leading-relaxed">
+                        <p className="text-xs text-slate-600 leading-relaxed">
                           {n.message}
                         </p>
-                        <p className="text-[10px] text-slate-500 font-mono pt-1">
+                        <p className="text-[10px] text-slate-400 font-mono pt-1">
                           {new Date(n.createdAt).toLocaleDateString(undefined, {
                             month: 'short',
                             day: 'numeric',
@@ -1269,7 +1269,7 @@ export function RecruiterDashboard() {
                           variant="ghost"
                           size="xs"
                           onClick={() => handleMarkNotifRead(n._id)}
-                          className="text-slate-400 hover:text-white"
+                          className="text-slate-500 hover:text-slate-800"
                         >
                           Mark Read
                         </Button>
@@ -1286,29 +1286,29 @@ export function RecruiterDashboard() {
           ══════════════════════════════════════════════════════════════════ */}
           {activeSection === 'settings' && (
             <div className="max-w-3xl mx-auto space-y-6">
-              <Card className="border-slate-800 bg-slate-900/80 shadow-card">
-                <CardHeader className="pb-3 border-b border-slate-800">
-                  <CardTitle className="text-base font-bold text-white">Notification Preferences</CardTitle>
+              <Card className="border-slate-200 bg-white shadow-sm">
+                <CardHeader className="pb-3 border-b border-slate-100">
+                  <CardTitle className="text-base font-bold text-slate-900">Notification Preferences</CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 space-y-4">
-                  <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-950 border border-slate-800">
+                  <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                     <div className="space-y-0.5">
-                      <p className="text-xs sm:text-sm font-bold text-white">
+                      <p className="text-xs sm:text-sm font-bold text-slate-900">
                         New Applicant Email Alerts
                       </p>
-                      <p className="text-[11px] text-slate-400">
+                      <p className="text-[11px] text-slate-500">
                         Receive instant notifications when students submit applications.
                       </p>
                     </div>
                     <Switch defaultChecked />
                   </div>
 
-                  <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-950 border border-slate-800">
+                  <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                     <div className="space-y-0.5">
-                      <p className="text-xs sm:text-sm font-bold text-white">
+                      <p className="text-xs sm:text-sm font-bold text-slate-900">
                         Interview Schedule Reminders
                       </p>
-                      <p className="text-[11px] text-slate-400">
+                      <p className="text-[11px] text-slate-500">
                         Get 24h & 1h advance reminders prior to scheduled candidate calls.
                       </p>
                     </div>
@@ -1317,21 +1317,21 @@ export function RecruiterDashboard() {
                 </CardContent>
               </Card>
 
-              <Card className="border-slate-800 bg-slate-900/80 shadow-card">
-                <CardHeader className="pb-3 border-b border-slate-800">
-                  <CardTitle className="text-base font-bold text-white">Account Details</CardTitle>
+              <Card className="border-slate-200 bg-white shadow-sm">
+                <CardHeader className="pb-3 border-b border-slate-100">
+                  <CardTitle className="text-base font-bold text-slate-900">Account Details</CardTitle>
                 </CardHeader>
-                <CardContent className="p-6 space-y-4 text-xs text-slate-300">
-                  <div className="flex justify-between border-b border-slate-800 pb-2.5">
-                    <span className="text-slate-400">Recruiter Name:</span>
-                    <strong className="text-white">{user?.name}</strong>
+                <CardContent className="p-6 space-y-4 text-xs text-slate-600">
+                  <div className="flex justify-between border-b border-slate-100 pb-2.5">
+                    <span className="text-slate-500">Recruiter Name:</span>
+                    <strong className="text-slate-900">{user?.name}</strong>
                   </div>
-                  <div className="flex justify-between border-b border-slate-800 pb-2.5">
-                    <span className="text-slate-400">Login Email:</span>
-                    <strong className="text-white font-mono">{user?.email}</strong>
+                  <div className="flex justify-between border-b border-slate-100 pb-2.5">
+                    <span className="text-slate-500">Login Email:</span>
+                    <strong className="text-slate-900 font-mono">{user?.email}</strong>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Account Role:</span>
+                    <span className="text-slate-500">Account Role:</span>
                     <Badge variant="success" size="xs">RECRUITER</Badge>
                   </div>
                 </CardContent>

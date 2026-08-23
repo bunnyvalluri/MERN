@@ -1,7 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,jsx}'],
-  darkMode: 'class',
   theme: {
     screens: {
       xs: '375px',
@@ -33,19 +32,19 @@ export default {
         ],
       },
       colors: {
-        // Base Brand Palette (Modern Indigo)
+        // Base Brand Palette (Professional Modern Blue/Indigo)
         brand: {
-          50: '#eef2ff',
-          100: '#e0e7ff',
-          200: '#c7d2fe',
-          300: '#a5b4fc',
-          400: '#818cf8',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
-          800: '#3730a3',
-          900: '#312e81',
-          950: '#1e1b4b',
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
+          950: '#172554',
         },
         // Slate / Neutral Surface Scale
         slate: {
@@ -81,12 +80,12 @@ export default {
         },
         // Semantic: Danger / Error (Rose)
         danger: {
-          50: '#fff1f2',
-          100: '#ffe4e6',
-          200: '#fecdd3',
-          500: '#f43f5e',
-          600: '#e11d48',
-          700: '#be123c',
+          50: '#fef2f2',
+          100: '#fee2e2',
+          200: '#fecaca',
+          500: '#ef4444',
+          600: '#dc2626',
+          700: '#b91c1c',
         },
         // Semantic: Info (Sky)
         info: {
@@ -100,11 +99,11 @@ export default {
       },
       boxShadow: {
         subtle: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-        card: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)',
-        'card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
-        dropdown: '0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
-        modal: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-        'focus-ring': '0 0 0 3px rgba(99, 102, 241, 0.35)',
+        card: '0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04)',
+        'card-hover': '0 10px 20px -5px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04)',
+        dropdown: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05)',
+        modal: '0 25px 50px -12px rgba(15, 23, 42, 0.2)',
+        'focus-ring': '0 0 0 3px rgba(37, 99, 235, 0.25)',
       },
       borderRadius: {
         '2xl': '1rem',
