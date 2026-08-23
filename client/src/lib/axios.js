@@ -2,13 +2,6 @@ import axios from 'axios';
 
 /**
  * Axios instance pre-configured for the InternHub API.
- *
- * Base URL is read from the Vite environment variable so it works
- * correctly in both development (proxy or direct) and production.
- *
- * Interceptors added here:
- * - Request: attaches the JWT access token from Redux store (added in Phase 2)
- * - Response: handles 401 → silent token refresh → retry (added in Phase 2)
  */
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '/api/v1',
@@ -16,21 +9,89 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 15000, // 15 second request timeout
+  timeout: 15000,
 });
 
-// ─── Request interceptor ──────────────────────────────────────────────────────
-// Token attachment will be added in Phase 2 when auth slice is implemented.
+// ─── Request Interceptor ──────────────────────────────────────────────────────
 apiClient.interceptors.request.use(
-  (config) => config,
+  (config) => {
+    const token = localStorage.getItem('accessToken');
+    if (token && !config.headers.Authorization) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
   (error) => Promise.reject(error)
 );
 
-// ─── Response interceptor ─────────────────────────────────────────────────────
-// Token refresh logic will be added in Phase 2.
+// ─── Response Interceptor (Silent Token Refresh) ──────────────────────────────
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
+
 apiClient.interceptors.response.use(
   (response) => response,
-  (error) => Promise.reject(error)
+  async (error) => {
+    const originalRequest = error.config;
+
+    // Handle 401 Unauthorized
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url?.includes('/auth/login') &&
+      !originalRequest.url?.includes('/auth/register') &&
+      !originalRequest.url?.includes('/auth/refresh')
+    ) {
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            return apiClient(originalRequest);
+          })
+          .catch((err) => Promise.reject(err));
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_BASE_URL || '/api/v1'}/auth/refresh`,
+          {},
+          { withCredentials: true }
+        );
+
+        const newAccessToken = response.data?.data?.accessToken;
+        if (newAccessToken) {
+          localStorage.setItem('accessToken', newAccessToken);
+          apiClient.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          processQueue(null, newAccessToken);
+          return apiClient(originalRequest);
+        }
+      } catch (refreshError) {
+        processQueue(refreshError, null);
+        localStorage.removeItem('accessToken');
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
+      }
+    }
+
+    return Promise.reject(error);
+  }
 );
 
 export default apiClient;

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Badge } from '../ui/index.js';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { logoutUser } from '../../features/auth/authSlice.js';
+import { Button, Badge, Avatar } from '../ui/index.js';
 import {
   Sparkles,
   Menu,
@@ -10,13 +12,19 @@ import {
   HelpCircle,
   BookOpen,
   ArrowRight,
-  User,
+  User as UserIcon,
+  LogOut,
+  LayoutDashboard,
 } from 'lucide-react';
 
 /**
  * Production-grade responsive Navigation Bar.
  */
-export function Navbar({ onAuthModalOpen }) {
+export function Navbar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isAuthenticated, user, role } = useSelector((state) => state.auth);
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -44,6 +52,8 @@ export function Navbar({ onAuthModalOpen }) {
     { label: 'Resources', href: '#resources', icon: <BookOpen className="w-4 h-4" /> },
   ];
 
+  const dashboardPath = role === 'RECRUITER' ? '/recruiter/dashboard' : '/student/dashboard';
+
   return (
     <header
       className={`sticky top-0 z-40 w-full transition-all duration-200 ${
@@ -54,8 +64,8 @@ export function Navbar({ onAuthModalOpen }) {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
         {/* Brand Logo */}
-        <a
-          href="/"
+        <Link
+          to="/"
           className="flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg p-1"
         >
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
@@ -69,7 +79,7 @@ export function Navbar({ onAuthModalOpen }) {
               Beta
             </Badge>
           </div>
-        </a>
+        </Link>
 
         {/* Desktop Nav Links */}
         <nav className="hidden md:flex items-center gap-1 lg:gap-2" aria-label="Main Navigation">
@@ -92,34 +102,63 @@ export function Navbar({ onAuthModalOpen }) {
 
         {/* Desktop Actions */}
         <div className="hidden sm:flex items-center gap-3">
-          <Button
-            variant="ghost"
-            size="sm"
-            leftIcon={<User className="w-4 h-4" />}
-            onClick={() => onAuthModalOpen?.('login')}
-          >
-            Login
-          </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            rightIcon={<ArrowRight className="w-4 h-4" />}
-            onClick={() => onAuthModalOpen?.('register')}
-          >
-            Get Started
-          </Button>
+          {isAuthenticated ? (
+            <div className="flex items-center gap-3">
+              <Link to={dashboardPath}>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  leftIcon={<LayoutDashboard className="w-4 h-4 text-brand-400" />}
+                >
+                  Dashboard
+                </Button>
+              </Link>
+              <div className="flex items-center gap-2 pl-2 border-l border-slate-800">
+                <Avatar name={user?.name || 'User'} size="sm" />
+                <button
+                  type="button"
+                  onClick={() => dispatch(logoutUser())}
+                  aria-label="Sign out"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-danger-400 hover:bg-slate-800 transition-colors"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <Button
+                variant="ghost"
+                size="sm"
+                leftIcon={<UserIcon className="w-4 h-4" />}
+                onClick={() => navigate('/login')}
+              >
+                Login
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
+                rightIcon={<ArrowRight className="w-4 h-4" />}
+                onClick={() => navigate('/register')}
+              >
+                Get Started
+              </Button>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Trigger */}
         <div className="flex items-center gap-2 md:hidden">
-          <Button
-            variant="ghost"
-            size="xs"
-            onClick={() => onAuthModalOpen?.('login')}
-            className="sm:hidden"
-          >
-            Login
-          </Button>
+          {!isAuthenticated && (
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={() => navigate('/login')}
+              className="sm:hidden"
+            >
+              Login
+            </Button>
+          )}
           <button
             type="button"
             onClick={() => setMobileMenuOpen((prev) => !prev)}
@@ -158,29 +197,57 @@ export function Navbar({ onAuthModalOpen }) {
           </nav>
 
           <div className="pt-4 border-t border-slate-800 space-y-2.5">
-            <Button
-              variant="outline"
-              fullWidth
-              size="md"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onAuthModalOpen?.('login');
-              }}
-            >
-              Login to Account
-            </Button>
-            <Button
-              variant="primary"
-              fullWidth
-              size="md"
-              rightIcon={<ArrowRight className="w-4 h-4" />}
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onAuthModalOpen?.('register');
-              }}
-            >
-              Create Student Profile
-            </Button>
+            {isAuthenticated ? (
+              <>
+                <Link
+                  to={dashboardPath}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block"
+                >
+                  <Button variant="primary" fullWidth size="md" leftIcon={<LayoutDashboard className="w-4 h-4" />}>
+                    Go to Dashboard
+                  </Button>
+                </Link>
+                <Button
+                  variant="danger"
+                  fullWidth
+                  size="md"
+                  leftIcon={<LogOut className="w-4 h-4" />}
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    dispatch(logoutUser());
+                  }}
+                >
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="outline"
+                  fullWidth
+                  size="md"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    navigate('/login');
+                  }}
+                >
+                  Login to Account
+                </Button>
+                <Button
+                  variant="primary"
+                  fullWidth
+                  size="md"
+                  rightIcon={<ArrowRight className="w-4 h-4" />}
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    navigate('/register');
+                  }}
+                >
+                  Create Account
+                </Button>
+              </>
+            )}
           </div>
         </div>
       )}
