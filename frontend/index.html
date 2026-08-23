@@ -71,8 +71,56 @@
       crossorigin
     />
 
-    <!-- ── Google Search Console verification (replace token) ────────────── -->
-    <!-- <meta name="google-site-verification" content="REPLACE_WITH_YOUR_TOKEN" /> -->
+    <!-- ── Hide Injected Netlify Badge / Drawer ────────────────────────── -->
+    <style>
+      netlify-feedback-drawer,
+      netlify-drawer,
+      #netlify-feedback,
+      #netlify-drawer,
+      .netlify-badge,
+      [data-netlify-badge],
+      [data-netlify-drawer],
+      [data-netlify-feedback],
+      iframe[src*="netlify"],
+      a[href*="netlify.com/powered-by"],
+      a[href*="netlify.com"][target="_blank"]:has(img),
+      img[alt*="Powered by Netlify"],
+      div:has(> a[href*="netlify.com/powered-by"]) {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+      }
+    </style>
+    <script>
+      (function () {
+        const removeNetlifyWidgets = function () {
+          const selectors = [
+            'netlify-feedback-drawer',
+            'netlify-drawer',
+            '#netlify-feedback',
+            '#netlify-drawer',
+            '.netlify-badge',
+            '[data-netlify-badge]',
+            '[data-netlify-drawer]',
+            '[data-netlify-feedback]',
+            'a[href*="netlify.com/powered-by"]',
+            'img[alt*="Powered by Netlify"]'
+          ];
+          selectors.forEach(function (sel) {
+            document.querySelectorAll(sel).forEach(function (el) {
+              el.remove();
+            });
+          });
+        };
+        if (typeof MutationObserver !== 'undefined') {
+          const obs = new MutationObserver(removeNetlifyWidgets);
+          obs.observe(document.documentElement, { childList: true, subtree: true });
+        }
+        window.addEventListener('DOMContentLoaded', removeNetlifyWidgets);
+        window.addEventListener('load', removeNetlifyWidgets);
+      })();
+    </script>
   </head>
   <body class="bg-slate-50 text-slate-800 antialiased selection:bg-brand-500/20 selection:text-brand-700">
     <!-- Skip to main content for keyboard/screen-reader users -->

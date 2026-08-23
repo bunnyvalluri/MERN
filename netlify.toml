@@ -5,6 +5,16 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  NETLIFY_DRAWER_ENABLED = "false"
+
+[context.production.environment]
+  NETLIFY_DRAWER_ENABLED = "false"
+
+[context.deploy-preview.environment]
+  NETLIFY_DRAWER_ENABLED = "false"
+
+[context.branch-deploy.environment]
+  NETLIFY_DRAWER_ENABLED = "false"
 
 [[redirects]]
   from = "/*"

@@ -180,4 +180,31 @@
     mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
   }
+
+  /* ── Hide Netlify Badges, Drawers & Injected Widgets ──────────────── */
+  [data-netlify-badge],
+  [data-netlify-drawer],
+  [data-netlify-feedback],
+  netlify-feedback-drawer,
+  netlify-drawer,
+  .netlify-badge,
+  #netlify-badge,
+  #netlify-drawer,
+  #netlify-feedback,
+  iframe[src*="netlify"],
+  a[href*="netlify.com/powered-by"],
+  a[href*="netlify.com"][target="_blank"]:has(img),
+  img[alt*="Powered by Netlify"],
+  div:has(> a[href*="netlify.com/powered-by"]) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    width: 0 !important;
+    height: 0 !important;
+    left: -99999px !important;
+    top: -99999px !important;
+    z-index: -99999 !important;
+  }
 }
