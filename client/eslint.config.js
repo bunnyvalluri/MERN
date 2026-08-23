@@ -41,7 +41,7 @@ export default [
         'error',
         {
           varsIgnorePattern: '^[A-Z]|^_',
-          argsIgnorePattern: '^_',
+          argsIgnorePattern: '^[A-Z]|^_',
         },
       ],
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
