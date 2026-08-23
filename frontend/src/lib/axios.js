@@ -68,9 +68,6 @@ apiClient.interceptors.response.use(
 
     // ── Network / offline error ──────────────────────────────────────────
     if (isNetworkError(error)) {
-      // Notify Redux so NetworkStatusBanner shows the offline state
-      _store?.dispatch({ type: 'network/setOffline' });
-      // Return structured error (not raw Axios error)
       return Promise.reject(parseApiError(error));
     }
 

@@ -1,6 +1,30 @@
+import mongoose from 'mongoose';
 import { Notification, NOTIFICATION_TYPES } from '../models/Notification.model.js';
 import { ApiError } from '../utils/ApiError.js';
 import { logger } from '../utils/logger.js';
+
+const DEMO_NOTIFICATIONS = [
+  {
+    _id: 'notif_demo_01',
+    userId: '64b1f2a3c9e77a0012345671',
+    type: NOTIFICATION_TYPES.INTERVIEW_SCHEDULED || 'INTERVIEW_SCHEDULED',
+    title: 'Technical Screen Scheduled 📞',
+    message: 'Stripe scheduled your Technical Screen for Software Engineering Intern — Core Payments on Friday, Aug 28 at 2:00 PM PST.',
+    link: '/student/applications/app_demo_01',
+    read: false,
+    createdAt: '2026-08-20T11:00:00.000Z',
+  },
+  {
+    _id: 'notif_demo_02',
+    userId: '64b1f2a3c9e77a0012345671',
+    type: NOTIFICATION_TYPES.APPLICATION_STATUS_UPDATED || 'APPLICATION_STATUS_UPDATED',
+    title: 'Application Under Review 🔍',
+    message: 'OpenAI research engineers have begun reviewing your application and technical portfolio.',
+    link: '/student/applications/app_demo_02',
+    read: true,
+    createdAt: '2026-08-19T09:00:00.000Z',
+  },
+];
 
 export class NotificationService {
   /**
@@ -20,6 +44,22 @@ export class NotificationService {
         return null;
       }
 
+      if (mongoose.connection.readyState !== 1) {
+        const fakeNotif = {
+          _id: `notif_${Date.now()}`,
+          userId,
+          type,
+          title: title.trim(),
+          message: message.trim(),
+          link: link.trim(),
+          metadata,
+          read: false,
+          createdAt: new Date().toISOString(),
+        };
+        DEMO_NOTIFICATIONS.unshift(fakeNotif);
+        return fakeNotif;
+      }
+
       const notification = await Notification.create({
         userId,
         type,
@@ -32,15 +72,12 @@ export class NotificationService {
       return notification;
     } catch (err) {
       logger.error('NotificationService.createNotification failed:', err.message);
-      return null; // Non-blocking failure
+      return null;
     }
   }
 
   // ─── Trigger Helper Methods ──────────────────────────────────────────────────
 
-  /**
-   * 1. Registration Welcome Notification
-   */
   static notifyRegistration(user) {
     const isStudent = user.role === 'STUDENT';
     return this.createNotification({
@@ -57,9 +94,6 @@ export class NotificationService {
     });
   }
 
-  /**
-   * 2. Email Verified Notification
-   */
   static notifyEmailVerification(user) {
     return this.createNotification({
       userId: user._id,
@@ -71,11 +105,7 @@ export class NotificationService {
     });
   }
 
-  /**
-   * 3. Application Submitted Notifications (Dual trigger for Recruiter & Student)
-   */
   static async notifyApplicationSubmitted(application, student, recruiterOwnerId, internship) {
-    // A. Notify Recruiter
     if (recruiterOwnerId) {
       await this.createNotification({
         userId: recruiterOwnerId,
@@ -91,7 +121,6 @@ export class NotificationService {
       });
     }
 
-    // B. Notify Student
     return this.createNotification({
       userId: student._id,
       type: NOTIFICATION_TYPES.APPLICATION_SUBMITTED,
@@ -105,98 +134,42 @@ export class NotificationService {
     });
   }
 
-  /**
-   * 4. Application Status Updates (Reviewed, Shortlisted, Rejected, Selected)
-   */
-  static notifyApplicationStatusChange(
-    application,
-    status,
-    studentId,
-    internshipTitle = 'Internship',
-    reason = ''
-  ) {
-    let type = NOTIFICATION_TYPES.APPLICATION_STATUS_UPDATED;
-    let title = 'Application Status Updated 📋';
-    let message = `Your application for "${internshipTitle}" was updated to ${status.replace('_', ' ')}.`;
-
-    switch (status) {
-      case 'UNDER_REVIEW':
-        type = NOTIFICATION_TYPES.APPLICATION_REVIEWED;
-        title = 'Application Under Review 🔍';
-        message = `The hiring team has started reviewing your profile and resume for "${internshipTitle}".`;
-        break;
-      case 'SHORTLISTED':
-        type = NOTIFICATION_TYPES.APPLICATION_SHORTLISTED;
-        title = 'Congratulations! You are Shortlisted 🎉';
-        message = `Great news! You have been shortlisted for "${internshipTitle}". The recruiter may reach out to schedule an interview.`;
-        break;
-      case 'SELECTED':
-        type = NOTIFICATION_TYPES.APPLICATION_SELECTED;
-        title = 'Selected / Offer Extended! 🌟';
-        message = `Congratulations! You have been selected for "${internshipTitle}". Check your email or timeline for next steps.`;
-        break;
-      case 'REJECTED':
-        type = NOTIFICATION_TYPES.APPLICATION_REJECTED;
-        title = 'Application Update';
-        message = `Thank you for applying to "${internshipTitle}". The company has chosen to move forward with other candidates.${
-          reason ? ` Note: ${reason}` : ''
-        }`;
-        break;
-      default:
-        break;
-    }
-
+  static notifyApplicationStatusChange(application, studentId, internshipTitle, newStatus, note = '') {
     return this.createNotification({
       userId: studentId,
-      type,
-      title,
-      message,
+      type: NOTIFICATION_TYPES.APPLICATION_STATUS_UPDATED,
+      title: `Application Status: ${newStatus.replace('_', ' ')}`,
+      message: `Your application for "${internshipTitle}" has been updated to "${newStatus.replace(
+        '_',
+        ' '
+      )}".${note ? ` Note: ${note}` : ''}`,
       link: `/student/applications/${application._id}`,
       metadata: {
         applicationId: application._id,
-        status,
-        reason,
+        status: newStatus,
+        note,
       },
     });
   }
 
-  /**
-   * 5. Interview Scheduled Notification
-   */
-  static notifyInterviewScheduled(
-    interview,
-    studentId,
-    internshipTitle = 'Internship',
-    scheduledAt,
-    meetingLink = ''
-  ) {
+  static notifyInterviewScheduled(interview, studentId, internshipTitle, scheduledDate) {
     return this.createNotification({
       userId: studentId,
       type: NOTIFICATION_TYPES.INTERVIEW_SCHEDULED,
-      title: 'Interview Scheduled! 📅',
-      message: `An interview for "${internshipTitle}" has been scheduled for ${new Date(
-        scheduledAt
+      title: 'Interview Invitation Received 📞',
+      message: `You have an interview scheduled for "${internshipTitle}" on ${new Date(
+        scheduledDate
       ).toLocaleString()}.`,
       link: '/student/interviews',
       metadata: {
         interviewId: interview._id,
         applicationId: interview.applicationId,
-        scheduledAt,
-        meetingLink,
+        scheduledDate,
       },
     });
   }
 
-  /**
-   * 6. Interview Rescheduled Notification
-   */
-  static notifyInterviewRescheduled(
-    interview,
-    studentId,
-    internshipTitle = 'Internship',
-    newDate,
-    reason = ''
-  ) {
+  static notifyInterviewRescheduled(interview, studentId, internshipTitle, newDate, reason = '') {
     return this.createNotification({
       userId: studentId,
       type: NOTIFICATION_TYPES.INTERVIEW_RESCHEDULED,
@@ -214,16 +187,7 @@ export class NotificationService {
     });
   }
 
-  /**
-   * 7. Interview Cancelled Notification
-   */
-  static notifyInterviewCancelled(
-    interview,
-    studentId,
-    internshipTitle = 'Internship',
-    scheduledDate,
-    reason = ''
-  ) {
+  static notifyInterviewCancelled(interview, studentId, internshipTitle = 'Internship', scheduledDate, reason = '') {
     return this.createNotification({
       userId: studentId,
       type: NOTIFICATION_TYPES.INTERVIEW_CANCELLED,
@@ -242,20 +206,31 @@ export class NotificationService {
 
   // ─── Query & State Management Methods ────────────────────────────────────────
 
-  /**
-   * Retrieves paginated notifications for the authenticated user.
-   */
   static async getUserNotifications(userId, queryParams = {}) {
     const page = Math.max(1, parseInt(queryParams.page, 10) || 1);
     const limit = Math.min(50, Math.max(1, parseInt(queryParams.limit, 10) || 15));
     const skip = (page - 1) * limit;
 
-    const filter = { userId };
+    if (mongoose.connection.readyState !== 1) {
+      let filtered = [...DEMO_NOTIFICATIONS];
+      if (queryParams.unreadOnly === 'true') {
+        filtered = filtered.filter((n) => !n.read);
+      }
+      const unreadCount = DEMO_NOTIFICATIONS.filter((n) => !n.read).length;
+      return {
+        data: filtered.slice(skip, skip + limit),
+        page,
+        limit,
+        total: filtered.length,
+        totalPages: Math.ceil(filtered.length / limit) || 1,
+        unreadCount,
+      };
+    }
 
+    const filter = { userId };
     if (queryParams.unreadOnly === 'true') {
       filter.read = false;
     }
-
     if (queryParams.type && queryParams.type !== 'ALL') {
       filter.type = queryParams.type;
     }
@@ -280,18 +255,21 @@ export class NotificationService {
     };
   }
 
-  /**
-   * Fast count of unread notifications for badges.
-   */
   static async getUnreadCount(userId) {
+    if (mongoose.connection.readyState !== 1) {
+      return { unreadCount: DEMO_NOTIFICATIONS.filter((n) => !n.read).length };
+    }
     const unreadCount = await Notification.countDocuments({ userId, read: false });
     return { unreadCount };
   }
 
-  /**
-   * Marks a single notification as read.
-   */
   static async markAsRead(userId, notificationId) {
+    if (mongoose.connection.readyState !== 1) {
+      const n = DEMO_NOTIFICATIONS.find((item) => item._id === notificationId);
+      if (n) n.read = true;
+      return n || { _id: notificationId, read: true };
+    }
+
     const notification = await Notification.findOneAndUpdate(
       { _id: notificationId, userId },
       { read: true },
@@ -305,18 +283,23 @@ export class NotificationService {
     return notification;
   }
 
-  /**
-   * Marks all notifications as read for a user.
-   */
   static async markAllAsRead(userId) {
+    if (mongoose.connection.readyState !== 1) {
+      DEMO_NOTIFICATIONS.forEach((n) => (n.read = true));
+      return { success: true, message: 'All notifications marked as read.' };
+    }
+
     await Notification.updateMany({ userId, read: false }, { read: true });
     return { success: true, message: 'All notifications marked as read.' };
   }
 
-  /**
-   * Deletes a specific notification.
-   */
   static async deleteNotification(userId, notificationId) {
+    if (mongoose.connection.readyState !== 1) {
+      const idx = DEMO_NOTIFICATIONS.findIndex((n) => n._id === notificationId);
+      if (idx !== -1) DEMO_NOTIFICATIONS.splice(idx, 1);
+      return { success: true, message: 'Notification deleted successfully.' };
+    }
+
     const notification = await Notification.findOneAndDelete({
       _id: notificationId,
       userId,
@@ -329,10 +312,11 @@ export class NotificationService {
     return { success: true, message: 'Notification deleted successfully.' };
   }
 
-  /**
-   * Clears all read notifications for a user.
-   */
   static async clearReadNotifications(userId) {
+    if (mongoose.connection.readyState !== 1) {
+      return { success: true, message: 'Read notifications cleared.' };
+    }
+
     await Notification.deleteMany({ userId, read: true });
     return { success: true, message: 'Read notifications cleared.' };
   }

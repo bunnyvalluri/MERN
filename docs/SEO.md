@@ -114,7 +114,6 @@ InternHub is a **client-side SPA** (Vite + React). SEO for SPAs is achievable be
 
 | Route | Status |
 |---|---|
-| `/design-system` | `noindex,nofollow` via `<SEOHead noindex>` in router |
 | `/login` | Not blocked in robots.txt (crawlable but no SEO value — relies on auth middleware) |
 | `/register` | Blocked in `robots.txt` |
 | `/admin/*` | Blocked in `robots.txt` + `ProtectedRoute` auth guard |
@@ -141,7 +140,6 @@ Disallow: /forgot-password
 Disallow: /reset-password
 Disallow: /verify-email
 Disallow: /notifications
-Disallow: /design-system
 
 Sitemap: https://internhub.dev/sitemap.xml
 ```

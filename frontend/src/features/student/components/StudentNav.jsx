@@ -1,4 +1,4 @@
-import React from 'react';
+import { BrandLogo } from '../../../components/common/BrandLogo.jsx';
 import { NavLink, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../auth/authSlice.js';
@@ -35,13 +35,8 @@ export function StudentNav() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Header */}
         <div className="flex items-center justify-between h-16 border-b border-slate-100">
-          <div className="flex items-center gap-4">
-            <Link to="/" className="flex items-center gap-2.5 group">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center shadow-sm">
-                <Sparkles className="w-4 h-4 text-white" />
-              </div>
-              <span className="font-bold text-lg text-slate-900 tracking-tight">InternHub</span>
-            </Link>
+          <div className="flex items-center gap-3">
+            <BrandLogo to="/" size="sm" showBadge={false} />
             <div className="h-4 w-px bg-slate-200 hidden sm:block" />
             <Badge variant="primary" size="sm" className="hidden sm:inline-flex">
               Student Portal

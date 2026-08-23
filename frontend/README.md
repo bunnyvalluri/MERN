@@ -67,7 +67,6 @@ frontend/
 │   │
 │   ├── pages/                    # Route View Pages
 │   │   ├── LandingPage.jsx       # Public landing page with hero, perks & stats
-│   │   ├── DesignSystemShowcase.jsx # Interactive internal design system preview
 │   │   ├── NotFoundPage.jsx      # 404 handler
 │   │   └── UnauthorizedPage.jsx  # 403 handler
 │   │

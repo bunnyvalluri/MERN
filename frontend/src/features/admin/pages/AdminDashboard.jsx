@@ -87,6 +87,7 @@ export function AdminDashboard() {
   // Search & Filter local states
   const [userSearch, setUserSearch] = useState('');
   const [userRoleFilter, setUserRoleFilter] = useState('ALL');
+  const [usersPage, setUsersPage] = useState(1);
   const [companySearch, setCompanySearch] = useState('');
   const [companyVerifyFilter, setCompanyVerifyFilter] = useState('ALL');
   const [internshipSearch, setInternshipSearch] = useState('');
@@ -134,13 +135,13 @@ export function AdminDashboard() {
         dispatch(fetchAdminMetrics());
         break;
       case 'users':
-        dispatch(fetchAdminUsers({ search: userSearch, role: userRoleFilter }));
+        dispatch(fetchAdminUsers({ search: userSearch, role: userRoleFilter, page: usersPage }));
         break;
       case 'students':
-        dispatch(fetchAdminUsers({ search: userSearch, role: 'STUDENT' }));
+        dispatch(fetchAdminUsers({ search: userSearch, role: 'STUDENT', page: usersPage }));
         break;
       case 'recruiters':
-        dispatch(fetchAdminUsers({ search: userSearch, role: 'RECRUITER' }));
+        dispatch(fetchAdminUsers({ search: userSearch, role: 'RECRUITER', page: usersPage }));
         break;
       case 'companies':
         dispatch(fetchAdminCompanies({ search: companySearch, verified: companyVerifyFilter }));
@@ -162,6 +163,7 @@ export function AdminDashboard() {
     activeSection,
     userSearch,
     userRoleFilter,
+    usersPage,
     companySearch,
     companyVerifyFilter,
     internshipSearch,
@@ -232,6 +234,8 @@ export function AdminDashboard() {
   };
 
   const pendingApprovals = metrics?.metrics?.pendingApprovals || 0;
+  const usersTotalPages = users?.totalPages || 1;
+  const usersTotal = users?.total || (users?.data || []).length;
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 flex selection:bg-rose-500/20 selection:text-rose-700">

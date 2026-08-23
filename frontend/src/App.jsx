@@ -3,35 +3,21 @@ import { Toaster } from 'react-hot-toast';
 import { useStore } from 'react-redux';
 import AppRouter from './routes/AppRouter.jsx';
 import { GlobalErrorBoundary } from './components/common/ErrorBoundary.jsx';
-import { NetworkStatusBanner } from './components/common/NetworkStatusBanner.jsx';
 import { injectStore } from './lib/axios.js';
 
 /**
  * Root application component.
- *
- * Responsibilities:
- * - Wrap routing in GlobalErrorBoundary (catches unhandled render errors)
- * - Render NetworkStatusBanner (offline/online detection)
- * - Render global providers (Toaster)
- * - Inject Redux store into Axios client (enables offline + logout dispatching)
- *
- * Redux Provider and HelmetProvider are in main.jsx (wrap this component).
+ * Clean, distraction-free view with error boundaries and toast notifications.
  */
 function App() {
   const store = useStore();
 
-  // Inject Redux store into Axios client once on mount.
-  // This allows the Axios interceptor to dispatch setOffline() and auth/clearAuth
-  // without creating a circular import.
   useEffect(() => {
     injectStore(store);
   }, [store]);
 
   return (
     <GlobalErrorBoundary>
-      {/* Offline detection banner — sits above all content */}
-      <NetworkStatusBanner />
-
       <AppRouter />
 
       <Toaster

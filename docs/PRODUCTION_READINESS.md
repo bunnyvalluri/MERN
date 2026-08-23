@@ -86,7 +86,6 @@ Created standard production configuration templates:
   - Strict role authorization guards on `/student/*`, `/recruiter/*`, and `/admin/*`
   - Catch-all redirect to `/` for unknown routes
   - Per-route `<SEOHead>` tags injecting canonical URLs, Open Graph, and Twitter Cards
-  - `noindex` applied to internal `/design-system` routes.
 
 ### Check 9: Authentication & Cookie Security
 - `server/src/controllers/auth.controller.js`:

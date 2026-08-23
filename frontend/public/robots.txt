@@ -35,9 +35,6 @@ Disallow: /verify-email
 # Authenticated-only pages
 Disallow: /notifications
 
-# Internal tooling / dev pages
-Disallow: /design-system
-
 # ── Sitemap ──────────────────────────────────────────────────────────────────
 Sitemap: https://internhub.dev/sitemap.xml
 

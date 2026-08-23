@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
 import { Button, Input, Badge } from '../ui/index.js';
 import { notify } from '../../utils/toast.js';
+import { BrandLogo } from './BrandLogo.jsx';
 import {
-  Sparkles,
   Github,
   Twitter,
   Linkedin,
@@ -34,7 +33,6 @@ export function Footer() {
       { label: 'Discover Internships', href: '#featured' },
       { label: 'Application Tracker', href: '#how-it-works' },
       { label: 'Company Directory', href: '#companies' },
-      { label: 'Design System', href: '/design-system' },
     ],
     Recruiters: [
       { label: 'Post an Internship', href: '#companies' },
@@ -104,12 +102,7 @@ export function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12">
           {/* Brand Info */}
           <div className="sm:col-span-2 space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center shadow-sm">
-                <Sparkles className="w-4 h-4 text-white" />
-              </div>
-              <span className="font-bold text-base tracking-tight text-slate-900">InternHub</span>
-            </div>
+            <BrandLogo to="/" size="md" showBadge={false} />
             <p className="text-xs sm:text-sm text-slate-600 max-w-sm leading-relaxed">
               InternHub is the next-generation internship discovery, tracking, and recruiter management
               platform built for students and high-growth tech engineering teams.

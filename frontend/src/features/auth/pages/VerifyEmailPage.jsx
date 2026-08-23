@@ -10,6 +10,7 @@ import {
   Alert,
   Spinner,
 } from '../../../components/ui/index.js';
+import { BrandLogo } from '../../../components/common/BrandLogo.jsx';
 import { notify } from '../../../utils/toast.js';
 import { Sparkles, CheckCircle2, ArrowRight, ArrowLeft, MailCheck } from 'lucide-react';
 
@@ -60,22 +61,16 @@ export function VerifyEmailPage() {
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative selection:bg-brand-500/20 selection:text-brand-700">
       <div className="sm:mx-auto sm:w-full sm:max-w-md z-10 space-y-6">
         {/* Brand Header */}
-        <div className="text-center space-y-2">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg p-1"
-          >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
-              <Sparkles className="w-5 h-5 text-white" />
-            </div>
-            <span className="font-bold text-xl tracking-tight text-slate-900 group-hover:text-brand-600 transition-colors">
-              InternHub
-            </span>
-          </Link>
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900">Verify your email</h2>
-          <p className="text-xs sm:text-sm text-slate-600">
-            Confirm your university or business email address to unlock verified applications
-          </p>
+        <div className="text-center space-y-3">
+          <div className="flex justify-center">
+            <BrandLogo to="/" size="lg" showBadge={true} />
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900">Verify your email</h2>
+            <p className="text-xs sm:text-sm text-slate-600 mt-1">
+              Confirm your university or business email address to unlock verified applications
+            </p>
+          </div>
         </div>
 
         {/* Card */}

@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../features/auth/authSlice.js';
 import { Button, Badge, Avatar } from '../ui/index.js';
+import { BrandLogo } from './BrandLogo.jsx';
 import {
-  Sparkles,
   Menu,
   X,
   Briefcase,
@@ -64,22 +64,7 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
         {/* Brand Logo */}
-        <Link
-          to="/"
-          className="flex items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg p-1 shrink-0"
-        >
-          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
-            <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-          </div>
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <span className="font-bold text-base sm:text-lg tracking-tight text-slate-900 group-hover:text-brand-600 transition-colors">
-              InternHub
-            </span>
-            <Badge variant="primary" size="sm" className="hidden sm:inline-flex">
-              Beta
-            </Badge>
-          </div>
-        </Link>
+        <BrandLogo to="/" size="md" />
 
         {/* Desktop Nav Links */}
         <nav className="hidden md:flex items-center gap-1 lg:gap-2" aria-label="Main Navigation">
@@ -102,12 +87,6 @@ export function Navbar() {
               </a>
             )
           )}
-          <Link
-            to="/design-system"
-            className="px-3 py-2 text-xs font-mono text-slate-500 hover:text-brand-600 hover:bg-slate-100 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
-          >
-            Design System
-          </Link>
         </nav>
 
         {/* Desktop Actions */}
@@ -208,14 +187,6 @@ export function Navbar() {
                 </a>
               )
             )}
-            <Link
-              to="/design-system"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-3 py-2.5 text-xs font-mono text-brand-600 hover:bg-slate-100 rounded-lg transition-colors"
-            >
-              <Sparkles className="w-4 h-4 text-brand-600" />
-              Design System Showcase
-            </Link>
           </nav>
 
           <div className="pt-4 border-t border-slate-200 space-y-2.5">

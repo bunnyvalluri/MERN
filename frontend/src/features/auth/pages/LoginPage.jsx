@@ -6,15 +6,54 @@ import {
   Button,
   Input,
   Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
   CardContent,
   CardFooter,
   Alert,
+  Badge,
 } from '../../../components/ui/index.js';
 import { notify } from '../../../utils/toast.js';
-import { Sparkles, ArrowRight, Lock, Mail, ArrowLeft } from 'lucide-react';
+import { BrandLogo, BrandIcon } from '../../../components/common/BrandLogo.jsx';
+import {
+  Sparkles,
+  ArrowRight,
+  Lock,
+  Mail,
+  ArrowLeft,
+  GraduationCap,
+  Building2,
+  ShieldCheck,
+  CheckCircle2,
+} from 'lucide-react';
+
+const DEMO_PRESETS = [
+  {
+    role: 'STUDENT',
+    title: 'Student Portal',
+    email: 'student@internhub.dev',
+    password: 'Student123!',
+    icon: <GraduationCap className="w-3.5 h-3.5" />,
+    badgeVariant: 'primary',
+    desc: 'Browse, save & 1-click apply',
+  },
+  {
+    role: 'RECRUITER',
+    title: 'Recruiter ATS',
+    email: 'recruiter@stripe.com',
+    password: 'Recruiter123!',
+    icon: <Building2 className="w-3.5 h-3.5" />,
+    badgeVariant: 'warning',
+    desc: 'Post roles & review candidates',
+  },
+  {
+    role: 'ADMIN',
+    title: 'Platform Admin',
+    email: 'admin@internhub.dev',
+    password: 'Admin123!',
+    icon: <ShieldCheck className="w-3.5 h-3.5" />,
+    badgeVariant: 'danger',
+    desc: 'Operations & moderation feed',
+  },
+];
 
 export function LoginPage() {
   const dispatch = useDispatch();
@@ -28,7 +67,7 @@ export function LoginPage() {
     password: '',
   });
 
-  const from = location.state?.from?.pathname || (role === 'RECRUITER' ? '/recruiter/dashboard' : '/student/dashboard');
+  const from = location.state?.from?.pathname || (role === 'RECRUITER' ? '/recruiter/dashboard' : role === 'ADMIN' ? '/admin' : '/student/dashboard');
 
   useEffect(() => {
     dispatch(clearAuthError());
@@ -42,6 +81,22 @@ export function LoginPage() {
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleFillDemo = (preset, autoLogin = false) => {
+    setFormData({
+      email: preset.email,
+      password: preset.password,
+    });
+    notify.info(`Filled ${preset.title} demo credentials`);
+
+    if (autoLogin) {
+      dispatch(loginUser({ email: preset.email, password: preset.password })).then((res) => {
+        if (loginUser.fulfilled.match(res)) {
+          notify.success(`Signed in as ${preset.title}!`);
+        }
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -61,22 +116,51 @@ export function LoginPage() {
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative selection:bg-brand-500/20 selection:text-brand-700">
       <div className="sm:mx-auto sm:w-full sm:max-w-md z-10 space-y-6">
         {/* Brand Header */}
-        <div className="text-center space-y-2">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg p-1"
-          >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
-              <Sparkles className="w-5 h-5 text-white" />
-            </div>
-            <span className="font-bold text-xl tracking-tight text-slate-900 group-hover:text-brand-600 transition-colors">
-              InternHub
+        <div className="text-center space-y-3">
+          <div className="flex justify-center">
+            <BrandLogo to="/" size="lg" showBadge={true} />
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900">Sign in to your account</h2>
+            <p className="text-xs sm:text-sm text-slate-600 mt-1">
+              Access your applications, recruiter pipeline, or admin center
+            </p>
+          </div>
+        </div>
+
+        {/* Quick Demo Access Bar */}
+        <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2.5">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-900 uppercase tracking-wider font-mono flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-brand-600" />
+              Quick Demo Access
             </span>
-          </Link>
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900">Sign in to your account</h2>
-          <p className="text-xs sm:text-sm text-slate-600">
-            Access your applications, interviews, and verified career profile
-          </p>
+            <span className="text-[11px] text-slate-500">1-click login</span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+            {DEMO_PRESETS.map((preset) => (
+              <button
+                key={preset.role}
+                type="button"
+                onClick={() => handleFillDemo(preset, true)}
+                className="p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-brand-50/60 hover:border-brand-300 transition-all text-left group flex flex-col justify-between space-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+              >
+                <div className="flex items-center justify-between w-full">
+                  <span className="font-bold text-xs text-slate-900 group-hover:text-brand-600 transition-colors flex items-center gap-1">
+                    {preset.icon}
+                    {preset.title.split(' ')[0]}
+                  </span>
+                  <Badge variant={preset.badgeVariant} size="xs">
+                    {preset.role}
+                  </Badge>
+                </div>
+                <span className="text-[10px] text-slate-500 font-mono truncate block">
+                  {preset.email.split('@')[0]}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Login Card */}
@@ -96,7 +180,7 @@ export function LoginPage() {
                 label="Email Address"
                 type="email"
                 name="email"
-                placeholder="name@university.edu or name@company.com"
+                placeholder="student@internhub.dev or recruiter@stripe.com"
                 leftIcon={<Mail className="w-4 h-4" />}
                 value={formData.email}
                 onChange={handleChange}
@@ -151,6 +235,28 @@ export function LoginPage() {
             </CardFooter>
           </form>
         </Card>
+
+        {/* Demo Credentials Cheat Sheet Card */}
+        <div className="p-4 rounded-xl border border-slate-200/80 bg-white/80 text-xs text-slate-600 space-y-2">
+          <div className="font-semibold text-slate-900 flex items-center gap-1.5">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            <span>Preset Login Credentials:</span>
+          </div>
+          <div className="grid grid-cols-1 gap-1.5 font-mono text-[11px] text-slate-600">
+            <div className="flex items-center justify-between bg-slate-50 p-2 rounded-lg border border-slate-100">
+              <span>🎓 student@internhub.dev</span>
+              <span className="text-slate-900 font-bold">Student123!</span>
+            </div>
+            <div className="flex items-center justify-between bg-slate-50 p-2 rounded-lg border border-slate-100">
+              <span>🏢 recruiter@stripe.com</span>
+              <span className="text-slate-900 font-bold">Recruiter123!</span>
+            </div>
+            <div className="flex items-center justify-between bg-slate-50 p-2 rounded-lg border border-slate-100">
+              <span>🛡️ admin@internhub.dev</span>
+              <span className="text-slate-900 font-bold">Admin123!</span>
+            </div>
+          </div>
+        </div>
 
         {/* Back Link */}
         <div className="text-center">

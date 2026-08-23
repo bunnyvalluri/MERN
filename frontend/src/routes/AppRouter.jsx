@@ -12,7 +12,6 @@ const InternshipsPage = lazy(() => import('../features/internships/pages/Interns
 const InternshipDetailPage = lazy(() => import('../features/internships/pages/InternshipDetailPage.jsx'));
 const CompaniesPage = lazy(() => import('../features/companies/pages/CompaniesPage.jsx'));
 const CompanyDetailPage = lazy(() => import('../features/companies/pages/CompanyDetailPage.jsx'));
-const DesignSystemShowcase = lazy(() => import('../pages/DesignSystemShowcase.jsx'));
 
 // Authentication Pages
 const LoginPage = lazy(() => import('../features/auth/pages/LoginPage.jsx'));
@@ -71,22 +70,6 @@ export function AppRouter() {
           <Route path="/internships/:id" element={<InternshipDetailPage />} />
           <Route path="/companies" element={<CompaniesPage />} />
           <Route path="/companies/:id" element={<CompanyDetailPage />} />
-
-          {/* Internal design tooling — not indexed by search engines */}
-          <Route
-            path="/design-system"
-            element={
-              <>
-                {/* noindex prevents this internal page from appearing in search results */}
-                <SEOHead
-                  title="Design System | InternHub Internal"
-                  description="Internal component library and design system showcase."
-                  noindex={true}
-                />
-                <DesignSystemShowcase />
-              </>
-            }
-          />
 
           {/* Global Protected Notifications Hub */}
           <Route
