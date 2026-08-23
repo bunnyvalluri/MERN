@@ -1,0 +1,45 @@
+# InternHub — robots.txt
+# https://internhub.dev/robots.txt
+# Last updated: 2026-08-23
+
+# ── Allow all well-behaved crawlers ─────────────────────────────────────────
+User-agent: *
+
+# Public discovery pages — always crawlable
+Allow: /$
+Allow: /internships$
+Allow: /internships/
+Allow: /companies$
+Allow: /companies/
+
+# ── Block private dashboard routes ──────────────────────────────────────────
+# Admin portal
+Disallow: /admin
+Disallow: /admin/
+
+# Student portal
+Disallow: /student
+Disallow: /student/
+
+# Recruiter portal
+Disallow: /recruiter
+Disallow: /recruiter/
+
+# Authentication flows
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /verify-email
+
+# Authenticated-only pages
+Disallow: /notifications
+
+# Internal tooling / dev pages
+Disallow: /design-system
+
+# ── Sitemap ──────────────────────────────────────────────────────────────────
+Sitemap: https://internhub.dev/sitemap.xml
+
+# ── Crawl-delay hint (optional, respected by Bing/Yahoo) ────────────────────
+# Crawl-delay: 1

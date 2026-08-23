@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+          http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+  <!--
+    InternHub Public Sitemap
+    Last updated: 2026-08-23
+    Generated: Statically for stable public routes.
+    Dynamic routes (/internships/:id, /companies/:id) should be
+    appended via a server-side /api/sitemap endpoint at build time.
+  -->
+
+  <!-- ── Home ──────────────────────────────────────────────────────────── -->
+  <url>
+    <loc>https://internhub.dev/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- ── Internship Discovery ──────────────────────────────────────────── -->
+  <url>
+    <loc>https://internhub.dev/internships</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- ── Company Discovery ─────────────────────────────────────────────── -->
+  <url>
+    <loc>https://internhub.dev/companies</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!--
+    NOTE: Dynamic pages (/internships/:id, /companies/:id) are not listed here.
+    Add a server-side route GET /sitemap-dynamic.xml that queries the database
+    and returns XML for all published internships and verified companies.
+    Reference it from a sitemap index at /sitemap-index.xml.
+    See docs/SEO.md for implementation guidance.
+  -->
+
+</urlset>

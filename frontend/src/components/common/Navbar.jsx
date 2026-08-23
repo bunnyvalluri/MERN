@@ -1,0 +1,280 @@
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { logoutUser } from '../../features/auth/authSlice.js';
+import { Button, Badge, Avatar } from '../ui/index.js';
+import {
+  Sparkles,
+  Menu,
+  X,
+  Briefcase,
+  Building2,
+  HelpCircle,
+  BookOpen,
+  ArrowRight,
+  User as UserIcon,
+  LogOut,
+  LayoutDashboard,
+} from 'lucide-react';
+
+/**
+ * Production-grade responsive Navigation Bar.
+ */
+export function Navbar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isAuthenticated, user, role } = useSelector((state) => state.auth);
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Close mobile menu on ESC
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const navLinks = [
+    { label: 'Find Internships', to: '/internships', icon: <Briefcase className="w-4 h-4" /> },
+    { label: 'Companies', to: '/companies', icon: <Building2 className="w-4 h-4" /> },
+    { label: 'How It Works', href: '/#how-it-works', icon: <HelpCircle className="w-4 h-4" /> },
+    { label: 'Resources', href: '/#resources', icon: <BookOpen className="w-4 h-4" /> },
+  ];
+
+  const dashboardPath = role === 'RECRUITER' ? '/recruiter/dashboard' : '/student/dashboard';
+
+  return (
+    <header
+      className={`sticky top-0 z-40 w-full transition-all duration-200 ${
+        scrolled
+          ? 'bg-slate-950/85 backdrop-blur-md border-b border-slate-800/80 shadow-card'
+          : 'bg-transparent border-b border-transparent'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+        {/* Brand Logo */}
+        <Link
+          to="/"
+          className="flex items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg p-1 shrink-0"
+        >
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+            <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+          </div>
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <span className="font-bold text-base sm:text-lg tracking-tight text-white group-hover:text-brand-300 transition-colors">
+              InternHub
+            </span>
+            <Badge variant="primary" size="sm" className="hidden sm:inline-flex">
+              Beta
+            </Badge>
+          </div>
+        </Link>
+
+        {/* Desktop Nav Links */}
+        <nav className="hidden md:flex items-center gap-1 lg:gap-2" aria-label="Main Navigation">
+          {navLinks.map((link) =>
+            link.to ? (
+              <Link
+                key={link.label}
+                to={link.to}
+                className="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-900/60 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.label}
+                href={link.href}
+                className="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-900/60 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+              >
+                {link.label}
+              </a>
+            )
+          )}
+          <Link
+            to="/design-system"
+            className="px-3 py-2 text-xs font-mono text-slate-400 hover:text-brand-300 hover:bg-slate-900/60 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+          >
+            Design System
+          </Link>
+        </nav>
+
+        {/* Desktop Actions */}
+        <div className="hidden sm:flex items-center gap-3">
+          {isAuthenticated ? (
+            <div className="flex items-center gap-3">
+              <Link to={dashboardPath}>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  leftIcon={<LayoutDashboard className="w-4 h-4 text-brand-400" />}
+                >
+                  Dashboard
+                </Button>
+              </Link>
+              <div className="flex items-center gap-2 pl-2 border-l border-slate-800">
+                <Avatar name={user?.name || 'User'} size="sm" />
+                <button
+                  type="button"
+                  onClick={() => dispatch(logoutUser())}
+                  aria-label="Sign out"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-danger-400 hover:bg-slate-800 transition-colors"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <Button
+                variant="ghost"
+                size="sm"
+                leftIcon={<UserIcon className="w-4 h-4" />}
+                onClick={() => navigate('/login')}
+              >
+                Login
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
+                rightIcon={<ArrowRight className="w-4 h-4" />}
+                onClick={() => navigate('/register')}
+              >
+                Get Started
+              </Button>
+            </>
+          )}
+        </div>
+
+        {/* Mobile Menu Trigger */}
+        <div className="flex items-center gap-2 md:hidden">
+          {!isAuthenticated && (
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={() => navigate('/login')}
+              className="sm:hidden"
+            >
+              Login
+            </Button>
+          )}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            aria-expanded={mobileMenuOpen}
+            aria-label="Toggle navigation menu"
+            className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu Drawer */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-b border-slate-800 bg-slate-950/95 backdrop-blur-lg animate-slide-down px-4 py-6 space-y-4 shadow-modal">
+          <nav className="space-y-1.5" aria-label="Mobile Navigation">
+            {navLinks.map((link) =>
+              link.to ? (
+                <Link
+                  key={link.label}
+                  to={link.to}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-200 hover:bg-slate-900 rounded-lg transition-colors"
+                >
+                  <span className="text-slate-400">{link.icon}</span>
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-200 hover:bg-slate-900 rounded-lg transition-colors"
+                >
+                  <span className="text-slate-400">{link.icon}</span>
+                  {link.label}
+                </a>
+              )
+            )}
+            <Link
+              to="/design-system"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-3 px-3 py-2.5 text-xs font-mono text-brand-300 hover:bg-slate-900 rounded-lg transition-colors"
+            >
+              <Sparkles className="w-4 h-4 text-brand-400" />
+              Design System Showcase
+            </Link>
+          </nav>
+
+          <div className="pt-4 border-t border-slate-800 space-y-2.5">
+            {isAuthenticated ? (
+              <>
+                <Link
+                  to={dashboardPath}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block"
+                >
+                  <Button variant="primary" fullWidth size="md" leftIcon={<LayoutDashboard className="w-4 h-4" />}>
+                    Go to Dashboard
+                  </Button>
+                </Link>
+                <Button
+                  variant="danger"
+                  fullWidth
+                  size="md"
+                  leftIcon={<LogOut className="w-4 h-4" />}
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    dispatch(logoutUser());
+                  }}
+                >
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="outline"
+                  fullWidth
+                  size="md"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    navigate('/login');
+                  }}
+                >
+                  Login to Account
+                </Button>
+                <Button
+                  variant="primary"
+                  fullWidth
+                  size="md"
+                  rightIcon={<ArrowRight className="w-4 h-4" />}
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    navigate('/register');
+                  }}
+                >
+                  Create Account
+                </Button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
+
+export default Navbar;
