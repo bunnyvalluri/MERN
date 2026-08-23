@@ -2,6 +2,7 @@
   "name": "internhub",
   "version": "1.0.0",
   "description": "InternHub — Full-stack internship discovery & application platform monorepo",
+  "author": "VALLURI RAHUL <https://valluri-rahul-portfolio.vercel.app/>",
   "private": true,
   "type": "module",
   "scripts": {

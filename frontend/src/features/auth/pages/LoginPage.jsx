@@ -405,14 +405,27 @@ export function LoginPage() {
             </form>
           </div>
 
-          {/* Back link */}
-          <div className="mt-5 text-center pb-4 sm:pb-0">
-            <Link
-              to="/"
-              className="text-xs text-slate-400 hover:text-slate-600 transition-colors"
-            >
-              ← Back to homepage
-            </Link>
+          {/* Back link & Copyright */}
+          <div className="mt-5 text-center pb-4 sm:pb-0 space-y-2">
+            <div>
+              <Link
+                to="/"
+                className="text-xs text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                ← Back to homepage
+              </Link>
+            </div>
+            <div className="text-[11px] text-slate-400">
+              &copy; {new Date().getFullYear()} InternHub • Crafted by{' '}
+              <a
+                href="https://valluri-rahul-portfolio.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-brand-600 hover:text-brand-700 hover:underline"
+              >
+                VALLURI RAHUL
+              </a>
+            </div>
           </div>
         </div>
       </main>

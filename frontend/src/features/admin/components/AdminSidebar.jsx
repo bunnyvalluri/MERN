@@ -160,6 +160,20 @@ export function AdminSidebar({
             </button>
           </div>
         )}
+
+        {!collapsed && (
+          <div className="text-[10px] text-slate-400 px-2 pt-1 border-t border-slate-100 truncate text-center">
+            &copy; {new Date().getFullYear()} InternHub •{' '}
+            <a
+              href="https://valluri-rahul-portfolio.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-rose-600 hover:underline font-medium"
+            >
+              VALLURI RAHUL
+            </a>
+          </div>
+        )}
       </div>
     </aside>
   );

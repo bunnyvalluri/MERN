@@ -112,8 +112,8 @@ export function RecruiterSidebar({
         })}
       </div>
 
-      {/* Bottom Public Discovery Link */}
-      <div className="p-3 border-t border-slate-100">
+      {/* Bottom Public Discovery Link & Copyright */}
+      <div className="p-3 border-t border-slate-100 space-y-2">
         <Link
           to="/internships"
           target="_blank"
@@ -124,8 +124,21 @@ export function RecruiterSidebar({
           title={collapsed ? 'Public Discovery' : undefined}
         >
           <ExternalLink className="w-4 h-4 shrink-0" />
-          {!collapsed && <span className="truncate">Public Job Discovery</span>}
+          {!collapsed && <span className="truncate font-medium">Public Job Discovery</span>}
         </Link>
+        {!collapsed && (
+          <div className="text-[10px] text-slate-400 px-2 pt-1 border-t border-slate-100 truncate">
+            &copy; {new Date().getFullYear()} InternHub •{' '}
+            <a
+              href="https://valluri-rahul-portfolio.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-brand-600 hover:underline font-medium"
+            >
+              VALLURI RAHUL
+            </a>
+          </div>
+        )}
       </div>
     </aside>
   );

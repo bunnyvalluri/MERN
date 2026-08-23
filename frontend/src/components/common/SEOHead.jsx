@@ -53,6 +53,8 @@ export function SEOHead({
       {/* ── Primary ─────────────────────────────────────────────────────── */}
       <title>{title}</title>
       <meta name="description" content={resolvedDesc} />
+      <meta name="author" content="VALLURI RAHUL (https://valluri-rahul-portfolio.vercel.app/)" />
+      <meta name="copyright" content="VALLURI RAHUL" />
       <meta name="robots" content={robotsContent} />
       <link rel="canonical" href={canonicalUrl} />
 
