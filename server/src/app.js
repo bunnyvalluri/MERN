@@ -9,6 +9,7 @@ import healthRouter from './routes/health.routes.js';
 import authRouter from './routes/auth.routes.js';
 import studentRouter from './routes/student.routes.js';
 import internshipRouter from './routes/internship.routes.js';
+import recruiterRouter from './routes/recruiter.routes.js';
 import { errorHandler, notFoundHandler } from './middleware/error.middleware.js';
 import { logger } from './utils/logger.js';
 
@@ -70,6 +71,7 @@ app.use('/api/v1/health', healthRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/students', studentRouter);
 app.use('/api/v1/internships', internshipRouter);
+app.use('/api/v1/recruiter', recruiterRouter);
 // app.use('/api/v1/applications',  applicationRouter);
 // app.use('/api/v1/interviews',    interviewRouter);
 // app.use('/api/v1/notifications', notificationRouter);

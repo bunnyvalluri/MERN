@@ -18,58 +18,14 @@ import StudentProfilePage from '../features/student/pages/StudentProfilePage.jsx
 import StudentResumePage from '../features/student/pages/StudentResumePage.jsx';
 import StudentSettingsPage from '../features/student/pages/StudentSettingsPage.jsx';
 
+// Recruiter Feature Pages
+import RecruiterDashboard from '../features/recruiter/pages/RecruiterDashboard.jsx';
+import RecruiterInternshipsPage from '../features/recruiter/pages/RecruiterInternshipsPage.jsx';
+import CreateInternshipPage from '../features/recruiter/pages/CreateInternshipPage.jsx';
+import EditInternshipPage from '../features/recruiter/pages/EditInternshipPage.jsx';
+import CompanyProfilePage from '../features/recruiter/pages/CompanyProfilePage.jsx';
+
 import ProtectedRoute from './ProtectedRoute.jsx';
-import { Button, Card, CardTitle, CardContent, Badge } from '../components/ui/index.js';
-import { useDispatch, useSelector } from 'react-redux';
-import { logoutUser } from '../features/auth/authSlice.js';
-import { LogOut, Building2 } from 'lucide-react';
-
-/**
- * Placeholder view for authenticated Recruiter Dashboard (built in next phase).
- */
-function RecruiterDashboardPlaceholder() {
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
-
-  return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 p-6 flex flex-col items-center justify-center">
-      <Card className="max-w-md w-full border-slate-800 bg-slate-900 p-6 space-y-6 text-center">
-        <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mx-auto text-emerald-400">
-          <Building2 className="w-6 h-6" />
-        </div>
-        <div className="space-y-1">
-          <Badge variant="success" size="sm">
-            Recruiter Portal
-          </Badge>
-          <CardTitle>Welcome, {user?.name || 'Recruiter'}!</CardTitle>
-          <p className="text-xs text-slate-400">
-            Authenticated via JWT • Role: <span className="font-mono text-emerald-300">{user?.role}</span>
-          </p>
-        </div>
-        <CardContent className="p-0 space-y-2 text-xs text-slate-300 text-left bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-          <div>Email: <span className="font-semibold text-white">{user?.email}</span></div>
-          <div>Company Hiring Pipeline: <span className="font-semibold text-white">Active</span></div>
-        </CardContent>
-        <div className="flex gap-3">
-          <a
-            href="/"
-            className="flex-1 px-4 py-2 rounded-lg border border-slate-700 bg-slate-800 text-xs font-semibold hover:bg-slate-700 transition-colors flex items-center justify-center"
-          >
-            Home Page
-          </a>
-          <Button
-            variant="danger"
-            size="sm"
-            leftIcon={<LogOut className="w-3.5 h-3.5" />}
-            onClick={() => dispatch(logoutUser())}
-          >
-            Sign Out
-          </Button>
-        </div>
-      </Card>
-    </div>
-  );
-}
 
 /**
  * Central Application Router.
@@ -133,10 +89,46 @@ function AppRouter() {
 
         {/* Protected Recruiter Portal Routes */}
         <Route
-          path="/recruiter/dashboard"
+          path="/recruiter"
           element={
             <ProtectedRoute allowedRoles={['RECRUITER', 'ADMIN', 'SUPER_ADMIN']}>
-              <RecruiterDashboardPlaceholder />
+              <RecruiterDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/recruiter/dashboard"
+          element={<Navigate to="/recruiter" replace />}
+        />
+        <Route
+          path="/recruiter/internships"
+          element={
+            <ProtectedRoute allowedRoles={['RECRUITER', 'ADMIN', 'SUPER_ADMIN']}>
+              <RecruiterInternshipsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/recruiter/internships/new"
+          element={
+            <ProtectedRoute allowedRoles={['RECRUITER', 'ADMIN', 'SUPER_ADMIN']}>
+              <CreateInternshipPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/recruiter/internships/:id/edit"
+          element={
+            <ProtectedRoute allowedRoles={['RECRUITER', 'ADMIN', 'SUPER_ADMIN']}>
+              <EditInternshipPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/recruiter/company"
+          element={
+            <ProtectedRoute allowedRoles={['RECRUITER', 'ADMIN', 'SUPER_ADMIN']}>
+              <CompanyProfilePage />
             </ProtectedRoute>
           }
         />
