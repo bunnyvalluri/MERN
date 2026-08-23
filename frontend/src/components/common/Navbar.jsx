@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../features/auth/authSlice.js';
-import { Button, Badge, Avatar } from '../ui/index.js';
+import { Button, Avatar } from '../ui/index.js';
 import { BrandLogo } from './BrandLogo.jsx';
 import {
   Menu,
@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 
 /**
- * Production-grade responsive Navigation Bar.
+ * Production-grade responsive Navigation Bar with clean SaaS breakpoints.
  */
 export function Navbar() {
   const dispatch = useDispatch();
@@ -63,22 +63,24 @@ export function Navbar() {
     <header
       className={`sticky top-0 z-40 w-full transition-all duration-200 ${
         scrolled
-          ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm'
-          : 'bg-transparent border-b border-transparent'
+          ? 'bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-xs'
+          : 'bg-white/80 backdrop-blur-sm border-b border-slate-100'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
         {/* Brand Logo */}
-        <BrandLogo to="/" size="md" />
+        <div className="shrink-0">
+          <BrandLogo to="/" size="md" />
+        </div>
 
-        {/* Desktop Nav Links */}
-        <nav className="hidden md:flex items-center gap-1 lg:gap-2" aria-label="Main Navigation">
+        {/* Desktop Nav Links (Clean spacing, zero text wrapping) */}
+        <nav className="hidden lg:flex items-center gap-1 xl:gap-2" aria-label="Main Navigation">
           {navLinks.map((link) =>
             link.to ? (
               <Link
                 key={link.label}
                 to={link.to}
-                className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+                className="px-3.5 py-2 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 rounded-xl whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
               >
                 {link.label}
               </Link>
@@ -86,7 +88,7 @@ export function Navbar() {
               <a
                 key={link.label}
                 href={link.href}
-                className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+                className="px-3.5 py-2 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 rounded-xl whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
               >
                 {link.label}
               </a>
@@ -95,7 +97,7 @@ export function Navbar() {
         </nav>
 
         {/* Desktop Actions */}
-        <div className="hidden sm:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-3 shrink-0">
           {isAuthenticated ? (
             <div className="flex items-center gap-3">
               <Link to={dashboardPath}>
@@ -103,6 +105,7 @@ export function Navbar() {
                   variant="secondary"
                   size="sm"
                   leftIcon={<LayoutDashboard className="w-4 h-4 text-brand-600" />}
+                  className="font-bold text-xs"
                 >
                   Dashboard
                 </Button>
@@ -113,19 +116,21 @@ export function Navbar() {
                   type="button"
                   onClick={() => dispatch(logoutUser())}
                   aria-label="Sign out"
-                  className="p-1.5 rounded-lg text-slate-500 hover:text-danger-600 hover:bg-slate-100 transition-colors"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-danger-600 hover:bg-slate-100 transition-colors"
+                  title="Sign out"
                 >
                   <LogOut className="w-4 h-4" />
                 </button>
               </div>
             </div>
           ) : (
-            <>
+            <div className="flex items-center gap-2.5">
               <Button
                 variant="ghost"
                 size="sm"
                 leftIcon={<UserIcon className="w-4 h-4" />}
                 onClick={() => navigate('/login')}
+                className="font-semibold text-xs text-slate-700"
               >
                 Login
               </Button>
@@ -134,21 +139,22 @@ export function Navbar() {
                 size="sm"
                 rightIcon={<ArrowRight className="w-4 h-4" />}
                 onClick={() => navigate('/register')}
+                className="font-bold text-xs shadow-xs"
               >
                 Get Started
               </Button>
-            </>
+            </div>
           )}
         </div>
 
-        {/* Mobile Menu Trigger */}
-        <div className="flex items-center gap-2 md:hidden">
+        {/* Mobile / Tablet Menu Trigger (< 1024px) */}
+        <div className="flex items-center gap-2 lg:hidden">
           {!isAuthenticated && (
             <Button
               variant="ghost"
               size="xs"
               onClick={() => navigate('/login')}
-              className="sm:hidden"
+              className="font-semibold text-xs text-slate-700 sm:hidden"
             >
               Login
             </Button>
@@ -158,16 +164,16 @@ export function Navbar() {
             onClick={() => setMobileMenuOpen((prev) => !prev)}
             aria-expanded={mobileMenuOpen}
             aria-label="Toggle navigation menu"
-            className="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+            className="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile / Tablet Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-slate-200 bg-white/95 backdrop-blur-lg animate-slide-down px-4 py-6 space-y-4 shadow-modal">
+        <div className="lg:hidden border-b border-slate-200 bg-white/98 backdrop-blur-xl animate-slide-down px-4 py-6 space-y-4 shadow-modal">
           <nav className="space-y-1.5" aria-label="Mobile Navigation">
             {navLinks.map((link) =>
               link.to ? (
@@ -175,9 +181,9 @@ export function Navbar() {
                   key={link.label}
                   to={link.to}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+                  className="flex items-center gap-3 px-3.5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 rounded-xl transition-colors"
                 >
-                  <span className="text-slate-500">{link.icon}</span>
+                  <span className="text-slate-400">{link.icon}</span>
                   {link.label}
                 </Link>
               ) : (
@@ -185,16 +191,16 @@ export function Navbar() {
                   key={link.label}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+                  className="flex items-center gap-3 px-3.5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 rounded-xl transition-colors"
                 >
-                  <span className="text-slate-500">{link.icon}</span>
+                  <span className="text-slate-400">{link.icon}</span>
                   {link.label}
                 </a>
               )
             )}
           </nav>
 
-          <div className="pt-4 border-t border-slate-200 space-y-2.5">
+          <div className="pt-4 border-t border-slate-100 space-y-2.5">
             {isAuthenticated ? (
               <>
                 <Link
@@ -220,7 +226,7 @@ export function Navbar() {
                 </Button>
               </>
             ) : (
-              <>
+              <div className="grid grid-cols-2 gap-2">
                 <Button
                   variant="outline"
                   fullWidth
@@ -229,8 +235,9 @@ export function Navbar() {
                     setMobileMenuOpen(false);
                     navigate('/login');
                   }}
+                  className="font-semibold text-xs"
                 >
-                  Login to Account
+                  Login
                 </Button>
                 <Button
                   variant="primary"
@@ -241,10 +248,11 @@ export function Navbar() {
                     setMobileMenuOpen(false);
                     navigate('/register');
                   }}
+                  className="font-bold text-xs"
                 >
-                  Create Account
+                  Get Started
                 </Button>
-              </>
+              </div>
             )}
           </div>
         </div>
