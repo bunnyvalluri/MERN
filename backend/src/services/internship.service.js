@@ -4,7 +4,7 @@ import { SavedInternship } from '../models/SavedInternship.model.js';
 import { Application } from '../models/Application.model.js';
 import { Company } from '../models/Company.model.js';
 import { ApiError } from '../utils/ApiError.js';
-import { REAL_COMPANIES, REAL_INTERNSHIPS } from '../data/realInternshipsData.js';
+import { REAL_INTERNSHIPS } from '../data/realInternshipsData.js';
 
 // In-memory saved bookmarks store for fallback mode
 const inMemorySavedBookmarks = new Map(); // studentId -> Set(internshipIds)

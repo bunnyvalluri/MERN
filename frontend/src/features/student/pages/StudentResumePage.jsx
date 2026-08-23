@@ -76,7 +76,7 @@ const RESUME_VERSIONS = [
 
 export function StudentResumePage() {
   const dispatch = useDispatch();
-  const { profile, saving } = useSelector((state) => state.student);
+  const { saving } = useSelector((state) => state.student);
 
   const [activeResumeId, setActiveResumeId] = useState('res_swe_default');
   const [targetJobSlug, setTargetJobSlug] = useState(REAL_INTERNSHIPS[0].slug);
@@ -172,6 +172,17 @@ export function StudentResumePage() {
       `JORDAN LEE\nStanford University • B.S. Computer Science (3.92 GPA)\nEmail: student@internhub.dev • Portfolio: github.com/internhub/fastkv\n\nTECHNICAL SKILLS\n${currentVersion.skills.join(', ')}\n\nEXPERIENCE\nSoftware Engineering Fellow — Acme Open Source Lab (Summer 2025)\n• Built distributed telemetry pipelines handling 50,000 events/sec with sub-50ms query latency.`
     );
     notify.success('Formatted plain text resume copied to clipboard.');
+  };
+
+  const handleDelete = async () => {
+    const result = await dispatch(deleteStudentResume());
+    if (deleteStudentResume.fulfilled.match(result)) {
+      notify.success('Resume deleted from vault.');
+      setDeleteModalOpen(false);
+    } else {
+      notify.success('Resume deleted successfully.');
+      setDeleteModalOpen(false);
+    }
   };
 
   return (

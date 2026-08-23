@@ -748,6 +748,21 @@ export function StudentSettingsPage() {
                         Update Password
                       </Button>
                     </div>
+
+                    <div className="pt-5 border-t border-slate-100 space-y-3">
+                      <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                        Two-Factor Authentication (2FA)
+                      </h4>
+                      <Switch
+                        label="Require Authenticator App (TOTP)"
+                        description="Add an extra layer of biometric or authenticator security for portal access."
+                        checked={twoFactorEnabled}
+                        onChange={(val) => {
+                          setTwoFactorEnabled(val);
+                          notify.success(val ? 'Two-Factor Authentication enabled.' : 'Two-Factor Authentication disabled.');
+                        }}
+                      />
+                    </div>
                   </CardContent>
                 </form>
               </Card>

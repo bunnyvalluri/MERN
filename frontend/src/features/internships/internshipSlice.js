@@ -58,7 +58,7 @@ const initialState = {
  */
 export const fetchInternships = createAsyncThunk(
   'internships/fetchList',
-  async (params = {}, { rejectWithValue }) => {
+  async (params = {}) => {
     const savedSet = getStoredSavedSet();
     try {
       const response = await internshipService.getInternships(params);
@@ -102,7 +102,7 @@ export const fetchInternshipDetail = createAsyncThunk(
  */
 export const toggleSaveInternship = createAsyncThunk(
   'internships/toggleSave',
-  async (internshipId, { rejectWithValue }) => {
+  async (internshipId) => {
     const savedSet = getStoredSavedSet();
     const isCurrentlySaved = savedSet.has(internshipId);
     let newSavedStatus = !isCurrentlySaved;

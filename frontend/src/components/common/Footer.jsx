@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { Button, Input, Badge } from '../ui/index.js';
 import { notify } from '../../utils/toast.js';
 import { BrandLogo } from './BrandLogo.jsx';

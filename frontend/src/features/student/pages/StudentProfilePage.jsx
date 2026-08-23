@@ -74,6 +74,7 @@ const SECTIONS = [
   { id: 'education', label: 'Education', icon: <GraduationCap className="w-4 h-4" /> },
   { id: 'experience', label: 'Work Experience', icon: <Briefcase className="w-4 h-4" /> },
   { id: 'projects', label: 'Projects & Portfolio', icon: <FolderGit2 className="w-4 h-4" /> },
+  { id: 'certifications', label: 'Certifications', icon: <Award className="w-4 h-4" /> },
   { id: 'skills', label: 'Skills & Tech Stack', icon: <Tag className="w-4 h-4" /> },
   { id: 'links', label: 'Links & Socials', icon: <Globe className="w-4 h-4" /> },
   { id: 'preferences', label: 'Internship Preferences', icon: <Sliders className="w-4 h-4" /> },
@@ -82,7 +83,7 @@ const SECTIONS = [
 export function StudentProfilePage() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const { profile, loading, saving } = useSelector((state) => state.student);
+  const { profile, saving } = useSelector((state) => state.student);
 
   const [activeSection, setActiveSection] = useState('identity');
 
@@ -717,6 +718,84 @@ export function StudentProfilePage() {
                           variant="ghost"
                           size="xs"
                           onClick={() => handleDeleteProject(idx)}
+                          className="text-rose-600 hover:text-rose-700"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Certifications Section */}
+            {activeSection === 'certifications' && (
+              <Card className="border-slate-200 bg-white shadow-sm">
+                <CardHeader className="pb-4 border-b border-slate-100 flex flex-row items-center justify-between">
+                  <div>
+                    <CardTitle className="text-base font-bold text-slate-900">
+                      Certifications & Credentials
+                    </CardTitle>
+                    <CardDescription className="text-xs text-slate-500 mt-0.5">
+                      Professional certificates, cloud badges, and exam accreditations
+                    </CardDescription>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    leftIcon={<Plus className="w-4 h-4" />}
+                    onClick={() => {
+                      setEditingCert(null);
+                      setCertModalOpen(true);
+                    }}
+                  >
+                    Add Certification
+                  </Button>
+                </CardHeader>
+                <CardContent className="p-6 space-y-4">
+                  {formData.certifications.map((cert, idx) => (
+                    <div
+                      key={cert._id || idx}
+                      className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start justify-between gap-4"
+                    >
+                      <div className="space-y-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <h4 className="text-sm font-bold text-slate-900">{cert.name}</h4>
+                          {cert.credentialUrl && (
+                            <a
+                              href={cert.credentialUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-brand-600 hover:text-brand-700"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </a>
+                          )}
+                        </div>
+                        <p className="text-xs text-slate-700 font-medium">{cert.issuer}</p>
+                        {cert.issueDate && (
+                          <p className="text-[11px] text-slate-500 font-mono">
+                            Issued {new Date(cert.issueDate).toLocaleDateString()}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-1 shrink-0">
+                        <Button
+                          variant="ghost"
+                          size="xs"
+                          onClick={() => {
+                            setEditingCert(cert);
+                            setCertModalOpen(true);
+                          }}
+                        >
+                          <Edit2 className="w-3.5 h-3.5" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="xs"
+                          onClick={() => handleDeleteCert(idx)}
                           className="text-rose-600 hover:text-rose-700"
                         >
                           <Trash2 className="w-3.5 h-3.5" />

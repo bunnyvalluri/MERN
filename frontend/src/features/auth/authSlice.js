@@ -55,7 +55,7 @@ const initialState = {
  */
 export const registerUser = createAsyncThunk(
   'auth/register',
-  async ({ name, email, password, role }, { rejectWithValue }) => {
+  async ({ name, email, password, role }) => {
     try {
       const data = await authService.register({ name, email, password, role });
       return data;
