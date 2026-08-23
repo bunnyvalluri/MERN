@@ -52,7 +52,12 @@ export function Navbar() {
     { label: 'Resources', href: '/#resources', icon: <BookOpen className="w-4 h-4" /> },
   ];
 
-  const dashboardPath = role === 'RECRUITER' ? '/recruiter/dashboard' : '/student/dashboard';
+  const dashboardPath =
+    role === 'ADMIN' || role === 'SUPER_ADMIN'
+      ? '/admin'
+      : role === 'RECRUITER'
+      ? '/recruiter'
+      : '/student';
 
   return (
     <header

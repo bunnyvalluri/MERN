@@ -30,6 +30,7 @@ const DEMO_PRESETS = [
     password: 'Student123!',
     icon: GraduationCap,
     desc: 'Browse & apply',
+    path: '/student',
   },
   {
     role: 'RECRUITER',
@@ -38,6 +39,7 @@ const DEMO_PRESETS = [
     password: 'Recruiter123!',
     icon: Building2,
     desc: 'Post & review',
+    path: '/recruiter',
   },
   {
     role: 'ADMIN',
@@ -46,6 +48,7 @@ const DEMO_PRESETS = [
     password: 'Admin123!',
     icon: ShieldCheck,
     desc: 'Operations',
+    path: '/admin',
   },
 ];
 
@@ -73,19 +76,19 @@ export function LoginPage() {
   const [activePreset, setActivePreset] = useState(null);
   const [mounted, setMounted] = useState(false);
 
-  const from =
-    location.state?.from?.pathname ||
-    (role === 'RECRUITER' ? '/recruiter/dashboard' : role === 'ADMIN' ? '/admin' : '/student/dashboard');
-
   useEffect(() => {
     dispatch(clearAuthError());
     const t = setTimeout(() => setMounted(true), 60);
     return () => clearTimeout(t);
   }, [dispatch]);
 
+  // If already authenticated, redirect to role home
   useEffect(() => {
-    if (isAuthenticated) navigate(from, { replace: true });
-  }, [isAuthenticated, navigate, from]);
+    if (isAuthenticated && role) {
+      const defaultPath = role === 'RECRUITER' ? '/recruiter' : role === 'ADMIN' ? '/admin' : '/student';
+      navigate(defaultPath, { replace: true });
+    }
+  }, [isAuthenticated, role, navigate]);
 
   const handleChange = (e) =>
     setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
@@ -94,7 +97,10 @@ export function LoginPage() {
     setActivePreset(preset.role);
     setFormData({ email: preset.email, password: preset.password });
     dispatch(loginUser({ email: preset.email, password: preset.password })).then((res) => {
-      if (loginUser.fulfilled.match(res)) notify.success(`Signed in as ${preset.title}!`);
+      if (loginUser.fulfilled.match(res)) {
+        notify.success(`Signed in as ${preset.title}!`);
+        navigate(preset.path, { replace: true });
+      }
     });
   };
 
@@ -105,7 +111,30 @@ export function LoginPage() {
       return;
     }
     const res = await dispatch(loginUser(formData));
-    if (loginUser.fulfilled.match(res)) notify.success('Welcome back! 👋');
+    if (loginUser.fulfilled.match(res)) {
+      notify.success('Welcome back! 👋');
+      const userRole = res.payload.data.user.role;
+      let targetPath =
+        userRole === 'RECRUITER'
+          ? '/recruiter'
+          : userRole === 'ADMIN'
+          ? '/admin'
+          : '/student';
+
+      if (location.state?.from?.pathname) {
+        const fromPath = location.state.from.pathname;
+        if (
+          (userRole === 'RECRUITER' && fromPath.startsWith('/recruiter')) ||
+          (userRole === 'ADMIN') ||
+          (userRole === 'STUDENT' && !fromPath.startsWith('/recruiter') && !fromPath.startsWith('/admin')) ||
+          fromPath.startsWith('/internships') ||
+          fromPath.startsWith('/companies')
+        ) {
+          targetPath = fromPath;
+        }
+      }
+      navigate(targetPath, { replace: true });
+    }
   };
 
   return (
@@ -146,7 +175,7 @@ export function LoginPage() {
             <div className="space-y-5 max-w-xs">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-white/90 text-xs font-semibold">
                 <Sparkles className="w-3.5 h-3.5 text-yellow-300 shrink-0" />
-                #1 Internship Platform in India
+                #1 Tech Internship Portal
               </div>
 
               <h1 className="text-[2.1rem] xl:text-[2.5rem] font-bold text-white leading-[1.18] tracking-tight">
@@ -156,8 +185,7 @@ export function LoginPage() {
               </h1>
 
               <p className="text-blue-100/75 text-sm leading-relaxed">
-                Connect with top companies, showcase your skills, and land the internship that
-                shapes your future.
+                Connect with top companies, showcase your verified skills, and land top-tier tech internships.
               </p>
 
               {/* Stats grid */}
@@ -223,11 +251,11 @@ export function LoginPage() {
           <div className="mb-5 p-3.5 rounded-2xl bg-gradient-to-br from-brand-50 to-indigo-50/60 border border-brand-100">
             <div className="flex items-center justify-between mb-3">
               <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
-                <Sparkles className="w-3 h-3 text-brand-500 shrink-0" />
-                Quick Demo
+                <Sparkles className="w-3.5 h-3.5 text-brand-500 shrink-0" />
+                1-Click Demo Portals
               </span>
               <span className="text-[10px] text-slate-400 bg-white px-2 py-0.5 rounded-full border border-slate-200">
-                1-click login
+                Instant access
               </span>
             </div>
 

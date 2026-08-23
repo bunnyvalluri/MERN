@@ -20,6 +20,15 @@ export const DEMO_CLIENT_ACCOUNTS = {
     isVerified: true,
     isActive: true,
   },
+  'recruiter@internhub.dev': {
+    _id: '64b1f2a3c9e77a0012345672',
+    name: 'Sarah Jenkins',
+    email: 'recruiter@internhub.dev',
+    role: 'RECRUITER',
+    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+    isVerified: true,
+    isActive: true,
+  },
   'admin@internhub.dev': {
     _id: '64b1f2a3c9e77a0012345673',
     name: 'Alex Vance (Platform Admin)',

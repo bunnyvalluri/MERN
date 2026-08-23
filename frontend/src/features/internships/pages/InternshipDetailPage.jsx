@@ -10,6 +10,7 @@ import { submitApplication } from '../../applications/applicationSlice.js';
 import Navbar from '../../../components/common/Navbar.jsx';
 import Footer from '../../../components/common/Footer.jsx';
 import SEOHead from '../../../components/common/SEOHead.jsx';
+import CompanyLogo from '../../../components/common/CompanyLogo.jsx';
 import {
   Card,
   CardHeader,
@@ -331,20 +332,13 @@ export function InternshipDetailPage() {
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-5 sm:gap-6">
             {/* Company Logo & Role Title */}
             <div className="flex flex-col xs:flex-row items-start gap-3.5 sm:gap-4 min-w-0">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-slate-50 border border-slate-200 p-2 sm:p-2.5 flex items-center justify-center shrink-0 shadow-sm overflow-hidden">
-                {company.logo ? (
-                  <img
-                    src={company.logo}
-                    alt={`${company.name} company logo`}
-                    width={64}
-                    height={64}
-                    className="w-full h-full object-contain rounded-lg"
-                    loading="eager"
-                  />
-                ) : (
-                  <Building2 className="w-7 h-7 sm:w-8 sm:h-8 text-brand-600" />
-                )}
-              </div>
+              <CompanyLogo
+                companyName={company.name}
+                slug={company.slug}
+                logo={company.logo}
+                website={company.website}
+                className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl shrink-0"
+              />
 
               <div className="space-y-1.5 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">

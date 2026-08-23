@@ -283,6 +283,8 @@ export function RecruiterDashboard() {
         collapsed={sidebarCollapsed}
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
         unreadNotifsCount={unreadNotifsCount}
+        applicationsCount={metrics?.totalApplications || 0}
+        upcomingInterviewsCount={metrics?.upcomingInterviews || 0}
         className="hidden md:flex sticky top-0 h-screen z-30"
       />
 
@@ -307,6 +309,8 @@ export function RecruiterDashboard() {
               activeSection={activeSection}
               onSelectSection={handleSelectSection}
               unreadNotifsCount={unreadNotifsCount}
+              applicationsCount={metrics?.totalApplications || 0}
+              upcomingInterviewsCount={metrics?.upcomingInterviews || 0}
               className="w-full flex-1 border-0"
             />
           </div>
