@@ -46,10 +46,10 @@ export function Navbar() {
   }, []);
 
   const navLinks = [
-    { label: 'Find Internships', href: '#featured', icon: <Briefcase className="w-4 h-4" /> },
-    { label: 'Companies', href: '#companies', icon: <Building2 className="w-4 h-4" /> },
-    { label: 'How It Works', href: '#how-it-works', icon: <HelpCircle className="w-4 h-4" /> },
-    { label: 'Resources', href: '#resources', icon: <BookOpen className="w-4 h-4" /> },
+    { label: 'Find Internships', to: '/internships', icon: <Briefcase className="w-4 h-4" /> },
+    { label: 'Companies', href: '/#companies', icon: <Building2 className="w-4 h-4" /> },
+    { label: 'How It Works', href: '/#how-it-works', icon: <HelpCircle className="w-4 h-4" /> },
+    { label: 'Resources', href: '/#resources', icon: <BookOpen className="w-4 h-4" /> },
   ];
 
   const dashboardPath = role === 'RECRUITER' ? '/recruiter/dashboard' : '/student/dashboard';
@@ -83,15 +83,25 @@ export function Navbar() {
 
         {/* Desktop Nav Links */}
         <nav className="hidden md:flex items-center gap-1 lg:gap-2" aria-label="Main Navigation">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-900/60 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) =>
+            link.to ? (
+              <Link
+                key={link.label}
+                to={link.to}
+                className="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-900/60 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.label}
+                href={link.href}
+                className="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-900/60 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+              >
+                {link.label}
+              </a>
+            )
+          )}
           <Link
             to="/design-system"
             className="px-3 py-2 text-xs font-mono text-slate-400 hover:text-brand-300 hover:bg-slate-900/60 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
@@ -175,17 +185,29 @@ export function Navbar() {
       {mobileMenuOpen && (
         <div className="md:hidden border-b border-slate-800 bg-slate-950/95 backdrop-blur-lg animate-slide-down px-4 py-6 space-y-4 shadow-modal">
           <nav className="space-y-1.5" aria-label="Mobile Navigation">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-200 hover:bg-slate-900 rounded-lg transition-colors"
-              >
-                <span className="text-slate-400">{link.icon}</span>
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) =>
+              link.to ? (
+                <Link
+                  key={link.label}
+                  to={link.to}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-200 hover:bg-slate-900 rounded-lg transition-colors"
+                >
+                  <span className="text-slate-400">{link.icon}</span>
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-200 hover:bg-slate-900 rounded-lg transition-colors"
+                >
+                  <span className="text-slate-400">{link.icon}</span>
+                  {link.label}
+                </a>
+              )
+            )}
             <Link
               to="/design-system"
               onClick={() => setMobileMenuOpen(false)}

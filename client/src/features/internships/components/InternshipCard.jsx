@@ -5,13 +5,14 @@ import {
   Building2,
   MapPin,
   DollarSign,
-  Calendar,
   ArrowUpRight,
   Sparkles,
+  CheckCircle2,
 } from 'lucide-react';
 
 /**
  * Reusable Internship Opportunity Card.
+ * Gracefully formats both database documents and display fixtures.
  */
 export function InternshipCard({
   internship,
@@ -20,25 +21,65 @@ export function InternshipCard({
   onViewDetails,
   className = '',
 }) {
-  const {
-    id,
-    title,
-    company,
-    companyLogo,
-    location,
-    locationType = 'Remote',
-    stipend,
-    skills = [],
-    postedDate,
-    category,
-    featured = false,
-  } = internship;
+  const id = internship._id || internship.id;
+  const title = internship.title || 'Software Engineering Intern';
+  const companyName = internship.companyId?.name || internship.company || 'Company';
+  const companyLogo = internship.companyId?.logo || internship.companyLogo || null;
+  const isVerified = Boolean(internship.companyId?.verified);
+
+  // Format location
+  const locationFormatted =
+    typeof internship.location === 'object'
+      ? `${internship.location?.city || ''}${
+          internship.location?.city && internship.location?.country ? ', ' : ''
+        }${internship.location?.country || ''}` || 'Remote'
+      : internship.location || 'Remote';
+
+  // Format workplace type
+  const remoteType = internship.remote || internship.locationType || 'Remote';
+  const locationType =
+    remoteType === 'REMOTE'
+      ? 'Remote'
+      : remoteType === 'HYBRID'
+      ? 'Hybrid'
+      : remoteType === 'ONSITE'
+      ? 'On-site'
+      : remoteType;
+
+  // Format stipend
+  let stipendFormatted = 'Competitive';
+  if (typeof internship.stipend === 'object' && internship.stipend !== null) {
+    if (internship.stipend.isUnpaid) {
+      stipendFormatted = 'Unpaid';
+    } else if (internship.stipend.amount) {
+      const periodMap = { HOUR: '/hr', MONTH: '/mo', TOTAL: ' total' };
+      stipendFormatted = `$${internship.stipend.amount.toLocaleString()}${
+        periodMap[internship.stipend.period] || '/mo'
+      }`;
+    }
+  } else if (typeof internship.stipend === 'string') {
+    stipendFormatted = internship.stipend;
+  }
+
+  // Format posted date
+  const postedFormatted = internship.createdAt
+    ? new Date(internship.createdAt).toLocaleDateString(undefined, {
+        month: 'short',
+        day: 'numeric',
+      })
+    : internship.postedDate || 'Recent';
+
+  const skills = Array.isArray(internship.skills) ? internship.skills : [];
+  const category = internship.category;
+  const featured = Boolean(internship.featured);
 
   const locationBadgeVariants = {
     Remote: 'info',
     Hybrid: 'primary',
     'On-site': 'neutral',
   };
+
+  const itemSaved = isSaved || Boolean(internship.isSaved);
 
   return (
     <Card
@@ -56,12 +97,12 @@ export function InternshipCard({
                 {companyLogo ? (
                   <img
                     src={companyLogo}
-                    alt={`${company} logo`}
+                    alt={`${companyName} logo`}
                     className="w-full h-full object-contain rounded"
                     loading="lazy"
                     onError={(e) => {
                       e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'flex';
+                      if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
                     }}
                   />
                 ) : null}
@@ -74,10 +115,13 @@ export function InternshipCard({
               </div>
 
               <div className="min-w-0">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5">
                   <span className="text-xs font-semibold text-slate-300 hover:text-white transition-colors truncate">
-                    {company}
+                    {companyName}
                   </span>
+                  {isVerified && (
+                    <CheckCircle2 className="w-3.5 h-3.5 text-brand-400 shrink-0" title="Verified Company" />
+                  )}
                   {featured && (
                     <Badge variant="primary" size="sm" className="hidden sm:inline-flex">
                       <Sparkles className="w-3 h-3 mr-1 text-brand-300" />
@@ -98,14 +142,14 @@ export function InternshipCard({
                 e.stopPropagation();
                 onToggleSave?.(id);
               }}
-              aria-label={isSaved ? 'Remove from saved' : 'Save internship'}
+              aria-label={itemSaved ? 'Remove from saved' : 'Save internship'}
               className={`p-2 rounded-lg border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 shrink-0 ${
-                isSaved
+                itemSaved
                   ? 'bg-brand-500/10 border-brand-500/40 text-brand-300'
                   : 'bg-slate-800/60 border-slate-700/60 text-slate-400 hover:text-slate-100 hover:bg-slate-800'
               }`}
             >
-              <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-brand-400 text-brand-400' : ''}`} />
+              <Bookmark className={`w-4 h-4 ${itemSaved ? 'fill-brand-400 text-brand-400' : ''}`} />
             </button>
           </div>
         </CardHeader>
@@ -113,15 +157,15 @@ export function InternshipCard({
         <CardContent className="pt-1 pb-4 space-y-4">
           {/* Metadata Badges */}
           <div className="flex items-center gap-2 flex-wrap text-xs text-slate-300">
-            <div className="flex items-center gap-1 text-slate-400 font-medium">
-              <MapPin className="w-3.5 h-3.5 text-slate-500" />
-              <span>{location}</span>
+            <div className="flex items-center gap-1 text-slate-400 font-medium truncate max-w-[150px]">
+              <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+              <span className="truncate">{locationFormatted}</span>
             </div>
             <Badge variant={locationBadgeVariants[locationType] || 'neutral'} size="sm">
               {locationType}
             </Badge>
             {category && (
-              <Badge variant="neutral" size="sm">
+              <Badge variant="neutral" size="sm" className="hidden sm:inline-flex">
                 {category}
               </Badge>
             )}
@@ -149,9 +193,9 @@ export function InternshipCard({
       {/* Card Footer */}
       <CardFooter className="pt-3 pb-4 justify-between bg-slate-950/40 border-t border-slate-800/80">
         <div className="flex items-center gap-1.5 text-xs text-slate-400">
-          <DollarSign className="w-4 h-4 text-emerald-400" />
-          <span className="font-semibold text-slate-200 text-sm">{stipend}</span>
-          <span className="text-slate-500 hidden sm:inline">• {postedDate}</span>
+          <DollarSign className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span className="font-semibold text-slate-200 text-sm">{stipendFormatted}</span>
+          <span className="text-slate-500 hidden sm:inline">• {postedFormatted}</span>
         </div>
 
         <Button

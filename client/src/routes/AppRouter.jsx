@@ -8,6 +8,10 @@ import ForgotPasswordPage from '../features/auth/pages/ForgotPasswordPage.jsx';
 import ResetPasswordPage from '../features/auth/pages/ResetPasswordPage.jsx';
 import VerifyEmailPage from '../features/auth/pages/VerifyEmailPage.jsx';
 
+// Discovery & Internships Pages
+import InternshipsPage from '../features/internships/pages/InternshipsPage.jsx';
+import InternshipDetailPage from '../features/internships/pages/InternshipDetailPage.jsx';
+
 // Student Feature Pages
 import StudentDashboard from '../features/student/pages/StudentDashboard.jsx';
 import StudentProfilePage from '../features/student/pages/StudentProfilePage.jsx';
@@ -74,9 +78,13 @@ function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public Routes */}
+        {/* Public Discovery Routes */}
         <Route path="/" element={<LandingPage />} />
+        <Route path="/internships" element={<InternshipsPage />} />
+        <Route path="/internships/:id" element={<InternshipDetailPage />} />
         <Route path="/design-system" element={<DesignSystemShowcase />} />
+
+        {/* Authentication Routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
