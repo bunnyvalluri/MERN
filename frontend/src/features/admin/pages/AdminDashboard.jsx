@@ -22,6 +22,7 @@ import {
   Card,
   CardHeader,
   CardTitle,
+  CardDescription,
   CardContent,
   Button,
   Badge,
@@ -73,6 +74,7 @@ import {
   Radio,
   TrendingUp,
   ChevronRight,
+  ArrowRight,
 } from 'lucide-react';
 
 export function AdminDashboard() {
