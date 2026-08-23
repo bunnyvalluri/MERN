@@ -2,16 +2,7 @@ import React, { useState } from 'react';
 import { Button, Input, Badge } from '../ui/index.js';
 import { notify } from '../../utils/toast.js';
 import { BrandLogo } from './BrandLogo.jsx';
-import {
-  Github,
-  Twitter,
-  Linkedin,
-  Mail,
-  Heart,
-  Globe,
-  ArrowRight,
-  ShieldCheck,
-} from 'lucide-react';
+import { Mail, ArrowRight } from 'lucide-react';
 
 /**
  * Production-ready multi-column SaaS Footer.
@@ -143,38 +134,16 @@ export function Footer() {
       <div className="border-t border-slate-100 bg-slate-50/80 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <div>
-            &copy; {new Date().getFullYear()} InternHub Platform, Inc. All rights reserved.
-          </div>
-
-          {/* Social Icons */}
-          <div className="flex items-center gap-4 text-slate-500">
+            &copy; {new Date().getFullYear()} InternHub Platform, Inc. Crafted by{' '}
             <a
-              href="https://github.com/bunnyvalluri/MERN"
+              href="https://valluri-rahul-portfolio.vercel.app/"
               target="_blank"
-              rel="noreferrer"
-              aria-label="InternHub GitHub Repository"
-              className="hover:text-slate-900 transition-colors p-1"
+              rel="noopener noreferrer"
+              className="font-semibold text-brand-600 hover:text-brand-700 hover:underline transition-colors"
             >
-              <Github className="w-4 h-4" />
+              VALLURI RAHUL
             </a>
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="InternHub Twitter"
-              className="hover:text-slate-900 transition-colors p-1"
-            >
-              <Twitter className="w-4 h-4" />
-            </a>
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="InternHub LinkedIn"
-              className="hover:text-slate-900 transition-colors p-1"
-            >
-              <Linkedin className="w-4 h-4" />
-            </a>
+            . All rights reserved.
           </div>
         </div>
       </div>
