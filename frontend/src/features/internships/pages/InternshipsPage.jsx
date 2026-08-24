@@ -264,12 +264,16 @@ export function InternshipsPage() {
 
       <Navbar />
 
-      {/* Live Synced Opportunities Banner */}
+      {/* Live Synced Opportunities Banner (100% Real Dynamic Total Count) */}
       <div className="bg-brand-600 text-white shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3 text-xs sm:text-sm font-bold">
           <div className="flex items-center gap-2.5">
             <BellRing className="w-4 h-4 text-white shrink-0" />
-            <span>388 new internships recently synced and available.</span>
+            <span>
+              {(pagination?.total || internships?.length || 0) > 0
+                ? `${pagination?.total || internships?.length} verified tech ${(pagination?.total || internships?.length) === 1 ? 'internship' : 'internships'} live and available.`
+                : 'Verified tech opportunities synchronized and available.'}
+            </span>
           </div>
           <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-white/90">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
