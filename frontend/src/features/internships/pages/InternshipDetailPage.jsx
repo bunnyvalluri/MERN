@@ -24,6 +24,7 @@ import {
   Textarea,
 } from '../../../components/ui/index.js';
 import { notify } from '../../../utils/toast.js';
+import { parseDescriptionParagraphs } from '../../../utils/textUtils.js';
 import {
   Building2,
   MapPin,
@@ -418,9 +419,13 @@ export function InternshipDetailPage() {
                 <CardTitle className="text-base font-bold text-slate-900">About the Internship</CardTitle>
               </CardHeader>
               <CardContent className="p-6 space-y-4">
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed whitespace-pre-line">
-                  {internship.description}
-                </p>
+                <div className="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-3">
+                  {parseDescriptionParagraphs(internship.description || '').map((para, idx) => (
+                    <p key={idx} className="leading-relaxed">
+                      {para}
+                    </p>
+                  ))}
+                </div>
               </CardContent>
             </Card>
 

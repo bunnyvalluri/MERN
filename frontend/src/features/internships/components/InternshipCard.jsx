@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import CompanyLogo from '../../../components/common/CompanyLogo.jsx';
+import { cleanDescriptionText } from '../../../utils/textUtils.js';
 import {
   Bookmark,
   MapPin,
@@ -92,10 +93,11 @@ export function InternshipCard({
 }) {
   const id = internship._id || internship.id || internship.slug;
   const title = internship.title || 'Software Engineering Opportunity';
-  const companyName = internship.companyName || internship.companyId?.name || internship.company || 'Enterprise Partner';
-  const companyLogo = internship.companyLogo || internship.companyId?.logo || null;
+  const rawCompanyName = internship.companyId?.name || internship.companyName || internship.company || '';
+  const companyName = rawCompanyName && rawCompanyName !== 'Partner Employer' ? rawCompanyName : (internship.companyId?.name || 'Top Tier Employer');
+  const companyLogo = internship.companyId?.logo || internship.companyLogo || null;
   const companySlug = internship.companyId?.slug || internship.companySlug || '';
-  const companyWebsite = internship.companyWebsite || internship.companyId?.website || '';
+  const companyWebsite = internship.companyId?.website || internship.companyWebsite || '';
   const isVerified = Boolean(internship.isVerified ?? internship.companyId?.verified ?? true);
   const sourceName = internship.source || (internship.sourceType === 'API' ? 'Partner Feed' : 'InternHub');
   const isExternal = internship.applicationMethod === 'EXTERNAL' || Boolean(internship.applicationUrl);
@@ -420,7 +422,7 @@ export function InternshipCard({
               {title}
             </h3>
             <p className="text-xs text-slate-500 line-clamp-2 mt-1.5 leading-relaxed font-normal">
-              {internship.shortDescription || internship.description || `Engineering opportunity at ${companyName}.`}
+              {cleanDescriptionText(internship.shortDescription || internship.description || `Engineering opportunity at ${companyName}.`)}
             </p>
           </div>
         </div>

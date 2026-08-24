@@ -212,10 +212,20 @@ export class InternshipService {
         savedMap = new Set(savedDocs.map((s) => s.internshipId.toString()));
       }
 
-      const data = internships.map((item) => ({
-        ...item,
-        isSaved: savedMap.has(item._id.toString()),
-      }));
+      const data = internships.map((item) => {
+        const comp = item.companyId || {};
+        const realName = comp.name || (item.companyName !== 'Partner Employer' ? item.companyName : '') || 'Top Tier Employer';
+        const realLogo = comp.logo || item.companyLogo || `https://www.google.com/s2/favicons?domain=${comp.slug || 'google'}.com&sz=128`;
+        const realWebsite = comp.website || item.companyWebsite || (comp.slug ? `https://${comp.slug}.com` : '');
+
+        return {
+          ...item,
+          companyName: realName,
+          companyLogo: realLogo,
+          companyWebsite: realWebsite,
+          isSaved: savedMap.has(item._id.toString()),
+        };
+      });
 
       return {
         data,

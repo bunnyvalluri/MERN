@@ -6,6 +6,7 @@ import {
   Badge,
 } from '../../../components/ui/index.js';
 import { notify } from '../../../utils/toast.js';
+import { parseDescriptionParagraphs } from '../../../utils/textUtils.js';
 import {
   X,
   MapPin,
@@ -447,11 +448,15 @@ export function InternshipDetailDrawer({
               <Briefcase className="w-3.5 h-3.5 text-slate-500" />
               Role Description & Mission
             </h3>
-            <div className="text-xs sm:text-sm text-slate-700 leading-relaxed space-y-3 prose prose-slate max-w-none">
-              <p>
-                {internship.description ||
-                  'Join our world-class engineering team to build scalable full-stack applications, collaborate with senior architects, and ship impactful software used by millions.'}
-              </p>
+            <div className="text-xs sm:text-sm text-slate-700 leading-relaxed space-y-3 max-w-none">
+              {parseDescriptionParagraphs(
+                internship.description ||
+                  'Join our world-class engineering team to build scalable applications, collaborate with senior architects, and ship impactful software used by millions.'
+              ).map((paragraph, pIdx) => (
+                <p key={pIdx} className="leading-relaxed">
+                  {paragraph}
+                </p>
+              ))}
             </div>
           </div>
 
