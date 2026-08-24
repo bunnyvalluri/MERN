@@ -1,6 +1,5 @@
 import { JobSourceConnector } from '../base/JobSourceConnector.js';
-import { SOURCE_TYPE, INTERNSHIP_STATUS, APPLICATION_METHOD } from '../../models/Internship.model.js';
-import { Internship } from '../../models/Internship.model.js';
+import { Internship, SOURCE_TYPE, INTERNSHIP_STATUS, APPLICATION_METHOD } from '../../models/Internship.model.js';
 import { logger } from '../../utils/logger.js';
 
 /**

@@ -155,11 +155,11 @@ export class JobSourceConnector {
   /**
    * Abstract Methods to be implemented by child connectors
    */
-  async fetchListings() {
-    throw new Error(`fetchListings() must be implemented by ${this.name}`);
+  fetchListings() {
+    return Promise.reject(new Error(`fetchListings() must be implemented by ${this.name}`));
   }
 
-  normalizeListing(rawListing) {
+  normalizeListing(_rawListing) {
     throw new Error(`normalizeListing() must be implemented by ${this.name}`);
   }
 

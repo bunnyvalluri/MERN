@@ -126,9 +126,9 @@ export class CompanyService {
   /**
    * Returns distinct industry list for filtering.
    */
-  static async getIndustries() {
+  static getIndustries() {
     if (mongoose.connection.readyState !== 1) {
-      return [];
+      return Promise.resolve([]);
     }
     return Company.distinct('industry');
   }

@@ -182,108 +182,61 @@ export class ApplicationService {
     const limit = Math.min(50, Math.max(1, parseInt(queryParams.limit, 10) || 10));
     const skip = (page - 1) * limit;
 
-    if (mongoose.connection.readyState !== 1) {
-      let filtered = [...IN_MEMORY_SAMPLE_APPLICATIONS];
-      if (queryParams.status && queryParams.status !== 'ALL') {
-        filtered = filtered.filter((a) => a.status === queryParams.status);
-      }
-      return {
-        data: filtered.slice(skip, skip + limit),
-        page,
-        limit,
-        total: filtered.length,
-        totalPages: Math.ceil(filtered.length / limit) || 1,
-      };
+    const filter = { studentId };
+    if (queryParams.status && queryParams.status !== 'ALL') {
+      filter.status = queryParams.status;
     }
 
-    try {
-      const filter = { studentId };
-      if (queryParams.status && queryParams.status !== 'ALL') {
-        filter.status = queryParams.status;
-      }
+    let sort = { createdAt: -1 };
+    if (queryParams.sortBy === 'oldest') sort = { createdAt: 1 };
+    if (queryParams.sortBy === 'status') sort = { status: 1, createdAt: -1 };
 
-      let sort = { createdAt: -1 };
-      if (queryParams.sortBy === 'oldest') sort = { createdAt: 1 };
-      if (queryParams.sortBy === 'status') sort = { status: 1, createdAt: -1 };
+    const [applications, total] = await Promise.all([
+      Application.find(filter)
+        .populate('internshipId', 'title slug remote type duration stipend location status openings applicationDeadline')
+        .populate('companyId', 'name logo industry verified')
+        .sort(sort)
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+      Application.countDocuments(filter),
+    ]);
 
-      const [applications, total] = await Promise.all([
-        Application.find(filter)
-          .populate('internshipId', 'title slug remote type duration stipend location status openings applicationDeadline')
-          .populate('companyId', 'name logo industry verified')
-          .sort(sort)
-          .skip(skip)
-          .limit(limit)
-          .lean(),
-        Application.countDocuments(filter),
-      ]);
-
-      if (total === 0 && !queryParams.status) {
-        return {
-          data: IN_MEMORY_SAMPLE_APPLICATIONS.slice(skip, skip + limit),
-          page,
-          limit,
-          total: IN_MEMORY_SAMPLE_APPLICATIONS.length,
-          totalPages: 1,
-        };
-      }
-
-      return {
-        data: applications,
-        page,
-        limit,
-        total,
-        totalPages: Math.ceil(total / limit) || 1,
-      };
-    } catch {
-      return {
-        data: IN_MEMORY_SAMPLE_APPLICATIONS.slice(skip, skip + limit),
-        page,
-        limit,
-        total: IN_MEMORY_SAMPLE_APPLICATIONS.length,
-        totalPages: 1,
-      };
-    }
+    return {
+      data: applications,
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit) || 1,
+    };
   }
 
   /**
    * Retrieves full details for a single student application including timeline.
    */
   static async getStudentApplicationById(applicationId, studentId) {
-    if (mongoose.connection.readyState !== 1) {
-      const found = IN_MEMORY_SAMPLE_APPLICATIONS.find((a) => a._id === applicationId) || IN_MEMORY_SAMPLE_APPLICATIONS[0];
-      return { application: found, interview: null };
+    const application = await Application.findOne({
+      _id: applicationId,
+      studentId,
+    })
+      .populate('internshipId')
+      .populate('companyId', 'name logo website industry location description verified')
+      .populate('timeline.changedBy', 'name role')
+      .lean();
+
+    if (!application) {
+      throw new ApiError(404, 'Application not found or unauthorized access.');
     }
 
-    try {
-      const application = await Application.findOne({
-        _id: applicationId,
-        studentId,
-      })
-        .populate('internshipId')
-        .populate('companyId', 'name logo website industry location description verified')
-        .populate('timeline.changedBy', 'name role')
-        .lean();
+    const interview = await Interview.findOne({
+      applicationId: application._id,
+      studentId,
+    }).lean();
 
-      if (!application) {
-        const found = IN_MEMORY_SAMPLE_APPLICATIONS.find((a) => a._id === applicationId);
-        if (found) return { application: found, interview: null };
-        throw new ApiError(404, 'Application not found or unauthorized access.');
-      }
-
-      const interview = await Interview.findOne({
-        applicationId: application._id,
-        studentId,
-      }).lean();
-
-      return {
-        application,
-        interview,
-      };
-    } catch (err) {
-      if (err instanceof ApiError) throw err;
-      const found = IN_MEMORY_SAMPLE_APPLICATIONS.find((a) => a._id === applicationId) || IN_MEMORY_SAMPLE_APPLICATIONS[0];
-      return { application: found, interview: null };
-    }
+    return {
+      application,
+      interview,
+    };
   }
 
   /**

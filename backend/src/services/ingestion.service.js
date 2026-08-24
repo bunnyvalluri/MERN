@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import mongoose from 'mongoose';
-import { Internship, INTERNSHIP_STATUS, FRESHNESS_STATE, SOURCE_TYPE } from '../models/Internship.model.js';
+import { Internship, INTERNSHIP_STATUS, FRESHNESS_STATE } from '../models/Internship.model.js';
 import { SyncJob, SYNC_JOB_STATUS, SYNC_JOB_TYPE } from '../models/SyncJob.model.js';
 import { sourceRegistry } from '../connectors/SourceRegistry.js';
 import { eventBus, SYSTEM_EVENTS } from '../utils/eventBus.js';
@@ -189,7 +189,7 @@ export class IngestionService {
     );
 
     // 3. Search for existing document by fingerprint OR by (source + externalId)
-    let existing = await Internship.findOne({
+    const existing = await Internship.findOne({
       $or: [
         { fingerprint },
         { source: item.source, externalId: item.externalId },

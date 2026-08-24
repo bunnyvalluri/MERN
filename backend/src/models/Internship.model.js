@@ -218,7 +218,7 @@ const internshipSchema = new mongoose.Schema(
     skills: {
       type: [String],
       validate: {
-        validator: function (v) {
+        validator(v) {
           return Array.isArray(v) && v.length > 0;
         },
         message: 'At least one skill is required',

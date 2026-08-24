@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import { Internship, INTERNSHIP_STATUS } from '../models/Internship.model.js';
 import { SavedInternship } from '../models/SavedInternship.model.js';
 import { Application } from '../models/Application.model.js';
-import { Company } from '../models/Company.model.js';
 import { SyncJob } from '../models/SyncJob.model.js';
 import { ApiError } from '../utils/ApiError.js';
 import { logger } from '../utils/logger.js';

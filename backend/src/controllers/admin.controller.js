@@ -175,14 +175,14 @@ export const broadcastNotificationHandler = asyncHandler(async (req, res) => {
 
 // ─── Source Health & Ingestion Management Handlers ───────────────────────────
 
-export const getSourcesHandler = asyncHandler(async (req, res) => {
+export const getSourcesHandler = asyncHandler((req, res) => {
   const metrics = sourceRegistry.getMetrics();
   res.status(200).json(
     new ApiResponse(200, 'Source connector metrics retrieved successfully.', metrics)
   );
 });
 
-export const updateSourceHandler = asyncHandler(async (req, res) => {
+export const updateSourceHandler = asyncHandler((req, res) => {
   const { name } = req.params;
   const { enabled } = req.body;
   const success = sourceRegistry.setSourceEnabled(name, enabled);

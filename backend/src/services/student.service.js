@@ -102,56 +102,6 @@ export const calculateProfileCompletion = (profile, _user = null) => {
   };
 };
 
-function getInMemoryProfile(userId) {
-  const key = userId.toString();
-  if (!inMemoryProfiles.has(key)) {
-    inMemoryProfiles.set(key, {
-      userId,
-      headline: 'Computer Science Major @ Stanford | Aspiring Full-Stack & Systems Engineer',
-      bio: 'Junior studying Computer Science with hands-on experience in React, TypeScript, Node.js, and cloud architectures. Passionate about building high-craft SaaS applications.',
-      phone: '+1 (555) 234-5678',
-      location: { city: 'San Francisco', state: 'CA', country: 'United States' },
-      skills: ['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Docker', 'Python', 'Tailwind CSS'],
-      education: [
-        {
-          institution: 'Stanford University',
-          degree: 'Bachelor of Science',
-          fieldOfStudy: 'Computer Science',
-          startDate: '2023-09-01',
-          endDate: '2027-06-15',
-          grade: '3.92 GPA',
-          current: true,
-        },
-      ],
-      experience: [
-        {
-          title: 'Software Engineering Fellow',
-          company: 'Acme Open Source Lab',
-          location: 'San Francisco, CA',
-          startDate: '2025-06-01',
-          endDate: '2025-08-31',
-          description: 'Built distributed telemetry pipelines and React visualization dashboards handling 50k events/sec.',
-          current: false,
-        },
-      ],
-      projects: [
-        {
-          title: 'FastKV — In-Memory Key-Value Store',
-          description: 'High-throughput append-only log storage engine implemented in Rust and TypeScript.',
-          link: 'https://github.com/internhub/fastkv',
-          technologies: ['Rust', 'TypeScript', 'Async I/O'],
-        },
-      ],
-      resume: {
-        url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-        fileName: 'Jordan_Lee_Resume_2026.pdf',
-        uploadedAt: new Date().toISOString(),
-      },
-    });
-  }
-  return inMemoryProfiles.get(key);
-}
-
 export class StudentService {
   /**
    * Retrieves current student's full profile and completion metric.
