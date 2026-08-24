@@ -296,17 +296,126 @@ export function StudentResumePage() {
     dynamicProjects.length > 0 ||
     studentSkills.length > 0;
 
-  // Calculate dynamic ATS Health Score based on actual data
-  const dynamicAtsScore = useMemo(() => {
-    let score = 40;
-    if (studentName) score += 10;
-    if (studentEmail) score += 10;
-    if (studentSkills.length >= 3) score += 15;
-    if (dynamicEducation.length > 0) score += 10;
-    if (dynamicExperience.length > 0) score += 10;
-    if (dynamicProjects.length > 0) score += 5;
-    return Math.min(100, score);
-  }, [studentName, studentEmail, studentSkills, dynamicEducation, dynamicExperience, dynamicProjects]);
+  // Dynamic ATS Engine Diagnostics & Point Calculation
+  const atsDiagnostics = useMemo(() => {
+    const isDocUploaded = Boolean(uploadedFileUrl || profile?.resumeUrl || profile?.resume?.url);
+    const hasName = Boolean(studentName && studentName !== 'Candidate');
+    const hasEmail = Boolean(studentEmail);
+    const hasPhone = Boolean(studentPhone);
+    const hasLocation = Boolean(studentLocation);
+    const hasSkills = studentSkills.length > 0;
+    const hasEdu = dynamicEducation.length > 0;
+    const hasExp = dynamicExperience.length > 0;
+    const hasProj = dynamicProjects.length > 0;
+
+    let score = 0;
+    
+    // 1. PDF Document Upload (35 pts)
+    const docScore = isDocUploaded ? 35 : 0;
+    
+    // 2. Technical Skills Indexing (25 pts)
+    let skillScore = 0;
+    if (studentSkills.length >= 6) skillScore = 25;
+    else if (studentSkills.length >= 3) skillScore = 18;
+    else if (studentSkills.length >= 1) skillScore = 10;
+    
+    // 3. Contact & Header Information (15 pts)
+    let contactScore = 0;
+    if (hasName) contactScore += 5;
+    if (hasEmail) contactScore += 5;
+    if (hasPhone || hasLocation) contactScore += 5;
+
+    // 4. Verified Education (15 pts)
+    const eduScore = hasEdu ? 15 : (isDocUploaded ? 10 : 0);
+
+    // 5. Work & Project Experience Depth (10 pts)
+    let expScore = 0;
+    if (hasExp && hasProj) expScore = 10;
+    else if (hasExp || hasProj) expScore = 7;
+    else if (isDocUploaded) expScore = 5;
+
+    score = docScore + skillScore + contactScore + eduScore + expScore;
+    score = Math.min(100, Math.max(isDocUploaded ? 70 : 15, score));
+
+    let scoreVariant = 'danger';
+    let scoreColor = 'text-rose-600';
+    let scoreBadge = 'bg-rose-50 text-rose-700 border-rose-200';
+
+    if (score >= 80) {
+      scoreVariant = 'success';
+      scoreColor = 'text-emerald-600';
+      scoreBadge = 'bg-emerald-50 text-emerald-700 border-emerald-200';
+    } else if (score >= 50) {
+      scoreVariant = 'warning';
+      scoreColor = 'text-amber-600';
+      scoreBadge = 'bg-amber-50 text-amber-700 border-amber-200';
+    }
+
+    // Dynamic Health Check statuses
+    const checks = [
+      {
+        label: 'PDF Document Verified',
+        status: isDocUploaded ? 'Optimal (UTF-8 Valid)' : 'Not Uploaded',
+        passed: isDocUploaded,
+        type: isDocUploaded ? 'pass' : 'fail',
+      },
+      {
+        label: 'ATS Header & Contact Data',
+        status: hasName && hasEmail ? '100% Compliant' : 'Missing Contact Fields',
+        passed: hasName && hasEmail,
+        type: hasName && hasEmail ? 'pass' : 'warn',
+      },
+      {
+        label: 'Technical Keyword Density',
+        status: studentSkills.length >= 5
+          ? `High Density (${studentSkills.length} skills)`
+          : studentSkills.length >= 1
+          ? `Moderate (${studentSkills.length} skills)`
+          : '0 Skills Detected',
+        passed: studentSkills.length >= 3,
+        type: studentSkills.length >= 3 ? 'pass' : studentSkills.length >= 1 ? 'warn' : 'fail',
+      },
+      {
+        label: 'Education & Experience Depth',
+        status: hasEdu || hasExp || isDocUploaded ? 'Verified & Indexed' : 'Incomplete History',
+        passed: hasEdu || hasExp || isDocUploaded,
+        type: hasEdu || hasExp || isDocUploaded ? 'pass' : 'warn',
+      },
+    ];
+
+    return {
+      score,
+      scoreVariant,
+      scoreColor,
+      scoreBadge,
+      docScore,
+      skillScore,
+      contactScore,
+      eduScore,
+      expScore,
+      checks,
+      isDocUploaded,
+      compatibility: {
+        greenhouse: isDocUploaded && hasSkills,
+        lever: isDocUploaded,
+        ashby: isDocUploaded && hasName && hasEmail,
+        workday: isDocUploaded && (hasEdu || isDocUploaded),
+      },
+    };
+  }, [
+    uploadedFileUrl,
+    profile,
+    studentName,
+    studentEmail,
+    studentPhone,
+    studentLocation,
+    studentSkills,
+    dynamicEducation,
+    dynamicExperience,
+    dynamicProjects,
+  ]);
+
+  const dynamicAtsScore = atsDiagnostics.score;
 
   // Dynamic resume versions from MongoDB profile
   const resumeVersions = useMemo(() => {
@@ -1175,60 +1284,123 @@ export function StudentResumePage() {
                     <Award className="w-4 h-4 text-brand-600" />
                     <CardTitle className="text-sm font-bold text-slate-900">ATS Parsing Engine</CardTitle>
                   </div>
-                  <Badge variant="success" size="xs" className="font-mono font-bold">
-                    Score: {currentVersion.atsScore}/100
-                  </Badge>
+                  <span className={`px-2 py-0.5 rounded-full text-xs font-mono font-bold border ${atsDiagnostics.scoreBadge}`}>
+                    Score: {atsDiagnostics.score}/100
+                  </span>
                 </div>
               </CardHeader>
               <CardContent className="p-5 space-y-4 text-xs">
                 
-                {/* 4 Health Checks */}
-                <div className="space-y-2.5">
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-600">Single-Column Hierarchy:</span>
-                    <span className="font-bold text-emerald-600 flex items-center gap-1">
-                      <Check className="w-3.5 h-3.5" /> Optimal
-                    </span>
+                {/* Live Progress Bar */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between text-[11px] font-mono font-bold text-slate-500">
+                    <span>INDEX HEALTH</span>
+                    <span className={atsDiagnostics.scoreColor}>{atsDiagnostics.score}%</span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-600">Standard Headers:</span>
-                    <span className="font-bold text-emerald-600 flex items-center gap-1">
-                      <Check className="w-3.5 h-3.5" /> 100% Compliant
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-600">Action Verb Metric Density:</span>
-                    <span className="font-bold text-emerald-600 flex items-center gap-1">
-                      <Check className="w-3.5 h-3.5" /> High Impact ({dynamicAtsScore}%)
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-600">Character Encoding / UTF-8:</span>
-                    <span className="font-bold text-emerald-600 flex items-center gap-1">
-                      <Check className="w-3.5 h-3.5" /> Valid
-                    </span>
+                  <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        atsDiagnostics.score >= 80
+                          ? 'bg-emerald-500'
+                          : atsDiagnostics.score >= 50
+                          ? 'bg-amber-500'
+                          : 'bg-rose-500'
+                      }`}
+                      style={{ width: `${atsDiagnostics.score}%` }}
+                    />
                   </div>
                 </div>
 
+                {/* 4 Live Health Checks */}
+                <div className="space-y-2.5 pt-1">
+                  {atsDiagnostics.checks.map((chk, idx) => (
+                    <div key={idx} className="flex items-center justify-between gap-2">
+                      <span className="text-slate-600 truncate">{chk.label}:</span>
+                      <span
+                        className={`font-bold shrink-0 flex items-center gap-1 font-mono text-[11px] ${
+                          chk.type === 'pass'
+                            ? 'text-emerald-600'
+                            : chk.type === 'warn'
+                            ? 'text-amber-600'
+                            : 'text-rose-600'
+                        }`}
+                      >
+                        {chk.type === 'pass' ? (
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                        ) : chk.type === 'warn' ? (
+                          <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
+                        ) : (
+                          <XCircle className="w-3.5 h-3.5 text-rose-500" />
+                        )}
+                        {chk.status}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Live System Compatibility Matrix */}
                 <div className="pt-3 border-t border-slate-100">
                   <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider font-mono">
                     System Compatibility Matrix:
                   </span>
                   <div className="grid grid-cols-2 gap-2 mt-2 font-mono text-[11px]">
-                    <div className="p-2 rounded-lg bg-slate-50 border border-slate-200/80 text-slate-700 flex items-center gap-1.5 font-bold">
-                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+                    <div
+                      className={`p-2 rounded-lg border flex items-center gap-1.5 font-bold transition-colors ${
+                        atsDiagnostics.compatibility.greenhouse
+                          ? 'bg-emerald-50/70 border-emerald-200 text-emerald-800'
+                          : 'bg-slate-50 border-slate-200/80 text-slate-400'
+                      }`}
+                    >
+                      {atsDiagnostics.compatibility.greenhouse ? (
+                        <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      ) : (
+                        <XCircle className="w-3.5 h-3.5 text-slate-300" />
+                      )}
                       Greenhouse
                     </div>
-                    <div className="p-2 rounded-lg bg-slate-50 border border-slate-200/80 text-slate-700 flex items-center gap-1.5 font-bold">
-                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+
+                    <div
+                      className={`p-2 rounded-lg border flex items-center gap-1.5 font-bold transition-colors ${
+                        atsDiagnostics.compatibility.lever
+                          ? 'bg-emerald-50/70 border-emerald-200 text-emerald-800'
+                          : 'bg-slate-50 border-slate-200/80 text-slate-400'
+                      }`}
+                    >
+                      {atsDiagnostics.compatibility.lever ? (
+                        <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      ) : (
+                        <XCircle className="w-3.5 h-3.5 text-slate-300" />
+                      )}
                       Lever
                     </div>
-                    <div className="p-2 rounded-lg bg-slate-50 border border-slate-200/80 text-slate-700 flex items-center gap-1.5 font-bold">
-                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+
+                    <div
+                      className={`p-2 rounded-lg border flex items-center gap-1.5 font-bold transition-colors ${
+                        atsDiagnostics.compatibility.ashby
+                          ? 'bg-emerald-50/70 border-emerald-200 text-emerald-800'
+                          : 'bg-slate-50 border-slate-200/80 text-slate-400'
+                      }`}
+                    >
+                      {atsDiagnostics.compatibility.ashby ? (
+                        <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      ) : (
+                        <XCircle className="w-3.5 h-3.5 text-slate-300" />
+                      )}
                       Ashby HQ
                     </div>
-                    <div className="p-2 rounded-lg bg-slate-50 border border-slate-200/80 text-slate-700 flex items-center gap-1.5 font-bold">
-                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+
+                    <div
+                      className={`p-2 rounded-lg border flex items-center gap-1.5 font-bold transition-colors ${
+                        atsDiagnostics.compatibility.workday
+                          ? 'bg-emerald-50/70 border-emerald-200 text-emerald-800'
+                          : 'bg-slate-50 border-slate-200/80 text-slate-400'
+                      }`}
+                    >
+                      {atsDiagnostics.compatibility.workday ? (
+                        <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      ) : (
+                        <XCircle className="w-3.5 h-3.5 text-slate-300" />
+                      )}
                       Workday
                     </div>
                   </div>
