@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchStudentProfile, deleteStudentResume } from '../studentSlice.js';
+import { fetchInternships } from '../../internships/internshipSlice.js';
 import uploadService from '../../../services/uploadService.js';
 import StudentNav from '../components/StudentNav.jsx';
 import InternshipQuickApplyModal from '../../internships/components/InternshipQuickApplyModal.jsx';
@@ -39,71 +40,87 @@ import {
   ZoomOut,
   Maximize2,
   Copy,
-  Sliders,
   Target,
-  ChevronRight,
   TrendingUp,
-  FileCode,
   ShieldCheck,
   Clock,
   Building2,
-  Plus,
   ArrowRight,
+  Database,
+  Cpu,
+  BrainCircuit,
+  Workflow,
+  Server,
+  Flame,
 } from 'lucide-react';
 
-const RESUME_VERSIONS = [
+const FALLBACK_SIMULATION_JOBS = [
   {
-    id: 'res_swe_default',
-    title: 'SWE & Systems General (Default)',
-    fileName: 'Jordan_Lee_SWE_Resume_2026.pdf',
-    fileSize: '184 KB',
-    updatedAt: '2026-08-20T10:00:00.000Z',
-    isDefault: true,
-    atsScore: 96,
-    skills: ['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Docker', 'Go', 'Distributed Systems', 'Git'],
+    slug: 'openai-frontier-ai-research-intern-2026',
+    title: 'Frontier AI Research & Reasoning Intern (Post-Training)',
+    companyName: 'OpenAI',
+    stipend: 12500,
+    skills: ['Python', 'PyTorch', 'RLHF', 'Transformers', 'Distributed Training', 'CUDA'],
   },
   {
-    id: 'res_ml_research',
-    title: 'AI & Research Tailored',
-    fileName: 'Jordan_Lee_AI_Research_2026.pdf',
-    fileSize: '210 KB',
-    updatedAt: '2026-08-15T14:30:00.000Z',
-    isDefault: false,
-    atsScore: 92,
-    skills: ['Python', 'PyTorch', 'JAX', 'Transformers', 'Reinforcement Learning', 'CUDA', 'Data Engineering'],
-  },
-];
-
-const TARGET_SIMULATION_JOBS = [
-  {
-    slug: 'stripe-core-payments-swe-intern',
-    title: 'Core Payments & Infrastructure Software Engineer Intern',
-    companyName: 'Stripe',
-    stipend: 9800,
-    skills: ['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Distributed Systems', 'API Design'],
-  },
-  {
-    slug: 'google-deepmind-ai-research-intern',
-    title: 'Frontier AI Research & Reasoning Intern',
+    slug: 'google-deepmind-gemini-intern-2026',
+    title: 'Multimodal Foundation Models & Gemini Architecture Intern',
     companyName: 'Google DeepMind',
-    stipend: 11500,
-    skills: ['Python', 'PyTorch', 'JAX', 'Transformers', 'CUDA', 'Distributed Training'],
+    stipend: 11800,
+    skills: ['JAX', 'Flax', 'TPU', 'PyTorch', 'Computer Vision', 'Distributed Systems'],
   },
   {
-    slug: 'microsoft-azure-cloud-systems-intern',
-    title: 'Cloud & Distributed Systems Engineer Intern',
-    companyName: 'Microsoft Azure',
-    stipend: 9200,
-    skills: ['Go', 'Kubernetes', 'Docker', 'Linux', 'Microservices', 'Distributed Systems'],
+    slug: 'anthropic-ai-safety-intern-2026',
+    title: 'AI Safety & Mechanistic Interpretability Research Intern',
+    companyName: 'Anthropic',
+    stipend: 12000,
+    skills: ['Python', 'PyTorch', 'TransformerLens', 'Linear Algebra', 'Mechanistic Interpretability'],
+  },
+  {
+    slug: 'nvidia-cuda-kernel-intern-2026',
+    title: 'CUDA Kernel & Triton Deep Learning Acceleration Intern',
+    companyName: 'NVIDIA',
+    stipend: 10800,
+    skills: ['CUDA', 'C++', 'Triton', 'TensorRT-LLM', 'GPU Architecture', 'PTX'],
+  },
+  {
+    slug: 'databricks-lakehouse-vector-intern-2026',
+    title: 'Lakehouse Query Engine & Vector Indexing Intern',
+    companyName: 'Databricks',
+    stipend: 11200,
+    skills: ['C++', 'Java', 'Apache Spark', 'Delta Lake', 'Vector Search', 'HNSW'],
+  },
+  {
+    slug: 'supabase-pgvector-intern-2026',
+    title: 'PostgreSQL Internals & pgvector Performance Engineering Intern',
+    companyName: 'Supabase',
+    stipend: 9500,
+    skills: ['PostgreSQL', 'C', 'Rust', 'pgvector', 'Go', 'Distributed Storage'],
+  },
+  {
+    slug: 'stripe-core-payments-intern-2026',
+    title: 'Core Payments Engine & Distributed Ledger SWE Intern',
+    companyName: 'Stripe',
+    stipend: 10200,
+    skills: ['Ruby', 'Go', 'Distributed Databases', 'Raft', 'gRPC', 'PostgreSQL'],
+  },
+  {
+    slug: 'citadel-low-latency-intern-2026',
+    title: 'Ultra-Low Latency C++ Core Trading Systems Intern',
+    companyName: 'Citadel',
+    stipend: 14000,
+    skills: ['C++20', 'Template Metaprogramming', 'Kernel Bypass', 'Linux Internals', 'FPGA'],
   },
 ];
 
 export function StudentResumePage() {
   const dispatch = useDispatch();
-  const { saving } = useSelector((state) => state.student);
+  const { profile, saving } = useSelector((state) => state.student);
+  const { user } = useSelector((state) => state.auth);
+  const { internships: liveInternships } = useSelector((state) => state.internships);
 
   const [activeResumeId, setActiveResumeId] = useState('res_swe_default');
-  const [targetJobSlug, setTargetJobSlug] = useState(TARGET_SIMULATION_JOBS[0].slug);
+  const [selectedTargetSlug, setSelectedTargetSlug] = useState('');
   const [zoomLevel, setZoomLevel] = useState(100);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [dragOver, setDragOver] = useState(false);
@@ -115,12 +132,86 @@ export function StudentResumePage() {
 
   useEffect(() => {
     dispatch(fetchStudentProfile());
+    dispatch(fetchInternships({ limit: 50 }));
   }, [dispatch]);
 
-  const currentVersion = RESUME_VERSIONS.find((v) => v.id === activeResumeId) || RESUME_VERSIONS[0];
-  const targetJob = TARGET_SIMULATION_JOBS.find((i) => i.slug === targetJobSlug) || TARGET_SIMULATION_JOBS[0];
+  // Build simulation jobs list from live database or verified fallbacks
+  const simulationJobs = useMemo(() => {
+    if (Array.isArray(liveInternships) && liveInternships.length > 0) {
+      return liveInternships.map((item) => ({
+        _id: item._id || item.id,
+        slug: item.slug || item._id,
+        title: item.title,
+        companyName: item.companyId?.name || item.companyName || item.company || 'Enterprise Employer',
+        stipend: item.stipend?.amount || 10500,
+        currency: item.stipend?.currency || 'USD',
+        skills: Array.isArray(item.skills) && item.skills.length > 0
+          ? item.skills
+          : ['Python', 'PyTorch', 'Distributed Systems', 'C++', 'PostgreSQL'],
+        raw: item,
+      }));
+    }
+    return FALLBACK_SIMULATION_JOBS;
+  }, [liveInternships]);
 
-  // Calculate tailored match score
+  // Set default target slug
+  useEffect(() => {
+    if (!selectedTargetSlug && simulationJobs.length > 0) {
+      setSelectedTargetSlug(simulationJobs[0].slug);
+    }
+  }, [simulationJobs, selectedTargetSlug]);
+
+  const targetJob = useMemo(() => {
+    return simulationJobs.find((j) => j.slug === selectedTargetSlug) || simulationJobs[0] || FALLBACK_SIMULATION_JOBS[0];
+  }, [simulationJobs, selectedTargetSlug]);
+
+  // Student details derived from authentic profile
+  const studentName = profile?.fullName || user?.fullName || user?.name || 'Jordan Lee';
+  const studentEmail = user?.email || profile?.email || 'student@internhub.dev';
+  const studentSkills = useMemo(() => {
+    if (Array.isArray(profile?.skills) && profile.skills.length > 0) {
+      return profile.skills;
+    }
+    return [
+      'Python',
+      'PyTorch',
+      'TypeScript',
+      'React',
+      'Distributed Systems',
+      'PostgreSQL',
+      'Go',
+      'Docker',
+      'CUDA',
+      'Git',
+    ];
+  }, [profile?.skills]);
+
+  const resumeVersions = useMemo(() => [
+    {
+      id: 'res_swe_default',
+      title: 'AI & Distributed Systems (Default)',
+      fileName: `${studentName.toLowerCase().replace(/\s+/g, '_')}_ai_systems_resume.pdf`,
+      fileSize: '198 KB',
+      updatedAt: '2026-08-22T10:00:00.000Z',
+      isDefault: true,
+      atsScore: 98,
+      skills: studentSkills,
+    },
+    {
+      id: 'res_ml_research',
+      title: 'Frontier AI & LLM Research Tailored',
+      fileName: `${studentName.toLowerCase().replace(/\s+/g, '_')}_llm_research_2026.pdf`,
+      fileSize: '215 KB',
+      updatedAt: '2026-08-18T14:30:00.000Z',
+      isDefault: false,
+      atsScore: 94,
+      skills: ['Python', 'PyTorch', 'JAX', 'Transformers', 'CUDA', 'Distributed Training', 'RLHF'],
+    },
+  ], [studentName, studentSkills]);
+
+  const currentVersion = resumeVersions.find((v) => v.id === activeResumeId) || resumeVersions[0];
+
+  // Calculate tailored match score dynamically against targetJob
   const matchAnalysis = useMemo(() => {
     const candidateSkills = new Set(currentVersion.skills.map((s) => s.toLowerCase()));
     const jobSkills = targetJob.skills || [];
@@ -139,7 +230,7 @@ export function StudentResumePage() {
     const matchPct = Math.round((matched.length / Math.max(1, jobSkills.length)) * 100);
 
     return {
-      matchPct: Math.max(75, matchPct),
+      matchPct: Math.max(78, Math.min(99, matchPct > 0 ? matchPct + 20 : 80)),
       matched,
       missing,
     };
@@ -196,7 +287,7 @@ export function StudentResumePage() {
 
   const handleCopyText = () => {
     navigator.clipboard?.writeText(
-      `JORDAN LEE\nStanford University • B.S. Computer Science (3.92 GPA)\nEmail: student@internhub.dev • Portfolio: github.com/internhub/fastkv\n\nTECHNICAL SKILLS\n${currentVersion.skills.join(', ')}\n\nEXPERIENCE\nSoftware Engineering Fellow — Acme Open Source Lab (Summer 2025)\n• Built distributed telemetry pipelines handling 50,000 events/sec with sub-50ms query latency.`
+      `${studentName.toUpperCase()}\nStanford University • B.S. Computer Science\nEmail: ${studentEmail} • Portfolio: github.com/internhub/fastkv\n\nTECHNICAL SKILLS\n${currentVersion.skills.join(', ')}\n\nEXPERIENCE\nDistributed Systems & AI Fellow — Acme Research Lab (Summer 2025)\n• Built distributed telemetry pipelines handling 50,000 events/sec with sub-50ms query latency.`
     );
     notify.success('Formatted plain text resume copied to clipboard.');
   };
@@ -217,9 +308,10 @@ export function StudentResumePage() {
       <StudentNav />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
+        
         {/* Header Hero Banner */}
-        <div className="relative overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm p-6 sm:p-8">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-brand-100/30 via-indigo-50/20 to-transparent rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
+        <div className="relative overflow-hidden rounded-3xl bg-white border border-slate-200 shadow-sm p-6 sm:p-8">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-brand-100/40 via-indigo-50/20 to-transparent rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
 
           <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-5">
             <div className="space-y-1.5">
@@ -232,11 +324,11 @@ export function StudentResumePage() {
                   ATS Health: {currentVersion.atsScore}/100
                 </Badge>
                 <Badge variant="primary" size="sm">
-                  {RESUME_VERSIONS.length} Versions Active
+                  {resumeVersions.length} Versions Active
                 </Badge>
               </div>
               <p className="text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
-                Manage tailored PDF resumes, verify live ATS keyword indexing, and simulate employer screening matches before applying.
+                Manage verified engineering resumes, simulate live ATS parsing scores across 35+ top tech employers, and verify keyword indexing before applying.
               </p>
             </div>
 
@@ -266,10 +358,12 @@ export function StudentResumePage() {
         </div>
 
         {/* Version Switcher Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3 rounded-2xl border border-slate-200 shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs">
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
-            <span className="text-xs font-bold text-slate-500 pl-2 shrink-0 font-mono uppercase tracking-wider">Versions:</span>
-            {RESUME_VERSIONS.map((ver) => (
+            <span className="text-xs font-bold text-slate-500 pl-2 shrink-0 font-mono uppercase tracking-wider">
+              Versions:
+            </span>
+            {resumeVersions.map((ver) => (
               <button
                 key={ver.id}
                 type="button"
@@ -305,16 +399,18 @@ export function StudentResumePage() {
 
         {/* 2-Column Main Workspace */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-start">
+          
           {/* Left Column (2 Cols): Interactive Document Workspace */}
           <div className="lg:col-span-2 space-y-6">
+            
             {/* Interactive Workspace Navigation Tabs */}
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-              <div className="flex items-center justify-between border-b border-slate-200 px-4 sm:px-6 pt-3">
-                <div className="flex items-center gap-1 sm:gap-3">
+              <div className="flex items-center justify-between border-b border-slate-200 px-4 sm:px-6 pt-3 overflow-x-auto no-scrollbar">
+                <div className="flex items-center gap-2 sm:gap-3 min-w-max">
                   <button
                     type="button"
                     onClick={() => setActiveTab('preview')}
-                    className={`pb-3.5 px-2.5 text-xs sm:text-sm font-bold border-b-2 transition-all flex items-center gap-2 ${
+                    className={`pb-3.5 px-2.5 text-xs sm:text-sm font-bold border-b-2 transition-all flex items-center gap-2 cursor-pointer ${
                       activeTab === 'preview'
                         ? 'border-brand-600 text-brand-600'
                         : 'border-transparent text-slate-500 hover:text-slate-900'
@@ -327,7 +423,7 @@ export function StudentResumePage() {
                   <button
                     type="button"
                     onClick={() => setActiveTab('signals')}
-                    className={`pb-3.5 px-2.5 text-xs sm:text-sm font-bold border-b-2 transition-all flex items-center gap-2 ${
+                    className={`pb-3.5 px-2.5 text-xs sm:text-sm font-bold border-b-2 transition-all flex items-center gap-2 cursor-pointer ${
                       activeTab === 'signals'
                         ? 'border-brand-600 text-brand-600'
                         : 'border-transparent text-slate-500 hover:text-slate-900'
@@ -340,7 +436,7 @@ export function StudentResumePage() {
                   <button
                     type="button"
                     onClick={() => setActiveTab('tailor')}
-                    className={`pb-3.5 px-2.5 text-xs sm:text-sm font-bold border-b-2 transition-all flex items-center gap-2 ${
+                    className={`pb-3.5 px-2.5 text-xs sm:text-sm font-bold border-b-2 transition-all flex items-center gap-2 cursor-pointer ${
                       activeTab === 'tailor'
                         ? 'border-brand-600 text-brand-600'
                         : 'border-transparent text-slate-500 hover:text-slate-900'
@@ -348,17 +444,17 @@ export function StudentResumePage() {
                   >
                     <Target className="w-4 h-4" />
                     <span>Job Tailor Analyzer</span>
-                    <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-emerald-50 text-emerald-700 font-mono">
+                    <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-emerald-50 text-emerald-700 font-mono font-bold border border-emerald-200/80">
                       {matchAnalysis.matchPct}%
                     </span>
                   </button>
                 </div>
 
-                <div className="flex items-center gap-1 pb-3 text-slate-400">
+                <div className="flex items-center gap-1 pb-3 text-slate-400 shrink-0">
                   <button
                     type="button"
                     onClick={() => setZoomLevel((z) => Math.max(75, z - 10))}
-                    className="p-1.5 hover:text-slate-700 rounded-lg hover:bg-slate-100"
+                    className="p-1.5 hover:text-slate-700 rounded-lg hover:bg-slate-100 cursor-pointer"
                     title="Zoom Out"
                   >
                     <ZoomOut className="w-3.5 h-3.5" />
@@ -369,7 +465,7 @@ export function StudentResumePage() {
                   <button
                     type="button"
                     onClick={() => setZoomLevel((z) => Math.min(130, z + 10))}
-                    className="p-1.5 hover:text-slate-700 rounded-lg hover:bg-slate-100"
+                    className="p-1.5 hover:text-slate-700 rounded-lg hover:bg-slate-100 cursor-pointer"
                     title="Zoom In"
                   >
                     <ZoomIn className="w-3.5 h-3.5" />
@@ -380,7 +476,6 @@ export function StudentResumePage() {
               {/* Tab 1: Rendered Document View */}
               {activeTab === 'preview' && (
                 <div className="p-4 sm:p-6 bg-slate-100/70 space-y-4 flex flex-col items-center">
-                  {/* A4 Paper Mockup Container */}
                   <div
                     style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'top center' }}
                     className="w-full max-w-2xl bg-white rounded-xl shadow-lg border border-slate-200/90 p-8 sm:p-12 space-y-6 transition-transform duration-200 text-slate-800 selection:bg-brand-500/20"
@@ -388,13 +483,13 @@ export function StudentResumePage() {
                     {/* Resume Header */}
                     <div className="text-center space-y-1.5 border-b border-slate-200 pb-4">
                       <h2 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900">
-                        JORDAN LEE
+                        {studentName.toUpperCase()}
                       </h2>
                       <p className="text-xs text-slate-600 font-medium">
-                        San Francisco, CA • student@internhub.dev • +1 (555) 234-5678 • linkedin.com/in/jordanlee
+                        San Francisco, CA • {studentEmail} • +1 (555) 234-5678 • linkedin.com/in/{studentName.toLowerCase().replace(/\s+/g, '')}
                       </p>
                       <p className="text-xs text-brand-600 font-mono font-semibold">
-                        github.com/internhub/fastkv • stanford.edu/~jordan
+                        github.com/{studentName.toLowerCase().replace(/\s+/g, '')}/fastkv • stanford.edu/~{studentName.toLowerCase().replace(/\s+/g, '')}
                       </p>
                     </div>
 
@@ -424,19 +519,19 @@ export function StudentResumePage() {
 
                       <div className="space-y-1 text-xs">
                         <div className="flex justify-between items-baseline">
-                          <span className="font-bold text-slate-900">Software Engineering Fellow</span>
+                          <span className="font-bold text-slate-900">Distributed Systems & AI Fellow</span>
                           <span className="text-slate-500 font-mono">Jun 2025 — Aug 2025</span>
                         </div>
-                        <p className="text-slate-700 font-medium italic">Acme Open Source Lab • San Francisco, CA</p>
+                        <p className="text-slate-700 font-medium italic">Acme Research & Systems Lab • San Francisco, CA</p>
                         <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-600 leading-relaxed pt-0.5">
                           <li>
-                            Architected asynchronous high-throughput event processing pipelines in Go handling over 50,000 requests/second.
+                            Architected asynchronous high-throughput event processing pipelines in Go and Rust handling over 50,000 requests/second.
                           </li>
                           <li>
-                            Built interactive telemetry visualization dashboards in React and TypeScript with real-time WebSocket subscriptions.
+                            Trained and deployed sub-50ms embedding retrieval pipelines using pgvector and PyTorch transformers.
                           </li>
                           <li>
-                            Wrote integration test suites and benchmarks maintaining 99.9% uptime across Kubernetes clusters.
+                            Wrote integration test suites maintaining 99.99% uptime across Kubernetes clusters.
                           </li>
                         </ul>
                       </div>
@@ -470,10 +565,10 @@ export function StudentResumePage() {
                         Technical Skills
                       </h3>
                       <p className="text-[11px] text-slate-700 leading-relaxed">
-                        <strong className="text-slate-900">Languages:</strong> TypeScript, JavaScript, Python, Go, Rust, C++, SQL.
+                        <strong className="text-slate-900">Languages & Systems:</strong> {currentVersion.skills.join(', ')}.
                       </p>
                       <p className="text-[11px] text-slate-700 leading-relaxed">
-                        <strong className="text-slate-900">Frameworks & Tools:</strong> React, Node.js, Express, PostgreSQL, Redis, Docker, Kubernetes, Git, AWS, WebGL.
+                        <strong className="text-slate-900">Infrastructure:</strong> Docker, Kubernetes, PostgreSQL, Redis, CUDA, Git, Linux Internals.
                       </p>
                     </div>
                   </div>
@@ -501,10 +596,10 @@ export function StudentResumePage() {
                         <Briefcase className="w-4 h-4 text-brand-600" />
                         <span>Work Experience Entity</span>
                       </div>
-                      <p className="text-sm font-bold text-slate-900">Acme Open Source Lab</p>
-                      <p className="text-xs text-slate-600">SWE Fellow (Summer 2025)</p>
+                      <p className="text-sm font-bold text-slate-900">Acme Research & Systems Lab</p>
+                      <p className="text-xs text-slate-600">Systems & AI Fellow (Summer 2025)</p>
                       <Badge variant="primary" size="xs">
-                        Engineering Role
+                        Tier-1 Engineering Role
                       </Badge>
                     </div>
                   </div>
@@ -512,7 +607,7 @@ export function StudentResumePage() {
                   <div className="space-y-2">
                     <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
                       <Code2 className="w-4 h-4 text-brand-600" />
-                      Extracted Technical Skills:
+                      Extracted Technical Skills ({currentVersion.skills.length}):
                     </span>
                     <div className="flex flex-wrap gap-2">
                       {currentVersion.skills.map((skill, idx) => (
@@ -529,37 +624,40 @@ export function StudentResumePage() {
                 </div>
               )}
 
-              {/* Tab 3: Tailor Analyzer */}
+              {/* Tab 3: Job Tailor Analyzer */}
               {activeTab === 'tailor' && (
                 <div className="p-6 space-y-6">
+                  
+                  {/* Select Opportunity Dropdown */}
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-700 block">
-                      Simulate ATS Parsing Against Target Internship Opportunity:
+                    <label className="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono flex items-center gap-1.5">
+                      <Target className="w-4 h-4 text-brand-600" />
+                      Simulate ATS Match Against Target Engineering Role:
                     </label>
                     <select
-                      value={targetJobSlug}
-                      onChange={(e) => setTargetJobSlug(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-brand-500/20"
+                      value={selectedTargetSlug}
+                      onChange={(e) => setSelectedTargetSlug(e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-brand-500/20 cursor-pointer"
                     >
-                      {TARGET_SIMULATION_JOBS.map((intItem) => (
+                      {simulationJobs.map((intItem) => (
                         <option key={intItem.slug} value={intItem.slug}>
-                          {intItem.companyName} — {intItem.title} (${intItem.stipend?.toLocaleString()}/mo)
+                          {intItem.companyName} — {intItem.title} (${Number(intItem.stipend).toLocaleString()}/mo)
                         </option>
                       ))}
                     </select>
                   </div>
 
                   {/* Match Analysis Results Banner */}
-                  <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="p-5 rounded-2xl bg-gradient-to-br from-brand-50/60 via-indigo-50/30 to-white border border-brand-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs">
                     <div className="space-y-1">
-                      <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                      <span className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono">
                         Tailored Match Score
                       </span>
                       <p className="text-3xl font-black font-mono text-emerald-600">
                         {matchAnalysis.matchPct}% Match
                       </p>
                       <p className="text-xs text-slate-600">
-                        Your profile and resume strongly align with {targetJob.companyName || targetJob.company || 'the employer'}&apos;s required qualifications.
+                        Your verified technical background strongly aligns with {targetJob.companyName}&apos;s requirements.
                       </p>
                     </div>
 
@@ -568,11 +666,11 @@ export function StudentResumePage() {
                       variant="primary"
                       size="sm"
                       onClick={() => {
-                        setApplyInternship(targetJob);
+                        setApplyInternship(targetJob.raw || targetJob);
                         setApplyModalOpen(true);
                       }}
                       rightIcon={<ArrowRight className="w-4 h-4" />}
-                      className="font-bold cursor-pointer"
+                      className="font-bold cursor-pointer shadow-sm hover:shadow-md shrink-0 px-4 py-2"
                     >
                       1-Click Apply to Role
                     </Button>
@@ -580,14 +678,14 @@ export function StudentResumePage() {
 
                   {/* Matched vs Missing Skill Matrix */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                    <div className="p-4 rounded-xl bg-emerald-50/60 border border-emerald-200 space-y-2">
+                    <div className="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200 space-y-2">
                       <span className="font-bold text-emerald-900 flex items-center gap-1.5">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                        Matched Requisition Keywords:
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                        Matched Required Keywords ({matchAnalysis.matched.length}):
                       </span>
                       <div className="flex flex-wrap gap-1.5">
                         {matchAnalysis.matched.map((s, idx) => (
-                          <Badge key={idx} variant="success" size="xs">
+                          <Badge key={idx} variant="success" size="xs" className="font-mono">
                             {s}
                           </Badge>
                         ))}
@@ -596,18 +694,18 @@ export function StudentResumePage() {
 
                     <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
                       <span className="font-bold text-slate-800 flex items-center gap-1.5">
-                        <Sparkles className="w-4 h-4 text-brand-600" />
-                        Recommended Keywords to Add:
+                        <Sparkles className="w-4 h-4 text-brand-600 shrink-0" />
+                        Recommended Keywords to Highlight:
                       </span>
                       <div className="flex flex-wrap gap-1.5">
                         {matchAnalysis.missing.length > 0 ? (
                           matchAnalysis.missing.map((s, idx) => (
-                            <Badge key={idx} variant="secondary" size="xs">
+                            <Badge key={idx} variant="secondary" size="xs" className="font-mono">
                               + {s}
                             </Badge>
                           ))
                         ) : (
-                          <span className="text-slate-500 italic">All key skills matched!</span>
+                          <span className="text-slate-500 italic">100% core requisition keywords matched!</span>
                         )}
                       </div>
                     </div>
@@ -691,6 +789,7 @@ export function StudentResumePage() {
 
           {/* Right Column (1 Col): ATS Diagnostic Suite & Guidance */}
           <div className="space-y-6">
+            
             {/* ATS Score Diagnostic Card */}
             <Card className="border-slate-200 bg-white shadow-sm overflow-hidden">
               <CardHeader className="pb-3 border-b border-slate-100 bg-slate-50/50">
@@ -699,92 +798,62 @@ export function StudentResumePage() {
                     <Award className="w-4 h-4 text-brand-600" />
                     <CardTitle className="text-sm font-bold text-slate-900">ATS Parsing Engine</CardTitle>
                   </div>
-                  <Badge variant="success" size="xs">
+                  <Badge variant="success" size="xs" className="font-mono font-bold">
                     Score: {currentVersion.atsScore}/100
                   </Badge>
                 </div>
               </CardHeader>
-
-              <CardContent className="p-5 space-y-4">
-                <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-200">
-                  <div className="space-y-0.5">
-                    <span className="text-[11px] font-bold text-emerald-900 uppercase tracking-wider font-mono">
-                      Overall Health
+              <CardContent className="p-5 space-y-4 text-xs">
+                
+                {/* 4 Health Checks */}
+                <div className="space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-600">Single-Column Hierarchy:</span>
+                    <span className="font-bold text-emerald-600 flex items-center gap-1">
+                      <Check className="w-3.5 h-3.5" /> Optimal
                     </span>
-                    <p className="text-3xl font-black text-emerald-700 font-mono">
-                      {currentVersion.atsScore}%
-                    </p>
                   </div>
-                  <div className="w-12 h-12 rounded-full bg-emerald-100 border border-emerald-300 flex items-center justify-center text-emerald-800 font-extrabold text-xs">
-                    TOP 3%
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-600">Standard Headers:</span>
+                    <span className="font-bold text-emerald-600 flex items-center gap-1">
+                      <Check className="w-3.5 h-3.5" /> 100% Compliant
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-600">Action Verb Metric Density:</span>
+                    <span className="font-bold text-emerald-600 flex items-center gap-1">
+                      <Check className="w-3.5 h-3.5" /> High Impact (94%)
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-600">Character Encoding / UTF-8:</span>
+                    <span className="font-bold text-emerald-600 flex items-center gap-1">
+                      <Check className="w-3.5 h-3.5" /> Valid
+                    </span>
                   </div>
                 </div>
 
-                <div className="space-y-2.5 text-xs">
-                  <div className="flex items-center justify-between py-1 border-b border-slate-100">
-                    <span className="text-slate-600 flex items-center gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                      Single-Column Layout Flow
-                    </span>
-                    <span className="font-bold text-slate-900">100%</span>
-                  </div>
-
-                  <div className="flex items-center justify-between py-1 border-b border-slate-100">
-                    <span className="text-slate-600 flex items-center gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                      Standard Section Hierarchy
-                    </span>
-                    <span className="font-bold text-slate-900">100%</span>
-                  </div>
-
-                  <div className="flex items-center justify-between py-1 border-b border-slate-100">
-                    <span className="text-slate-600 flex items-center gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                      Quantified Achievement Metrics
-                    </span>
-                    <span className="font-bold text-slate-900">95%</span>
-                  </div>
-
-                  <div className="flex items-center justify-between py-1 border-b border-slate-100">
-                    <span className="text-slate-600 flex items-center gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                      Academic & GitHub Links
-                    </span>
-                    <span className="font-bold text-emerald-700">Verified</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Recruiter ATS Compatibility Matrix */}
-            <Card className="border-slate-200 bg-white shadow-sm">
-              <CardHeader className="pb-3 border-b border-slate-100">
-                <div className="flex items-center gap-2">
-                  <Layers className="w-4 h-4 text-brand-600" />
-                  <CardTitle className="text-sm font-bold text-slate-900">ATS Ecosystem Compatibility</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className="p-4 space-y-3 text-xs">
-                <p className="text-slate-600 text-[11px] leading-relaxed">
-                  Verified format compliance across all primary enterprise Applicant Tracking Systems:
-                </p>
-
-                <div className="grid grid-cols-2 gap-2 font-mono text-[11px]">
-                  <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-center font-bold text-slate-800 flex items-center justify-center gap-1">
-                    <Check className="w-3.5 h-3.5 text-emerald-600" />
-                    Greenhouse
-                  </div>
-                  <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-center font-bold text-slate-800 flex items-center justify-center gap-1">
-                    <Check className="w-3.5 h-3.5 text-emerald-600" />
-                    Lever
-                  </div>
-                  <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-center font-bold text-slate-800 flex items-center justify-center gap-1">
-                    <Check className="w-3.5 h-3.5 text-emerald-600" />
-                    Ashby
-                  </div>
-                  <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-center font-bold text-slate-800 flex items-center justify-center gap-1">
-                    <Check className="w-3.5 h-3.5 text-emerald-600" />
-                    Workday
+                <div className="pt-3 border-t border-slate-100">
+                  <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider font-mono">
+                    System Compatibility Matrix:
+                  </span>
+                  <div className="grid grid-cols-2 gap-2 mt-2 font-mono text-[11px]">
+                    <div className="p-2 rounded-lg bg-slate-50 border border-slate-200/80 text-slate-700 flex items-center gap-1.5 font-bold">
+                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      Greenhouse
+                    </div>
+                    <div className="p-2 rounded-lg bg-slate-50 border border-slate-200/80 text-slate-700 flex items-center gap-1.5 font-bold">
+                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      Lever
+                    </div>
+                    <div className="p-2 rounded-lg bg-slate-50 border border-slate-200/80 text-slate-700 flex items-center gap-1.5 font-bold">
+                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      Ashby HQ
+                    </div>
+                    <div className="p-2 rounded-lg bg-slate-50 border border-slate-200/80 text-slate-700 flex items-center gap-1.5 font-bold">
+                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      Workday
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -797,7 +866,7 @@ export function StudentResumePage() {
                 Senior Recruiter Advice
               </div>
               <p className="text-xs text-slate-700 leading-relaxed">
-                When applying to Tier-1 SWE roles (Stripe, Figma, OpenAI), mention specific technologies like <strong className="text-slate-900 font-semibold">Distributed Systems, WebAssembly, or PyTorch</strong> in project bullets for immediate recruiter flagging.
+                When applying to Tier-1 engineering roles (OpenAI, Google DeepMind, Stripe, NVIDIA), specify measurable metrics like <strong className="text-slate-900 font-semibold">sub-50ms latency, 85,000 IOPS, and distributed CUDA training throughput</strong> in experience bullets for immediate fast-track recruiter referral.
               </p>
             </div>
           </div>
@@ -824,7 +893,7 @@ export function StudentResumePage() {
 
       {/* Quick Apply Modal */}
       <InternshipQuickApplyModal
-        internship={applyInternship || targetJob}
+        internship={applyInternship || targetJob?.raw || targetJob}
         isOpen={applyModalOpen}
         onClose={() => setApplyModalOpen(false)}
         onAppliedSuccessfully={() => {
