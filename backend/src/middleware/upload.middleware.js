@@ -33,19 +33,19 @@ const BLOCKED_EXTENSIONS = new Set([
 // ─── Supported File Categories ───────────────────────────────────────────────
 const FILE_CONFIGS = {
   resume: {
-    maxSize: 5 * 1024 * 1024, // 5MB
+    maxSize: 50 * 1024 * 1024, // 50MB
     allowedMimes: ['application/pdf'],
     allowedExts: ['.pdf'],
-    label: 'Resume (PDF format up to 5MB)',
+    label: 'Resume (PDF format up to 50MB)',
   },
   avatar: {
-    maxSize: 2 * 1024 * 1024, // 2MB
+    maxSize: 50 * 1024 * 1024, // 50MB
     allowedMimes: ['image/jpeg', 'image/png', 'image/webp'],
     allowedExts: ['.jpg', '.jpeg', '.png', '.webp'],
-    label: 'Profile Avatar (JPEG, PNG, WEBP up to 2MB)',
+    label: 'Profile Avatar (JPEG, PNG, WEBP up to 50MB)',
   },
   companyLogo: {
-    maxSize: 3 * 1024 * 1024, // 3MB
+    maxSize: 50 * 1024 * 1024, // 50MB
     allowedMimes: [
       'image/jpeg',
       'image/png',
@@ -53,20 +53,10 @@ const FILE_CONFIGS = {
       'image/svg+xml',
     ],
     allowedExts: ['.jpg', '.jpeg', '.png', '.webp', '.svg'],
-    label: 'Company Logo (JPEG, PNG, WEBP, SVG up to 3MB)',
+    label: 'Company Logo (JPEG, PNG, WEBP, SVG up to 50MB)',
   },
   certificate: {
-    maxSize: 5 * 1024 * 1024, // 5MB
-    allowedMimes: [
-      'application/pdf',
-      'image/jpeg',
-      'image/png',
-    ],
-    allowedExts: ['.pdf', '.jpg', '.jpeg', '.png'],
-    label: 'Certificate (PDF, JPEG, PNG up to 5MB)',
-  },
-  document: {
-    maxSize: 5 * 1024 * 1024, // 5MB
+    maxSize: 50 * 1024 * 1024, // 50MB
     allowedMimes: [
       'application/pdf',
       'image/jpeg',
@@ -74,7 +64,18 @@ const FILE_CONFIGS = {
       'image/webp',
     ],
     allowedExts: ['.pdf', '.jpg', '.jpeg', '.png', '.webp'],
-    label: 'Document (PDF or Image up to 5MB)',
+    label: 'Certificate (PDF, JPEG, PNG, WEBP up to 50MB)',
+  },
+  document: {
+    maxSize: 50 * 1024 * 1024, // 50MB
+    allowedMimes: [
+      'application/pdf',
+      'image/jpeg',
+      'image/png',
+      'image/webp',
+    ],
+    allowedExts: ['.pdf', '.jpg', '.jpeg', '.png', '.webp'],
+    label: 'General Document (up to 50MB)',
   },
 };
 

@@ -122,8 +122,8 @@ export function StudentSettingsPage() {
       return;
     }
 
-    if (file.size > 2 * 1024 * 1024) {
-      notify.error('Profile image cannot exceed 2MB.');
+    if (file.size > 50 * 1024 * 1024) {
+      notify.error('Profile image cannot exceed 50MB.');
       return;
     }
 
@@ -599,7 +599,7 @@ export function StudentSettingsPage() {
                               Upload a professional headshot or use modern system-generated initials
                             </p>
                             <span className="text-[10px] font-mono text-slate-400 block pt-0.5">
-                              PNG, JPG, WebP • Max 2MB
+                              PNG, JPG, WebP • Max 50MB
                             </span>
                           </div>
                         </div>
