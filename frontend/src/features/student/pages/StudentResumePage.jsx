@@ -73,12 +73,36 @@ const RESUME_VERSIONS = [
   },
 ];
 
+const TARGET_SIMULATION_JOBS = [
+  {
+    slug: 'stripe-core-payments-swe-intern',
+    title: 'Core Payments & Infrastructure Software Engineer Intern',
+    companyName: 'Stripe',
+    stipend: 9800,
+    skills: ['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Distributed Systems', 'API Design'],
+  },
+  {
+    slug: 'google-deepmind-ai-research-intern',
+    title: 'Frontier AI Research & Reasoning Intern',
+    companyName: 'Google DeepMind',
+    stipend: 11500,
+    skills: ['Python', 'PyTorch', 'JAX', 'Transformers', 'CUDA', 'Distributed Training'],
+  },
+  {
+    slug: 'microsoft-azure-cloud-systems-intern',
+    title: 'Cloud & Distributed Systems Engineer Intern',
+    companyName: 'Microsoft Azure',
+    stipend: 9200,
+    skills: ['Go', 'Kubernetes', 'Docker', 'Linux', 'Microservices', 'Distributed Systems'],
+  },
+];
+
 export function StudentResumePage() {
   const dispatch = useDispatch();
   const { saving } = useSelector((state) => state.student);
 
   const [activeResumeId, setActiveResumeId] = useState('res_swe_default');
-  const [targetJobSlug, setTargetJobSlug] = useState(REAL_INTERNSHIPS[0].slug);
+  const [targetJobSlug, setTargetJobSlug] = useState(TARGET_SIMULATION_JOBS[0].slug);
   const [zoomLevel, setZoomLevel] = useState(100);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [dragOver, setDragOver] = useState(false);
@@ -90,7 +114,7 @@ export function StudentResumePage() {
   }, [dispatch]);
 
   const currentVersion = RESUME_VERSIONS.find((v) => v.id === activeResumeId) || RESUME_VERSIONS[0];
-  const targetJob = REAL_INTERNSHIPS.find((i) => i.slug === targetJobSlug) || REAL_INTERNSHIPS[0];
+  const targetJob = TARGET_SIMULATION_JOBS.find((i) => i.slug === targetJobSlug) || TARGET_SIMULATION_JOBS[0];
 
   // Calculate tailored match score
   const matchAnalysis = useMemo(() => {
@@ -516,9 +540,9 @@ export function StudentResumePage() {
                       onChange={(e) => setTargetJobSlug(e.target.value)}
                       className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-brand-500/20"
                     >
-                      {REAL_INTERNSHIPS.map((intItem) => (
+                      {TARGET_SIMULATION_JOBS.map((intItem) => (
                         <option key={intItem.slug} value={intItem.slug}>
-                          {intItem.companyId?.name} — {intItem.title} (${intItem.stipend?.amount?.toLocaleString()}/mo)
+                          {intItem.companyName} — {intItem.title} (${intItem.stipend?.toLocaleString()}/mo)
                         </option>
                       ))}
                     </select>

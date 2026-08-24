@@ -52,32 +52,8 @@ export function StudentDashboard() {
     dispatch(fetchStudentApplications({ limit: 6 }));
   }, [dispatch]);
 
-  const appCount = studentApplications?.total || 3;
-  const recentApps = (studentApplications?.data && studentApplications.data.length > 0)
-    ? studentApplications.data
-    : [
-        {
-          _id: 'app_demo_01',
-          internshipId: REAL_INTERNSHIPS[0],
-          companyId: REAL_INTERNSHIPS[0].companyId,
-          status: 'INTERVIEW',
-          createdAt: '2026-08-18T14:30:00.000Z',
-        },
-        {
-          _id: 'app_demo_02',
-          internshipId: REAL_INTERNSHIPS[4],
-          companyId: REAL_INTERNSHIPS[4].companyId,
-          status: 'UNDER_REVIEW',
-          createdAt: '2026-08-19T16:00:00.000Z',
-        },
-        {
-          _id: 'app_demo_03',
-          internshipId: REAL_INTERNSHIPS[7],
-          companyId: REAL_INTERNSHIPS[7].companyId,
-          status: 'APPLIED',
-          createdAt: '2026-08-21T18:00:00.000Z',
-        },
-      ];
+  const appCount = studentApplications?.total || (studentApplications?.data?.length || 0);
+  const recentApps = studentApplications?.data || [];
 
   const interviewCount = recentApps.filter((a) => a.status === 'INTERVIEW').length;
 
@@ -119,9 +95,6 @@ export function StudentDashboard() {
       badgeVariant: 'info',
     },
   ];
-
-  // Matched Opportunities based on real tech data
-  const recommendedInternships = REAL_INTERNSHIPS.slice(0, 3);
 
   // Time-aware greeting
   const getGreeting = () => {
@@ -379,21 +352,46 @@ export function StudentDashboard() {
               {/* Tab 2: Matched Opportunities */}
               {activeTab === 'matched' && (
                 <div className="p-4 sm:p-6 space-y-3">
-                  {recommendedInternships.map((intItem) => (
+                  {[
+                    {
+                      _id: 'sample_stripe',
+                      title: 'Core Payments & Infrastructure Software Engineer Intern',
+                      companyName: 'Stripe',
+                      logo: 'https://www.google.com/s2/favicons?domain=stripe.com&sz=128',
+                      stipend: 9800,
+                      remote: 'REMOTE',
+                    },
+                    {
+                      _id: 'sample_deepmind',
+                      title: 'Frontier AI Research & Reasoning Intern',
+                      companyName: 'Google DeepMind',
+                      logo: 'https://www.google.com/s2/favicons?domain=google.com&sz=128',
+                      stipend: 11500,
+                      remote: 'HYBRID',
+                    },
+                    {
+                      _id: 'sample_azure',
+                      title: 'Cloud & Distributed Systems Engineer Intern',
+                      companyName: 'Microsoft',
+                      logo: 'https://www.google.com/s2/favicons?domain=microsoft.com&sz=128',
+                      stipend: 9200,
+                      remote: 'REMOTE',
+                    },
+                  ].map((intItem) => (
                     <div
                       key={intItem._id}
                       className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-slate-50/70 border border-slate-200/80 hover:bg-white hover:border-slate-300 hover:shadow-sm transition-all duration-200"
                     >
                       <div className="flex items-start sm:items-center gap-3.5 min-w-0">
                         <img
-                          src={intItem.companyId?.logo}
-                          alt={intItem.companyId?.name}
+                          src={intItem.logo}
+                          alt={intItem.companyName}
                           className="w-11 h-11 rounded-xl object-cover border border-slate-200 shadow-xs shrink-0"
                         />
                         <div className="space-y-1 min-w-0">
                           <div className="flex items-center gap-2">
                             <Link
-                              to={`/internships/${intItem._id}`}
+                              to="/internships"
                               className="text-sm font-bold text-slate-900 group-hover:text-brand-600 transition-colors truncate block"
                             >
                               {intItem.title}
@@ -403,10 +401,10 @@ export function StudentDashboard() {
                             </Badge>
                           </div>
                           <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500 font-medium">
-                            <span className="font-semibold text-slate-700">{intItem.companyId?.name}</span>
+                            <span className="font-semibold text-slate-700">{intItem.companyName}</span>
                             <span>•</span>
                             <span className="text-emerald-700 font-bold">
-                              ${intItem.stipend?.amount?.toLocaleString()}/mo
+                              ${intItem.stipend.toLocaleString()}/mo
                             </span>
                             <span>•</span>
                             <span>{intItem.remote}</span>
@@ -415,9 +413,9 @@ export function StudentDashboard() {
                       </div>
 
                       <div className="flex items-center gap-2 shrink-0">
-                        <Link to={`/internships/${intItem._id}`}>
+                        <Link to="/internships">
                           <Button variant="primary" size="xs" rightIcon={<ArrowRight className="w-3.5 h-3.5" />}>
-                            1-Click Apply
+                            View Roles
                           </Button>
                         </Link>
                       </div>

@@ -15,7 +15,7 @@ import {
 
 export function CompanySpotlightBanner({
   spotlightCompanies = [],
-  onSelectCompany,
+  onSelectCompany: _onSelectCompany,
 }) {
   const [activeTab, setActiveTab] = useState('ALL');
 

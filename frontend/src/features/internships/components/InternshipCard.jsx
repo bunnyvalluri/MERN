@@ -100,7 +100,7 @@ export function InternshipCard({
   const sourceName = internship.source || (internship.sourceType === 'API' ? 'Partner Feed' : 'InternHub');
   const isExternal = internship.applicationMethod === 'EXTERNAL' || Boolean(internship.applicationUrl);
   const category = internship.category || 'Software Development';
-  const aiMatch = internship.aiMatch;
+  const _aiMatch = internship.aiMatch;
 
   // Format location
   const locationFormatted =

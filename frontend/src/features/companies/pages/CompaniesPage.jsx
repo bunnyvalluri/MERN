@@ -6,8 +6,8 @@
  */
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { useSearchParams, useNavigate, Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSearchParams, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Navbar from '../../../components/common/Navbar.jsx';
 import Footer from '../../../components/common/Footer.jsx';
 import SEOHead from '../../../components/common/SEOHead.jsx';
@@ -86,9 +86,7 @@ const SAVED_COMPANIES_STORAGE_KEY = 'internhub_saved_companies';
 const USER_SKILLS_STORAGE_KEY = 'internhub_user_target_skills';
 
 export function CompaniesPage() {
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
   const studentProfile = useSelector((state) => state.student?.profile);
 
   // Layout mode: 'grid' | 'list'
@@ -110,8 +108,8 @@ export function CompaniesPage() {
 
   // ─── API-backed company data ───────────────────────────────────────────────
   const [allCompanies, setAllCompanies] = useState(() => getAllEnrichedCompanies());
-  const [companiesLoading, setCompaniesLoading] = useState(true);
-  const [companiesError, setCompaniesError] = useState(null);
+  const [_companiesLoading, setCompaniesLoading] = useState(true);
+  const [_companiesError, setCompaniesError] = useState(null);
 
   // Fetch live company data from MongoDB Atlas on mount
   useEffect(() => {

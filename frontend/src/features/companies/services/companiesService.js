@@ -151,7 +151,7 @@ export function getAllEnrichedCompanies() {
 }
 
 // ─── Logo fallback mapper ─────────────────────────────────────────────────────
-function getCleanCompanyLogo(company) {
+export function getCleanCompanyLogo(company) {
   return resolveLogoUrl(company);
 }
 

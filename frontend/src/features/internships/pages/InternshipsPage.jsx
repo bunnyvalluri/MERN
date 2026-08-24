@@ -696,6 +696,29 @@ export function InternshipsPage() {
         onClose={() => setApplyModalOpen(false)}
       />
 
+      {/* Mobile Filter Sheet / Modal */}
+      <Modal
+        isOpen={mobileFilterOpen}
+        onClose={() => setMobileFilterOpen(false)}
+        title="Filter Opportunities"
+      >
+        <div className="py-2">
+          <InternshipFilters
+            filters={currentFilters}
+            onFilterChange={(newFilters) => {
+              updateURLParams(newFilters);
+              setMobileFilterOpen(false);
+            }}
+            onReset={() => {
+              updateURLParams({});
+              setMobileFilterOpen(false);
+            }}
+            savedOnly={savedOnly}
+            onToggleSavedOnly={() => setSavedOnly(!savedOnly)}
+          />
+        </div>
+      </Modal>
+
       <Footer />
     </div>
   );

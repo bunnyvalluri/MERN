@@ -65,49 +65,6 @@ const STAGE_LABELS = {
   WITHDRAWN: 'Withdrawn',
 };
 
-const DEFAULT_REAL_APPS = [
-  {
-    _id: 'app_demo_01',
-    internshipId: REAL_INTERNSHIPS[0],
-    companyId: REAL_INTERNSHIPS[0].companyId,
-    status: 'INTERVIEW',
-    createdAt: '2026-08-18T14:30:00.000Z',
-    nextAction: 'Technical screen scheduled for Friday, Aug 28 at 2:00 PM PST',
-    meetingLink: 'https://meet.google.com/abc-defg-hij',
-    coverLetter: 'Excited to apply for the Core Payments SWE internship at Stripe...',
-    timeline: [
-      { status: 'APPLIED', note: 'Application submitted successfully', changedAt: '2026-08-18T14:30:00.000Z' },
-      { status: 'UNDER_REVIEW', note: 'Recruiter screened profile & resume', changedAt: '2026-08-19T09:00:00.000Z' },
-      { status: 'INTERVIEW', note: 'Technical screen scheduled with payments lead', changedAt: '2026-08-20T11:00:00.000Z' },
-    ],
-  },
-  {
-    _id: 'app_demo_02',
-    internshipId: REAL_INTERNSHIPS[4],
-    companyId: REAL_INTERNSHIPS[4].companyId,
-    status: 'UNDER_REVIEW',
-    createdAt: '2026-08-19T16:00:00.000Z',
-    nextAction: 'Research engineers reviewing code sample & ML portfolio',
-    coverLetter: 'Passionate about AI safety evaluations and scalable oversight...',
-    timeline: [
-      { status: 'APPLIED', note: 'Application submitted', changedAt: '2026-08-19T16:00:00.000Z' },
-      { status: 'UNDER_REVIEW', note: 'Research team reviewing technical portfolio', changedAt: '2026-08-20T10:00:00.000Z' },
-    ],
-  },
-  {
-    _id: 'app_demo_03',
-    internshipId: REAL_INTERNSHIPS[7],
-    companyId: REAL_INTERNSHIPS[7].companyId,
-    status: 'APPLIED',
-    createdAt: '2026-08-21T18:00:00.000Z',
-    nextAction: 'In queue for initial engineering manager screening',
-    coverLetter: 'Fascinated by WebGL graphics pipelines and WebAssembly rendering...',
-    timeline: [
-      { status: 'APPLIED', note: 'Application submitted', changedAt: '2026-08-21T18:00:00.000Z' },
-    ],
-  },
-];
-
 export function StudentApplicationsPage() {
   const dispatch = useDispatch();
   const { studentApplications, loading, actionLoading } = useSelector(
@@ -130,9 +87,7 @@ export function StudentApplicationsPage() {
     );
   }, [dispatch, selectedStatus, currentPage]);
 
-  const rawList = (studentApplications?.data && studentApplications.data.length > 0)
-    ? studentApplications.data
-    : DEFAULT_REAL_APPS;
+  const rawList = useMemo(() => studentApplications?.data || [], [studentApplications?.data]);
 
   // Filter & Search
   const filteredApps = useMemo(() => {

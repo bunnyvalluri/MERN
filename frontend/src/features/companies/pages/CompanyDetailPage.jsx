@@ -4,8 +4,8 @@
  * and live application workflows for top tech employers.
  */
 
-import React, { useState, useMemo, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useMemo } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Navbar from '../../../components/common/Navbar.jsx';
 import Footer from '../../../components/common/Footer.jsx';
@@ -46,7 +46,6 @@ import {
 
 export function CompanyDetailPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const studentProfile = useSelector((state) => state.student?.profile);
 
   // Active Tab state

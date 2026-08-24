@@ -58,7 +58,7 @@ const SKILL_CATEGORIES = {
 export function CompanySmartMatchWidget({
   userSkills = [],
   onSkillsChange,
-  isActive = false,
+  isActive: _isActive = false,
   onToggleActive,
 }) {
   const [customInput, setCustomInput] = useState('');
