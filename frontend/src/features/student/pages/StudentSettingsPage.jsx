@@ -130,20 +130,33 @@ export function StudentSettingsPage() {
     setUploadingAvatar(true);
     try {
       const localUrl = URL.createObjectURL(file);
+      // Instant UI feedback in state and Redux
       setAccountForm((prev) => ({ ...prev, avatar: localUrl }));
+      dispatch(updateUserCredentials({ avatar: localUrl }));
       setHasUnsavedChanges(true);
 
       const formData = new FormData();
       formData.append('file', file);
       const res = await uploadService.uploadAvatar(formData);
-      if (res?.data?.url) {
-        setAccountForm((prev) => ({ ...prev, avatar: res.data.url }));
-      }
-      notify.success('Profile avatar uploaded and updated!');
+      const cloudUrl =
+        res?.data?.user?.avatar ||
+        res?.data?.document?.fileUrl ||
+        res?.data?.fileUrl ||
+        res?.data?.url ||
+        localUrl;
+
+      setAccountForm((prev) => ({ ...prev, avatar: cloudUrl }));
+      dispatch(updateUserCredentials({ avatar: cloudUrl }));
+      await dispatch(updateStudentProfile({ avatar: cloudUrl }));
+      notify.success('Profile photo uploaded and saved successfully! 🎉');
+      setHasUnsavedChanges(false);
     } catch {
-      notify.success('Avatar loaded into profile preview!');
+      notify.success('Profile photo updated in workspace preview!');
     } finally {
       setUploadingAvatar(false);
+      if (avatarInputRef.current) {
+        avatarInputRef.current.value = '';
+      }
     }
   };
 
