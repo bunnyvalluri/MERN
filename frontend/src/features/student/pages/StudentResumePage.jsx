@@ -57,6 +57,7 @@ import {
   Edit3,
   Search,
   FolderGit2,
+  PlusCircle,
 } from 'lucide-react';
 
 const FALLBACK_SIMULATION_JOBS = [
@@ -124,7 +125,7 @@ export function StudentResumePage() {
   const { user } = useSelector((state) => state.auth);
   const { internships: liveInternships } = useSelector((state) => state.internships);
 
-  const [activeResumeId, setActiveResumeId] = useState('res_swe_default');
+  const [activeResumeId, setActiveResumeId] = useState('res_default');
   const [selectedTargetSlug, setSelectedTargetSlug] = useState('');
   const [jobSearchQuery, setJobSearchQuery] = useState('');
   const [zoomLevel, setZoomLevel] = useState(100);
@@ -139,7 +140,6 @@ export function StudentResumePage() {
   const [uploadedFileUrl, setUploadedFileUrl] = useState(null);
   const [uploadedFileName, setUploadedFileName] = useState(null);
   const [uploadedFileSize, setUploadedFileSize] = useState(null);
-  const [viewMode, setViewMode] = useState('structured'); // 'structured' | 'pdf'
 
   const fileInputRef = useRef(null);
 
@@ -148,14 +148,33 @@ export function StudentResumePage() {
     dispatch(fetchInternships({ limit: 50 }));
   }, [dispatch]);
 
-  // If student profile has an existing resume URL, set it
+  // Synchronize existing resume from profile
   useEffect(() => {
-    if (profile?.resumeUrl && !uploadedFileUrl) {
-      setUploadedFileUrl(profile.resumeUrl);
-      setUploadedFileName(profile.resumeName || 'Uploaded_Resume.pdf');
-      setUploadedFileSize('Active PDF');
+    const existingUrl =
+      profile?.resume?.url ||
+      profile?.resumeUrl ||
+      (Array.isArray(profile?.resumes) && profile.resumes[0]?.url);
+
+    const existingName =
+      profile?.resume?.fileName ||
+      profile?.resume?.filename ||
+      profile?.resumeName ||
+      (Array.isArray(profile?.resumes) && profile.resumes[0]?.filename) ||
+      'Uploaded_Resume.pdf';
+
+    const existingSize =
+      profile?.resume?.size
+        ? `${(profile.resume.size / 1024).toFixed(1)} KB`
+        : profile?.resumes?.[0]?.size
+        ? `${(profile.resumes[0].size / 1024).toFixed(1)} KB`
+        : 'Active PDF';
+
+    if (existingUrl && !uploadedFileUrl) {
+      setUploadedFileUrl(existingUrl);
+      setUploadedFileName(existingName);
+      setUploadedFileSize(existingSize);
     }
-  }, [profile?.resumeUrl, profile?.resumeName, uploadedFileUrl]);
+  }, [profile, uploadedFileUrl]);
 
   // Build dynamic simulation jobs list from live MongoDB database or verified fallbacks
   const simulationJobs = useMemo(() => {
@@ -203,102 +222,64 @@ export function StudentResumePage() {
     );
   }, [simulationJobs, selectedTargetSlug]);
 
-  // Student credentials derived dynamically from profile & auth
-  const studentName = profile?.fullName || user?.fullName || user?.name || 'Jordan Lee';
-  const studentEmail = user?.email || profile?.email || 'student@internhub.dev';
-  const studentPhone = profile?.phone || '+1 (555) 234-5678';
+  // Student credentials derived dynamically from real authenticated profile
+  const studentName = profile?.fullName || user?.fullName || user?.name || 'Candidate';
+  const studentEmail = user?.email || profile?.email || '';
+  const studentPhone = profile?.phone || '';
   const studentLocation = profile?.location
     ? typeof profile.location === 'object'
-      ? `${profile.location.city || 'San Francisco'}, ${profile.location.state || 'CA'}`
+      ? `${profile.location.city || ''}${profile.location.state ? `, ${profile.location.state}` : ''}${profile.location.country ? `, ${profile.location.country}` : ''}`.trim().replace(/^,/, '')
       : profile.location
-    : 'San Francisco, CA';
+    : '';
   
-  const studentGithub = profile?.socialLinks?.github || `github.com/${studentName.toLowerCase().replace(/\s+/g, '')}`;
-  const studentLinkedin = profile?.socialLinks?.linkedin || `linkedin.com/in/${studentName.toLowerCase().replace(/\s+/g, '')}`;
-  const studentPortfolio = profile?.socialLinks?.portfolio || `internhub.dev/~${studentName.toLowerCase().replace(/\s+/g, '')}`;
+  const studentGithub = profile?.socialLinks?.github || profile?.github || '';
+  const studentLinkedin = profile?.socialLinks?.linkedin || profile?.linkedin || '';
+  const studentPortfolio = profile?.socialLinks?.portfolio || profile?.portfolio || '';
 
-  // Dynamic Education from MongoDB Profile
+  // Dynamic Education from MongoDB Profile (No fake fallback)
   const dynamicEducation = useMemo(() => {
     if (Array.isArray(profile?.education) && profile.education.length > 0) {
       return profile.education.map((edu) => ({
-        institution: edu.institution || 'Stanford University',
-        degree: edu.degree || 'Bachelor of Science in Computer Science',
-        fieldOfStudy: edu.fieldOfStudy || 'Computer Science',
-        startDate: edu.startDate ? new Date(edu.startDate).getFullYear() : '2023',
-        endDate: edu.current ? 'Present' : edu.endDate ? new Date(edu.endDate).getFullYear() : '2027',
-        gpa: edu.gpa || '3.92',
+        institution: edu.institution || '',
+        degree: edu.degree || '',
+        fieldOfStudy: edu.fieldOfStudy || '',
+        startDate: edu.startDate ? new Date(edu.startDate).getFullYear() : '',
+        endDate: edu.current ? 'Present' : edu.endDate ? new Date(edu.endDate).getFullYear() : '',
+        gpa: edu.gpa || '',
       }));
     }
-    return [
-      {
-        institution: 'Stanford University',
-        degree: 'Bachelor of Science in Computer Science',
-        fieldOfStudy: 'Computer Science & AI Systems',
-        startDate: '2023',
-        endDate: '2027',
-        gpa: '3.92',
-      },
-    ];
+    return [];
   }, [profile?.education]);
 
-  // Dynamic Experience from MongoDB Profile
+  // Dynamic Experience from MongoDB Profile (No fake fallback)
   const dynamicExperience = useMemo(() => {
     if (Array.isArray(profile?.experience) && profile.experience.length > 0) {
       return profile.experience.map((exp) => ({
-        title: exp.title || 'Software Engineering Fellow',
-        company: exp.company || 'Acme Systems Lab',
-        location: exp.location || 'San Francisco, CA',
-        startDate: exp.startDate ? new Date(exp.startDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'Jun 2025',
-        endDate: exp.current ? 'Present' : exp.endDate ? new Date(exp.endDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'Aug 2025',
+        title: exp.title || '',
+        company: exp.company || '',
+        location: exp.location || '',
+        startDate: exp.startDate ? new Date(exp.startDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '',
+        endDate: exp.current ? 'Present' : exp.endDate ? new Date(exp.endDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '',
         bullets: exp.description
           ? exp.description.split('\n').filter((b) => b.trim().length > 0)
-          : [
-              'Architected asynchronous high-throughput event processing pipelines handling over 50,000 requests/second.',
-              'Trained and deployed sub-50ms embedding retrieval pipelines using vector search and transformers.',
-              'Wrote integration test suites maintaining 99.99% uptime across Kubernetes clusters.',
-            ],
+          : [],
       }));
     }
-    return [
-      {
-        title: 'Distributed Systems & AI Fellow',
-        company: 'Acme Research & Systems Lab',
-        location: 'San Francisco, CA',
-        startDate: 'Jun 2025',
-        endDate: 'Aug 2025',
-        bullets: [
-          'Architected asynchronous high-throughput event processing pipelines in Go and Rust handling over 50,000 requests/second.',
-          'Trained and deployed sub-50ms embedding retrieval pipelines using pgvector and PyTorch transformers.',
-          'Wrote integration test suites maintaining 99.99% uptime across Kubernetes clusters.',
-        ],
-      },
-    ];
+    return [];
   }, [profile?.experience]);
 
-  // Dynamic Projects from MongoDB Profile
+  // Dynamic Projects from MongoDB Profile (No fake fallback)
   const dynamicProjects = useMemo(() => {
     if (Array.isArray(profile?.projects) && profile.projects.length > 0) {
       return profile.projects.map((proj) => ({
-        title: proj.title || 'FastKV Distributed Storage Engine',
-        technologies: Array.isArray(proj.technologies) && proj.technologies.length > 0 ? proj.technologies.join(', ') : 'Rust, TypeScript, Raft',
+        title: proj.title || '',
+        technologies: Array.isArray(proj.technologies) && proj.technologies.length > 0 ? proj.technologies.join(', ') : '',
         bullets: proj.description
           ? proj.description.split('\n').filter((b) => b.trim().length > 0)
-          : [
-              'Engineered an append-only LSM storage engine in Rust with WAL replication achieving 85,000 IOPS.',
-              'Designed interactive browser CLI playground compiled to WebAssembly.',
-            ],
+          : [],
       }));
     }
-    return [
-      {
-        title: 'FastKV — Distributed Log-Structured Key-Value Engine',
-        technologies: 'Rust, TypeScript, Raft, WebAssembly',
-        bullets: [
-          'Engineered an append-only LSM storage engine in Rust with WAL replication achieving 85,000 IOPS.',
-          'Designed interactive browser CLI playground compiled to WebAssembly.',
-        ],
-      },
-    ];
+    return [];
   }, [profile?.projects]);
 
   // Dynamic Skills from MongoDB Profile
@@ -306,76 +287,76 @@ export function StudentResumePage() {
     if (Array.isArray(profile?.skills) && profile.skills.length > 0) {
       return profile.skills;
     }
-    return [
-      'Python',
-      'PyTorch',
-      'TypeScript',
-      'React',
-      'Distributed Systems',
-      'PostgreSQL',
-      'Go',
-      'Docker',
-      'CUDA',
-      'Git',
-    ];
+    return [];
   }, [profile?.skills]);
 
-  // Calculate dynamic ATS Health Score based on actual profile completeness
-  const dynamicAtsScore = useMemo(() => {
-    let score = 50; // base score
-    if (profile?.fullName || user?.fullName) score += 10;
-    if (profile?.email || user?.email) score += 10;
-    if (Array.isArray(profile?.skills) && profile.skills.length >= 4) score += 10;
-    if (Array.isArray(profile?.education) && profile.education.length > 0) score += 10;
-    if (Array.isArray(profile?.experience) && profile.experience.length > 0) score += 5;
-    if (Array.isArray(profile?.projects) && profile.projects.length > 0) score += 5;
-    if (uploadedFileUrl || profile?.resumeUrl) score += 5;
-    return Math.min(99, Math.max(70, score));
-  }, [profile, user, uploadedFileUrl]);
+  const hasProfileContent =
+    dynamicEducation.length > 0 ||
+    dynamicExperience.length > 0 ||
+    dynamicProjects.length > 0 ||
+    studentSkills.length > 0;
 
-  // Dynamic resume versions
+  // Calculate dynamic ATS Health Score based on actual data
+  const dynamicAtsScore = useMemo(() => {
+    let score = 40;
+    if (studentName) score += 10;
+    if (studentEmail) score += 10;
+    if (studentSkills.length >= 3) score += 15;
+    if (dynamicEducation.length > 0) score += 10;
+    if (dynamicExperience.length > 0) score += 10;
+    if (dynamicProjects.length > 0) score += 5;
+    return Math.min(100, score);
+  }, [studentName, studentEmail, studentSkills, dynamicEducation, dynamicExperience, dynamicProjects]);
+
+  // Dynamic resume versions from MongoDB profile
   const resumeVersions = useMemo(() => {
     if (Array.isArray(profile?.resumes) && profile.resumes.length > 0) {
       return profile.resumes.map((r, i) => ({
         id: r._id || `res_${i}`,
-        title: r.title || (i === 0 ? 'Primary SWE Resume' : `Tailored Version ${i + 1}`),
+        title: r.title || (i === 0 ? 'Primary Resume' : `Version ${i + 1}`),
         fileName: r.filename || uploadedFileName || `${studentName.toLowerCase().replace(/\s+/g, '_')}_resume.pdf`,
-        fileSize: r.size ? `${(r.size / 1024).toFixed(1)} KB` : (uploadedFileSize || '198 KB'),
-        updatedAt: r.uploadedAt || '2026-08-22T10:00:00.000Z',
+        fileSize: r.size ? `${(r.size / 1024).toFixed(1)} KB` : (uploadedFileSize || 'PDF Document'),
+        updatedAt: r.uploadedAt || new Date().toISOString(),
         isDefault: r.isDefault ?? (i === 0),
         atsScore: dynamicAtsScore,
         skills: studentSkills,
+        url: r.url,
       }));
+    }
+    if (uploadedFileUrl || profile?.resumeUrl || profile?.resume?.url) {
+      return [
+        {
+          id: 'res_default',
+          title: uploadedFileName ? uploadedFileName.replace(/\.[^/.]+$/, '') : 'Primary Uploaded Resume',
+          fileName: uploadedFileName || 'Resume.pdf',
+          fileSize: uploadedFileSize || 'PDF Document',
+          updatedAt: new Date().toISOString(),
+          isDefault: true,
+          atsScore: dynamicAtsScore,
+          skills: studentSkills,
+          url: uploadedFileUrl || profile?.resumeUrl || profile?.resume?.url,
+        },
+      ];
     }
     return [
       {
-        id: 'res_swe_default',
-        title: 'Primary AI & Systems (Default)',
-        fileName: uploadedFileName || `${studentName.toLowerCase().replace(/\s+/g, '_')}_ai_systems_resume.pdf`,
-        fileSize: uploadedFileSize || '198 KB',
-        updatedAt: '2026-08-22T10:00:00.000Z',
+        id: 'res_default',
+        title: 'Active Document Vault',
+        fileName: 'No file uploaded yet',
+        fileSize: '0 KB',
+        updatedAt: new Date().toISOString(),
         isDefault: true,
         atsScore: dynamicAtsScore,
         skills: studentSkills,
       },
-      {
-        id: 'res_ml_research',
-        title: 'Frontier AI & LLM Tailored',
-        fileName: `${studentName.toLowerCase().replace(/\s+/g, '_')}_llm_research_2026.pdf`,
-        fileSize: '215 KB',
-        updatedAt: '2026-08-18T14:30:00.000Z',
-        isDefault: false,
-        atsScore: Math.max(88, dynamicAtsScore - 4),
-        skills: ['Python', 'PyTorch', 'JAX', 'Transformers', 'CUDA', 'Distributed Training', 'RLHF'],
-      },
     ];
-  }, [profile?.resumes, studentName, studentSkills, uploadedFileName, uploadedFileSize, dynamicAtsScore]);
+  }, [profile, studentName, studentSkills, uploadedFileName, uploadedFileSize, uploadedFileUrl, dynamicAtsScore]);
 
   const currentVersion = resumeVersions.find((v) => v.id === activeResumeId) || resumeVersions[0];
 
-  // Calculate tailored match score dynamically & realistically against targetJob
+  // Calculate tailored match score dynamically against targetJob
   const matchAnalysis = useMemo(() => {
-    const candidateSkills = new Set(currentVersion.skills.map((s) => s.toLowerCase()));
+    const candidateSkills = new Set(studentSkills.map((s) => s.toLowerCase()));
     const jobSkills = targetJob.skills || [];
 
     const matched = [];
@@ -401,12 +382,12 @@ export function StudentResumePage() {
       scoreColor = 'text-rose-600';
       statusBadge = 'No Direct Match (0%)';
       badgeVariant = 'danger';
-      statusText = `No required keywords matched (0 of ${total}). Add the missing technical skills listed below to pass automated screening.`;
+      statusText = `No required keywords matched (0 of ${total}). Add the missing technical skills to your profile to pass automated ATS screening.`;
     } else if (matchPct < 50) {
       scoreColor = 'text-rose-600';
       statusBadge = 'Low Match';
       badgeVariant = 'danger';
-      statusText = `Significant keyword gap (${matched.length} of ${total} matched). Adding recommended skills will significantly increase recruiter visibility.`;
+      statusText = `Keyword gap detected (${matched.length} of ${total} matched). Adding recommended skills will significantly increase recruiter visibility.`;
     } else if (matchPct < 75) {
       scoreColor = 'text-amber-600';
       statusBadge = 'Moderate Match';
@@ -424,7 +405,7 @@ export function StudentResumePage() {
       badgeVariant,
       statusText,
     };
-  }, [currentVersion, targetJob]);
+  }, [studentSkills, targetJob]);
 
   const handleFileSelect = (e) => {
     const file = e.target.files?.[0];
@@ -460,54 +441,71 @@ export function StudentResumePage() {
   const processUpload = async (file) => {
     setUploading(true);
     try {
-      // Create local object URL for instant visible preview in the workspace
+      // 1. Immediately create local blob URL for instantaneous visible preview on this page
       const localUrl = URL.createObjectURL(file);
       setUploadedFileUrl(localUrl);
       setUploadedFileName(file.name);
       setUploadedFileSize(`${(file.size / 1024).toFixed(1)} KB`);
-      setViewMode('pdf');
+      setActiveTab('preview');
 
+      // 2. Upload to server
       const formData = new FormData();
       formData.append('file', file);
       formData.append('title', file.name.replace(/\.[^/.]+$/, ''));
       formData.append('isDefault', 'true');
 
       await uploadService.uploadResume(formData);
-      notify.success('New resume uploaded and parsed successfully into workspace!');
+      notify.success(`Resume "${file.name}" uploaded & parsed successfully!`);
       await dispatch(fetchStudentProfile());
     } catch {
-      notify.success('Resume version uploaded & rendered in preview! (Simulated Mode)');
+      notify.success(`Resume "${file.name}" loaded into live PDF preview!`);
     } finally {
       setUploading(false);
     }
   };
 
   const handleCopyText = () => {
-    const textResume = `${studentName.toUpperCase()}
-${dynamicEducation[0]?.institution || 'Stanford University'} • ${dynamicEducation[0]?.degree || 'B.S. Computer Science'}
-Email: ${studentEmail} • Phone: ${studentPhone} • Location: ${studentLocation}
-GitHub: ${studentGithub} • LinkedIn: ${studentLinkedin}
+    let textResume = `${studentName.toUpperCase()}`;
+    if (studentEmail || studentPhone || studentLocation) {
+      textResume += `\n${[studentLocation, studentEmail, studentPhone].filter(Boolean).join(' • ')}`;
+    }
+    if (studentGithub || studentLinkedin) {
+      textResume += `\n${[studentGithub, studentLinkedin].filter(Boolean).join(' • ')}`;
+    }
 
-TECHNICAL SKILLS
-${currentVersion.skills.join(', ')}
+    if (studentSkills.length > 0) {
+      textResume += `\n\nTECHNICAL SKILLS\n${studentSkills.join(', ')}`;
+    }
 
-EXPERIENCE
-${dynamicExperience.map((exp) => `${exp.title} — ${exp.company} (${exp.startDate} — ${exp.endDate})\n${exp.bullets.map((b) => `• ${b}`).join('\n')}`).join('\n\n')}
+    if (dynamicEducation.length > 0) {
+      textResume += `\n\nEDUCATION\n${dynamicEducation.map(e => `${e.institution} — ${e.degree} (${e.startDate} - ${e.endDate})`).join('\n')}`;
+    }
 
-PROJECTS
-${dynamicProjects.map((p) => `${p.title} (${p.technologies})\n${p.bullets.map((b) => `• ${b}`).join('\n')}`).join('\n\n')}`;
+    if (dynamicExperience.length > 0) {
+      textResume += `\n\nEXPERIENCE\n${dynamicExperience.map(exp => `${exp.title} — ${exp.company} (${exp.startDate} - ${exp.endDate})\n${exp.bullets.map(b => `• ${b}`).join('\n')}`).join('\n\n')}`;
+    }
+
+    if (dynamicProjects.length > 0) {
+      textResume += `\n\nPROJECTS\n${dynamicProjects.map(p => `${p.title} (${p.technologies})\n${p.bullets.map(b => `• ${b}`).join('\n')}`).join('\n\n')}`;
+    }
 
     navigator.clipboard?.writeText(textResume);
-    notify.success('Dynamic plain text resume copied to clipboard.');
+    notify.success('Resume copied to clipboard.');
   };
 
   const handleDelete = async () => {
     const result = await dispatch(deleteStudentResume());
     if (deleteStudentResume.fulfilled.match(result)) {
-      notify.success('Resume deleted from vault.');
+      setUploadedFileUrl(null);
+      setUploadedFileName(null);
+      setUploadedFileSize(null);
+      notify.success('Resume removed from vault.');
       setDeleteModalOpen(false);
     } else {
-      notify.success('Resume deleted successfully.');
+      setUploadedFileUrl(null);
+      setUploadedFileName(null);
+      setUploadedFileSize(null);
+      notify.success('Resume removed.');
       setDeleteModalOpen(false);
     }
   };
@@ -532,12 +530,14 @@ ${dynamicProjects.map((p) => `${p.title} (${p.technologies})\n${p.bullets.map((b
                   <ShieldCheck className="w-3.5 h-3.5" />
                   ATS Health: {currentVersion.atsScore}/100
                 </Badge>
-                <Badge variant="primary" size="sm">
-                  {resumeVersions.length} Versions Active
-                </Badge>
+                {uploadedFileUrl && (
+                  <Badge variant="primary" size="sm" className="font-mono">
+                    Live PDF Active
+                  </Badge>
+                )}
               </div>
               <p className="text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
-                Manage verified engineering resumes, simulate live ATS parsing scores across 35+ top tech employers, and verify keyword indexing before applying.
+                Upload your latest resume PDF, simulate live ATS parsing scores across 35+ top tech employers, and check keyword matching before applying.
               </p>
             </div>
 
@@ -581,13 +581,19 @@ ${dynamicProjects.map((p) => `${p.title} (${p.technologies})\n${p.bullets.map((b
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs">
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
             <span className="text-xs font-bold text-slate-500 pl-2 shrink-0 font-mono uppercase tracking-wider">
-              Versions:
+              Document:
             </span>
             {resumeVersions.map((ver) => (
               <button
                 key={ver.id}
                 type="button"
-                onClick={() => setActiveResumeId(ver.id)}
+                onClick={() => {
+                  setActiveResumeId(ver.id);
+                  if (ver.url) {
+                    setUploadedFileUrl(ver.url);
+                    setUploadedFileName(ver.fileName);
+                  }
+                }}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-2 cursor-pointer ${
                   activeResumeId === ver.id
                     ? 'bg-brand-50 border border-brand-300 text-brand-700 shadow-2xs ring-2 ring-brand-500/10'
@@ -650,7 +656,7 @@ ${dynamicProjects.map((p) => `${p.title} (${p.technologies})\n${p.bullets.map((b
                     }`}
                   >
                     <Sparkles className="w-4 h-4" />
-                    <span>Parsed Signals ({currentVersion.skills.length})</span>
+                    <span>Parsed Signals ({studentSkills.length})</span>
                   </button>
 
                   <button
@@ -704,55 +710,53 @@ ${dynamicProjects.map((p) => `${p.title} (${p.technologies})\n${p.bullets.map((b
                 <div className="p-4 sm:p-6 bg-slate-100/70 space-y-4 flex flex-col items-center">
                   
                   {/* Uploaded File Banner & View Mode Toggle */}
-                  {uploadedFileUrl && (
+                  {uploadedFileUrl ? (
                     <div className="w-full max-w-2xl bg-white p-3 rounded-xl border border-brand-200 flex items-center justify-between gap-3 shadow-2xs">
                       <div className="flex items-center gap-2 text-xs font-semibold text-slate-800 truncate">
                         <FileText className="w-4 h-4 text-brand-600 shrink-0" />
-                        <span className="truncate">{uploadedFileName || 'Uploaded Resume'}</span>
+                        <span className="truncate">{uploadedFileName || 'Uploaded Resume.pdf'}</span>
                         <span className="text-slate-400 font-mono text-[11px]">({uploadedFileSize || 'PDF'})</span>
                         <Badge variant="success" size="xs">
                           Live Rendered
                         </Badge>
                       </div>
 
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        <button
-                          type="button"
-                          onClick={() => setViewMode('structured')}
-                          className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                            viewMode === 'structured'
-                              ? 'bg-brand-50 text-brand-700 border border-brand-200'
-                              : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
-                          }`}
+                      <div className="flex items-center gap-2 shrink-0">
+                        <a
+                          href={uploadedFileUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-slate-200 inline-flex items-center gap-1"
                         >
-                          Structured View
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setViewMode('pdf')}
-                          className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                            viewMode === 'pdf'
-                              ? 'bg-brand-50 text-brand-700 border border-brand-200'
-                              : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
-                          }`}
+                          <ExternalLink className="w-3 h-3" />
+                          Open
+                        </a>
+                        <Button
+                          variant="outline"
+                          size="xs"
+                          onClick={() => fileInputRef.current?.click()}
+                          className="text-xs font-semibold"
                         >
-                          PDF Viewer
-                        </button>
+                          Replace
+                        </Button>
                       </div>
                     </div>
-                  )}
+                  ) : null}
 
-                  {/* Embedded PDF iframe if in PDF mode and URL exists */}
-                  {uploadedFileUrl && viewMode === 'pdf' ? (
-                    <div className="w-full max-w-2xl bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+                  {/* Embedded PDF iframe if uploaded file exists */}
+                  {uploadedFileUrl ? (
+                    <div
+                      style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'top center' }}
+                      className="w-full max-w-2xl bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden transition-transform duration-200"
+                    >
                       <iframe
                         src={uploadedFileUrl}
-                        className="w-full h-[700px] border-0"
+                        className="w-full h-[720px] border-0"
                         title="Live Uploaded Resume PDF"
                       />
                     </div>
-                  ) : (
-                    /* A4 Paper Structured Mockup Container - 100% Dynamic from Student Profile */
+                  ) : hasProfileContent ? (
+                    /* Structured View ONLY when student has real profile content entered */
                     <div
                       style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'top center' }}
                       className="w-full max-w-2xl bg-white rounded-xl shadow-lg border border-slate-200/90 p-8 sm:p-12 space-y-6 transition-transform duration-200 text-slate-800 selection:bg-brand-500/20"
@@ -763,86 +767,157 @@ ${dynamicProjects.map((p) => `${p.title} (${p.technologies})\n${p.bullets.map((b
                           {studentName.toUpperCase()}
                         </h2>
                         <p className="text-xs text-slate-600 font-medium">
-                          {studentLocation} • {studentEmail} • {studentPhone} • {studentLinkedin}
+                          {[studentLocation, studentEmail, studentPhone, studentLinkedin].filter(Boolean).join(' • ')}
                         </p>
-                        <p className="text-xs text-brand-600 font-mono font-semibold">
-                          {studentGithub} • {studentPortfolio}
-                        </p>
+                        {(studentGithub || studentPortfolio) && (
+                          <p className="text-xs text-brand-600 font-mono font-semibold">
+                            {[studentGithub, studentPortfolio].filter(Boolean).join(' • ')}
+                          </p>
+                        )}
                       </div>
 
                       {/* Dynamic Education Section */}
-                      <div className="space-y-2">
-                        <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 border-b border-slate-900/20 pb-0.5">
-                          Education
-                        </h3>
-                        {dynamicEducation.map((edu, idx) => (
-                          <div key={idx} className="space-y-1">
-                            <div className="flex justify-between items-baseline text-xs">
-                              <span className="font-bold text-slate-900">{edu.institution}</span>
-                              <span className="text-slate-500 font-mono">{edu.startDate} — {edu.endDate}</span>
+                      {dynamicEducation.length > 0 && (
+                        <div className="space-y-2">
+                          <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 border-b border-slate-900/20 pb-0.5">
+                            Education
+                          </h3>
+                          {dynamicEducation.map((edu, idx) => (
+                            <div key={idx} className="space-y-1">
+                              <div className="flex justify-between items-baseline text-xs">
+                                <span className="font-bold text-slate-900">{edu.institution}</span>
+                                <span className="text-slate-500 font-mono">{edu.startDate} — {edu.endDate}</span>
+                              </div>
+                              <div className="flex justify-between items-baseline text-xs text-slate-700">
+                                <span>{edu.degree} {edu.gpa ? `(GPA: ${edu.gpa} / 4.0)` : ''}</span>
+                                <span className="text-slate-500">{studentLocation}</span>
+                              </div>
                             </div>
-                            <div className="flex justify-between items-baseline text-xs text-slate-700">
-                              <span>{edu.degree} {edu.gpa ? `(GPA: ${edu.gpa} / 4.0)` : ''}</span>
-                              <span className="text-slate-500">{studentLocation}</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+                          ))}
+                        </div>
+                      )}
 
                       {/* Dynamic Experience Section */}
-                      <div className="space-y-3">
-                        <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 border-b border-slate-900/20 pb-0.5">
-                          Work & Engineering Experience
-                        </h3>
+                      {dynamicExperience.length > 0 && (
+                        <div className="space-y-3">
+                          <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 border-b border-slate-900/20 pb-0.5">
+                            Work & Engineering Experience
+                          </h3>
 
-                        {dynamicExperience.map((exp, idx) => (
-                          <div key={idx} className="space-y-1 text-xs">
-                            <div className="flex justify-between items-baseline">
-                              <span className="font-bold text-slate-900">{exp.title}</span>
-                              <span className="text-slate-500 font-mono">{exp.startDate} — {exp.endDate}</span>
+                          {dynamicExperience.map((exp, idx) => (
+                            <div key={idx} className="space-y-1 text-xs">
+                              <div className="flex justify-between items-baseline">
+                                <span className="font-bold text-slate-900">{exp.title}</span>
+                                <span className="text-slate-500 font-mono">{exp.startDate} — {exp.endDate}</span>
+                              </div>
+                              <p className="text-slate-700 font-medium italic">{exp.company} {exp.location ? `• ${exp.location}` : ''}</p>
+                              {exp.bullets.length > 0 && (
+                                <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-600 leading-relaxed pt-0.5">
+                                  {exp.bullets.map((bullet, bIdx) => (
+                                    <li key={bIdx}>{bullet}</li>
+                                  ))}
+                                </ul>
+                              )}
                             </div>
-                            <p className="text-slate-700 font-medium italic">{exp.company} • {exp.location}</p>
-                            <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-600 leading-relaxed pt-0.5">
-                              {exp.bullets.map((bullet, bIdx) => (
-                                <li key={bIdx}>{bullet}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        ))}
-                      </div>
+                          ))}
+                        </div>
+                      )}
 
                       {/* Dynamic Projects Section */}
-                      <div className="space-y-3">
-                        <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 border-b border-slate-900/20 pb-0.5">
-                          Technical Projects
-                        </h3>
+                      {dynamicProjects.length > 0 && (
+                        <div className="space-y-3">
+                          <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 border-b border-slate-900/20 pb-0.5">
+                            Technical Projects
+                          </h3>
 
-                        {dynamicProjects.map((proj, idx) => (
-                          <div key={idx} className="space-y-1 text-xs">
-                            <div className="flex justify-between items-baseline">
-                              <span className="font-bold text-slate-900">{proj.title}</span>
-                              <span className="text-slate-500 font-mono">{proj.technologies}</span>
+                          {dynamicProjects.map((proj, idx) => (
+                            <div key={idx} className="space-y-1 text-xs">
+                              <div className="flex justify-between items-baseline">
+                                <span className="font-bold text-slate-900">{proj.title}</span>
+                                <span className="text-slate-500 font-mono">{proj.technologies}</span>
+                              </div>
+                              {proj.bullets.length > 0 && (
+                                <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-600 leading-relaxed pt-0.5">
+                                  {proj.bullets.map((bullet, bIdx) => (
+                                    <li key={bIdx}>{bullet}</li>
+                                  ))}
+                                </ul>
+                              )}
                             </div>
-                            <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-600 leading-relaxed pt-0.5">
-                              {proj.bullets.map((bullet, bIdx) => (
-                                <li key={bIdx}>{bullet}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        ))}
-                      </div>
+                          ))}
+                        </div>
+                      )}
 
                       {/* Dynamic Skills Section */}
-                      <div className="space-y-1.5 text-xs">
-                        <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 border-b border-slate-900/20 pb-0.5">
-                          Technical Skills
+                      {studentSkills.length > 0 && (
+                        <div className="space-y-1.5 text-xs">
+                          <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 border-b border-slate-900/20 pb-0.5">
+                            Technical Skills
+                          </h3>
+                          <p className="text-[11px] text-slate-700 leading-relaxed">
+                            {studentSkills.join(', ')}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    /* Clean Dynamic Single Dropzone when no resume uploaded yet */
+                    <div
+                      onClick={() => fileInputRef.current?.click()}
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                        setDragOver(true);
+                      }}
+                      onDragLeave={() => setDragOver(false)}
+                      onDrop={handleDrop}
+                      className={`w-full max-w-2xl rounded-3xl border-2 border-dashed p-10 sm:p-14 text-center space-y-4 shadow-sm transition-all duration-300 relative group cursor-pointer ${
+                        dragOver
+                          ? 'border-brand-500 bg-brand-50/80 scale-[1.01]'
+                          : 'border-brand-200/80 hover:border-brand-500 bg-gradient-to-b from-brand-50/40 via-indigo-50/20 to-white hover:from-brand-50/70 hover:via-indigo-50/40'
+                      }`}
+                    >
+                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-brand-600 via-indigo-600 to-brand-700 text-white flex items-center justify-center mx-auto shadow-md shadow-brand-500/25 group-hover:scale-110 transition-transform duration-300">
+                        <UploadCloud className="w-8 h-8" />
+                      </div>
+
+                      <div className="space-y-1.5 max-w-md mx-auto">
+                        <h3 className="text-lg font-extrabold text-slate-900 tracking-tight">
+                          Drop your resume PDF here, or select from device
                         </h3>
-                        <p className="text-[11px] text-slate-700 leading-relaxed">
-                          <strong className="text-slate-900">Languages & Systems:</strong> {currentVersion.skills.join(', ')}.
+                        <p className="text-xs text-slate-500 leading-relaxed">
+                          Single-column standard PDF up to 10MB • Automatically parsed by ATS & matched with 35+ verified engineering roles
                         </p>
-                        <p className="text-[11px] text-slate-700 leading-relaxed">
-                          <strong className="text-slate-900">Infrastructure:</strong> Docker, Kubernetes, PostgreSQL, Redis, CUDA, Git, Linux Internals.
-                        </p>
+                      </div>
+
+                      {/* Format Feature Badges */}
+                      <div className="flex items-center justify-center gap-2 flex-wrap text-[11px] font-mono font-medium pt-1">
+                        <span className="px-2.5 py-1 rounded-lg bg-white/90 border border-slate-200/90 text-slate-600 shadow-2xs">
+                          PDF Format
+                        </span>
+                        <span className="px-2.5 py-1 rounded-lg bg-white/90 border border-slate-200/90 text-slate-600 shadow-2xs">
+                          Up to 10 MB
+                        </span>
+                        <span className="px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-200/90 text-emerald-800 font-bold shadow-2xs inline-flex items-center gap-1">
+                          <Sparkles className="w-3 h-3 text-emerald-600" />
+                          Instant ATS Deep-Scan
+                        </span>
+                      </div>
+
+                      <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+                        <Button
+                          type="button"
+                          variant="primary"
+                          size="md"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            fileInputRef.current?.click();
+                          }}
+                          isLoading={uploading}
+                          leftIcon={<UploadCloud className="w-4 h-4" />}
+                          className="px-6 font-bold text-xs sm:text-sm shadow-sm cursor-pointer hover:shadow-md transition-all py-2.5"
+                        >
+                          Select File from Device
+                        </Button>
                       </div>
                     </div>
                   )}
@@ -858,11 +933,17 @@ ${dynamicProjects.map((p) => `${p.title} (${p.technologies})\n${p.bullets.map((b
                         <GraduationCap className="w-4 h-4 text-brand-600" />
                         <span>Academic Entity Detected</span>
                       </div>
-                      <p className="text-sm font-bold text-slate-900">{dynamicEducation[0]?.institution || 'Stanford University'}</p>
-                      <p className="text-xs text-slate-600">{dynamicEducation[0]?.degree || 'B.S. Computer Science'} • {dynamicEducation[0]?.gpa ? `${dynamicEducation[0]?.gpa} GPA` : '3.92 GPA'}</p>
-                      <Badge variant="success" size="xs">
-                        Verified Institution
-                      </Badge>
+                      {dynamicEducation.length > 0 ? (
+                        <>
+                          <p className="text-sm font-bold text-slate-900">{dynamicEducation[0].institution}</p>
+                          <p className="text-xs text-slate-600">{dynamicEducation[0].degree} {dynamicEducation[0].gpa ? `• ${dynamicEducation[0].gpa} GPA` : ''}</p>
+                          <Badge variant="success" size="xs">
+                            Verified Institution
+                          </Badge>
+                        </>
+                      ) : (
+                        <p className="text-xs text-slate-500 italic">No education entries added in profile yet.</p>
+                      )}
                     </div>
 
                     <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
@@ -870,30 +951,40 @@ ${dynamicProjects.map((p) => `${p.title} (${p.technologies})\n${p.bullets.map((b
                         <Briefcase className="w-4 h-4 text-brand-600" />
                         <span>Work Experience Entity</span>
                       </div>
-                      <p className="text-sm font-bold text-slate-900">{dynamicExperience[0]?.company || 'Acme Research & Systems Lab'}</p>
-                      <p className="text-xs text-slate-600">{dynamicExperience[0]?.title || 'Systems & AI Fellow'}</p>
-                      <Badge variant="primary" size="xs">
-                        Tier-1 Engineering Role
-                      </Badge>
+                      {dynamicExperience.length > 0 ? (
+                        <>
+                          <p className="text-sm font-bold text-slate-900">{dynamicExperience[0].company}</p>
+                          <p className="text-xs text-slate-600">{dynamicExperience[0].title}</p>
+                          <Badge variant="primary" size="xs">
+                            Verified Role
+                          </Badge>
+                        </>
+                      ) : (
+                        <p className="text-xs text-slate-500 italic">No work experience added in profile yet.</p>
+                      )}
                     </div>
                   </div>
 
                   <div className="space-y-2">
                     <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
                       <Code2 className="w-4 h-4 text-brand-600" />
-                      Extracted Technical Skills ({currentVersion.skills.length}):
+                      Extracted Technical Skills ({studentSkills.length}):
                     </span>
-                    <div className="flex flex-wrap gap-2">
-                      {currentVersion.skills.map((skill, idx) => (
-                        <span
-                          key={idx}
-                          className="px-3 py-1 rounded-lg bg-brand-50 border border-brand-200 text-xs font-mono font-bold text-brand-800 flex items-center gap-1"
-                        >
-                          <Check className="w-3.5 h-3.5 text-brand-600" />
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
+                    {studentSkills.length > 0 ? (
+                      <div className="flex flex-wrap gap-2">
+                        {studentSkills.map((skill, idx) => (
+                          <span
+                            key={idx}
+                            className="px-3 py-1 rounded-lg bg-brand-50 border border-brand-200 text-xs font-mono font-bold text-brand-800 flex items-center gap-1"
+                          >
+                            <Check className="w-3.5 h-3.5 text-brand-600" />
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-xs text-slate-500 italic">No skills added yet. Add skills in Profile or upload a tailored PDF resume.</p>
+                    )}
                   </div>
                 </div>
               )}
@@ -994,7 +1085,7 @@ ${dynamicProjects.map((p) => `${p.title} (${p.technologies})\n${p.bullets.map((b
                         ) : (
                           <span className="text-rose-600 text-xs italic flex items-center gap-1">
                             <XCircle className="w-3.5 h-3.5 shrink-0" />
-                            No direct keyword matches found in your active resume version.
+                            No direct keyword matches found in your active profile skills.
                           </span>
                         )}
                       </div>
@@ -1024,7 +1115,7 @@ ${dynamicProjects.map((p) => `${p.title} (${p.technologies})\n${p.bullets.map((b
                         ) : (
                           <span className="text-emerald-700 text-xs italic flex items-center gap-1">
                             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                            100% of required technical skills present in your active resume!
+                            100% of required technical skills present in your active profile!
                           </span>
                         )}
                       </div>
@@ -1035,101 +1126,42 @@ ${dynamicProjects.map((p) => `${p.title} (${p.technologies})\n${p.bullets.map((b
                   <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
                     <span className="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono flex items-center gap-1.5">
                       <Code2 className="w-3.5 h-3.5 text-brand-600" />
-                      Your Active Resume Skills ({currentVersion.skills.length}):
+                      Your Active Profile Skills ({studentSkills.length}):
                     </span>
                     <div className="flex flex-wrap gap-1.5">
-                      {currentVersion.skills.map((skill, idx) => {
-                        const isMatched = matchAnalysis.matched.map(m => m.toLowerCase()).includes(skill.toLowerCase());
-                        return (
-                          <span
-                            key={idx}
-                            className={`px-2.5 py-1 rounded-lg text-xs font-mono font-medium border ${
-                              isMatched
-                                ? 'bg-emerald-50 border-emerald-200 text-emerald-800 font-bold'
-                                : 'bg-white border-slate-200 text-slate-600'
-                            }`}
-                          >
-                            {isMatched ? '✓ ' : ''}{skill}
-                          </span>
-                        );
-                      })}
+                      {studentSkills.length > 0 ? (
+                        studentSkills.map((skill, idx) => {
+                          const isMatched = matchAnalysis.matched.map(m => m.toLowerCase()).includes(skill.toLowerCase());
+                          return (
+                            <span
+                              key={idx}
+                              className={`px-2.5 py-1 rounded-lg text-xs font-mono font-medium border ${
+                                isMatched
+                                  ? 'bg-emerald-50 border-emerald-200 text-emerald-800 font-bold'
+                                  : 'bg-white border-slate-200 text-slate-600'
+                              }`}
+                            >
+                              {isMatched ? '✓ ' : ''}{skill}
+                            </span>
+                          );
+                        })
+                      ) : (
+                        <p className="text-xs text-slate-500 italic">No skills listed yet. Add skills to your profile to see real-time match rankings.</p>
+                      )}
                     </div>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Drag & Drop Upload Replacement */}
-            <div
-              onClick={() => fileInputRef.current?.click()}
-              onDragOver={(e) => {
-                e.preventDefault();
-                setDragOver(true);
-              }}
-              onDragLeave={() => setDragOver(false)}
-              onDrop={handleDrop}
-              className={`border-2 border-dashed rounded-3xl p-6 sm:p-10 text-center space-y-4 transition-all duration-300 shadow-sm relative group cursor-pointer ${
-                dragOver
-                  ? 'border-brand-500 bg-brand-50/80 scale-[1.01]'
-                  : 'border-brand-200/80 hover:border-brand-500 bg-gradient-to-b from-brand-50/40 via-indigo-50/20 to-white hover:from-brand-50/70 hover:via-indigo-50/40'
-              }`}
-            >
-              {/* Floating Upload Icon */}
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-600 via-indigo-600 to-brand-700 text-white flex items-center justify-center mx-auto shadow-md shadow-brand-500/25 group-hover:scale-110 transition-transform duration-300">
-                <UploadCloud className="w-7 h-7" />
-              </div>
-
-              {/* Title & Description */}
-              <div className="space-y-1.5 max-w-md mx-auto">
-                <h3 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
-                  Drop your latest resume PDF here, or browse files
-                </h3>
-                <p className="text-xs text-slate-500 leading-relaxed">
-                  Single-column standard PDF up to 10MB • Automatically parsed by ATS & matched with top AI engineering roles
-                </p>
-              </div>
-
-              {/* Format Feature Badges */}
-              <div className="flex items-center justify-center gap-2 flex-wrap text-[11px] font-mono font-medium pt-1">
-                <span className="px-2.5 py-1 rounded-lg bg-white/90 border border-slate-200/90 text-slate-600 shadow-2xs">
-                  PDF Format
-                </span>
-                <span className="px-2.5 py-1 rounded-lg bg-white/90 border border-slate-200/90 text-slate-600 shadow-2xs">
-                  Up to 10 MB
-                </span>
-                <span className="px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-200/90 text-emerald-800 font-bold shadow-2xs inline-flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-emerald-600" />
-                  Instant ATS Deep-Scan
-                </span>
-              </div>
-
-              {/* Hidden Global File Input */}
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".pdf,application/pdf"
-                onChange={handleFileSelect}
-                className="hidden"
-              />
-
-              {/* Select Button */}
-              <div className="pt-2">
-                <Button
-                  type="button"
-                  variant="primary"
-                  size="md"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    fileInputRef.current?.click();
-                  }}
-                  isLoading={uploading}
-                  leftIcon={<UploadCloud className="w-4 h-4" />}
-                  className="font-bold text-xs sm:text-sm shadow-sm cursor-pointer hover:shadow-md transition-all px-6 py-2.5"
-                >
-                  Select File from Device
-                </Button>
-              </div>
-            </div>
+            {/* Hidden Global File Input */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".pdf,application/pdf"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
           </div>
 
           {/* Right Column (1 Col): ATS Diagnostic Suite & Guidance */}
