@@ -308,7 +308,7 @@ export function StudentDashboard() {
                                 ${internship.stipend?.amount ? internship.stipend.amount.toLocaleString() : '9,200'}/mo
                               </span>
                               <span>•</span>
-                              <span>Applied {new Date(app.createdAt).toLocaleDateString()}</span>
+                              <span>Applied {app.createdAt ? new Date(app.createdAt).toLocaleDateString() : 'Recently'}</span>
                             </div>
                           </div>
                         </div>
@@ -329,7 +329,7 @@ export function StudentDashboard() {
                             size="sm"
                             className="font-bold uppercase tracking-wider text-[11px]"
                           >
-                            {app.status.replace('_', ' ')}
+                            {(app.status || 'SUBMITTED').replace(/_/g, ' ')}
                           </Badge>
 
                           <Link to={`/student/applications/${app._id}`}>

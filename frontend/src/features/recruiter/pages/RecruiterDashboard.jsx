@@ -240,15 +240,16 @@ export function RecruiterDashboard() {
   };
 
   const handleQuickStatus = async (appId, newStatus) => {
+    const formatted = (newStatus || '').replace(/_/g, ' ');
     const result = await dispatch(
       updateCandidateStatus({
         id: appId,
         status: newStatus,
-        note: `Moved to ${newStatus.replace('_', ' ')}`,
+        note: `Moved to ${formatted}`,
       })
     );
     if (updateCandidateStatus.fulfilled.match(result)) {
-      notify.success(`Candidate marked as ${newStatus.replace('_', ' ')}.`);
+      notify.success(`Candidate marked as ${formatted}.`);
       dispatch(fetchDashboardAnalytics());
       dispatch(fetchRecruiterApplications({ limit: 20 }));
     }
@@ -639,7 +640,7 @@ export function RecruiterDashboard() {
                               }
                               size="xs"
                             >
-                              {app.status.replace('_', ' ')}
+                              {(app.status || 'SUBMITTED').replace(/_/g, ' ')}
                             </Badge>
                             <Link to={`/recruiter/applications/${app._id}`}>
                               <ChevronRight className="w-4 h-4 text-slate-400 hover:text-slate-700" />
@@ -933,7 +934,7 @@ export function RecruiterDashboard() {
                           }
                           size="sm"
                         >
-                          {app.status.replace('_', ' ')}
+                          {(app.status || 'SUBMITTED').replace(/_/g, ' ')}
                         </Badge>
                         <Button
                           variant="outline"

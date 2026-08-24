@@ -82,7 +82,7 @@ export function ApplicationTimeline({ timeline = [] }) {
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <Badge variant={badgeVariant} size="sm">
-                    {status.replace('_', ' ')}
+                    {(status || 'SUBMITTED').replace(/_/g, ' ')}
                   </Badge>
                   {isLatest && (
                     <span className="text-[10px] uppercase font-bold tracking-wider text-brand-700 bg-brand-50 px-2 py-0.5 rounded-full border border-brand-200">
@@ -94,13 +94,13 @@ export function ApplicationTimeline({ timeline = [] }) {
                 <div className="flex items-center gap-1.5 text-xs text-slate-500">
                   <Clock className="w-3 h-3 text-slate-400" />
                   <span>
-                    {new Date(event.changedAt).toLocaleDateString(undefined, {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
+                    {event?.changedAt
+                      ? new Date(event.changedAt).toLocaleDateString(undefined, {
+                          month: 'short',
+                          day: 'numeric',
+                          year: 'numeric',
+                        })
+                      : 'Recently'}
                   </span>
                 </div>
               </div>

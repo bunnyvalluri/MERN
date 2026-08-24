@@ -98,16 +98,17 @@ export function RecruiterApplicationsPage() {
   };
 
   const handleQuickStatusUpdate = async (applicationId, newStatus) => {
+    const formatted = (newStatus || '').replace(/_/g, ' ');
     const result = await dispatch(
       updateCandidateStatus({
         id: applicationId,
         status: newStatus,
-        note: `Status updated to ${newStatus.replace('_', ' ')} via quick actions`,
+        note: `Status updated to ${formatted} via quick actions`,
       })
     );
 
     if (updateCandidateStatus.fulfilled.match(result)) {
-      notify.success(`Candidate marked as ${newStatus.replace('_', ' ')}.`);
+      notify.success(`Candidate marked as ${formatted}.`);
     } else {
       notify.error(result.payload || 'Failed to update status.');
     }
@@ -249,7 +250,7 @@ export function RecruiterApplicationsPage() {
                 title={
                   selectedStatus === 'ALL'
                     ? 'No candidates found'
-                    : `No candidates with status "${selectedStatus.replace('_', ' ')}"`
+                    : `No candidates with status "${(selectedStatus || '').replace(/_/g, ' ')}"`
                 }
                 description="When students apply to your internship listings, their profiles and verified resumes will appear here."
               />
@@ -290,7 +291,7 @@ export function RecruiterApplicationsPage() {
                             </Badge>
                           )}
                           <Badge variant={badgeVariant} size="sm">
-                            {app.status.replace('_', ' ')}
+                            {(app.status || 'SUBMITTED').replace(/_/g, ' ')}
                           </Badge>
                         </div>
 

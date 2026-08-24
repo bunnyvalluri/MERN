@@ -161,7 +161,7 @@ export function StatusDistributionChart({ data = [] }) {
                 key={item.status}
                 style={{ width: `${pct}%` }}
                 className={`${STATUS_COLORS[item.status] || 'bg-slate-400'} h-full transition-all`}
-                title={`${item.status.replace('_', ' ')}: ${item.count} (${pct.toFixed(1)}%)`}
+                title={`${(item.status || '').replace(/_/g, ' ')}: ${item.count} (${pct.toFixed(1)}%)`}
               />
             );
           })}
@@ -183,7 +183,7 @@ export function StatusDistributionChart({ data = [] }) {
                     }`}
                   />
                   <span className="text-[11px] font-medium text-slate-700 truncate capitalize">
-                    {item.status.toLowerCase().replace('_', ' ')}
+                    {(item.status || '').toLowerCase().replace(/_/g, ' ')}
                   </span>
                 </div>
                 <div className="flex items-baseline justify-between">

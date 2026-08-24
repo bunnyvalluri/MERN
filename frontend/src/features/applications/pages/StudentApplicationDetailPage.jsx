@@ -210,7 +210,7 @@ export function StudentApplicationDetailPage() {
             {/* Current Status Badge & Top Actions */}
             <div className="flex flex-col sm:flex-row md:flex-col items-start md:items-end gap-3 self-start shrink-0">
               <Badge variant={badgeVariant} size="lg" className="px-3.5 py-1 text-xs sm:text-sm">
-                {application.status.replace('_', ' ')}
+                {(application?.status || 'SUBMITTED').replace(/_/g, ' ')}
               </Badge>
 
               <div className="flex items-center gap-2">

@@ -86,16 +86,17 @@ export function CandidateDetailPage() {
   const internship = application?.internshipId || {};
 
   const handleStatusChange = async (newStatus, note = '') => {
+    const formatted = (newStatus || '').replace(/_/g, ' ');
     const result = await dispatch(
       updateCandidateStatus({
         id: application._id,
         status: newStatus,
-        note: note || `Candidate moved to ${newStatus.replace('_', ' ')}`,
+        note: note || `Candidate moved to ${formatted}`,
       })
     );
 
     if (updateCandidateStatus.fulfilled.match(result)) {
-      notify.success(`Status updated to ${newStatus.replace('_', ' ')}.`);
+      notify.success(`Status updated to ${formatted}.`);
       dispatch(fetchRecruiterCandidateDetail(id));
     } else {
       notify.error(result.payload || 'Failed to update status.');
@@ -221,7 +222,7 @@ export function CandidateDetailPage() {
                     </Badge>
                   )}
                   <Badge variant={badgeVariant} size="sm">
-                    {application.status.replace('_', ' ')}
+                    {(application?.status || 'SUBMITTED').replace(/_/g, ' ')}
                   </Badge>
                 </div>
 

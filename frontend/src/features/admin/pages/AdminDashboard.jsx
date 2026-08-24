@@ -329,7 +329,7 @@ export function AdminDashboard() {
                 Admin /
               </span>
               <h1 className="text-sm sm:text-base font-bold text-slate-900 capitalize">
-                {activeSection.replace('-', ' ')}
+                {(activeSection || 'dashboard').replace(/-/g, ' ')}
               </h1>
             </div>
           </div>
