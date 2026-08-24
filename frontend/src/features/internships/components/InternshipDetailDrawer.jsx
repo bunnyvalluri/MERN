@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import CompanyLogo from '../../../components/common/CompanyLogo.jsx';
-import { Button, Badge } from '../../../components/ui/index.js';
+import { Button } from '../../../components/ui/index.js';
 import { notify } from '../../../utils/toast.js';
 import { parseDescriptionBlocks, formatLocationSmart } from '../../../utils/textUtils.js';
 import {
@@ -22,12 +22,9 @@ import {
   Send,
   ChevronLeft,
   ChevronRight,
-  Target,
   Briefcase,
   Layers,
   Building2,
-  Users,
-  Award,
   Zap,
   BookOpen,
 } from 'lucide-react';
@@ -200,11 +197,11 @@ export function InternshipDetailDrawer({
         aria-hidden="true"
       />
 
-      {/* Slide-over Side Panel */}
+      {/* Slide-over Side Panel (Responsive max-width across mobile to 4k) */}
       <div className="relative w-full sm:max-w-xl md:max-w-2xl lg:max-w-3xl bg-white h-full shadow-2xl z-10 flex flex-col overflow-hidden animate-slide-in-right border-l border-slate-200">
         
         {/* Top Header Control Bar */}
-        <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-slate-200 bg-white/95 backdrop-blur-md shrink-0 sticky top-0 z-20">
+        <div className="flex items-center justify-between px-3.5 sm:px-6 py-3 border-b border-slate-200 bg-white/95 backdrop-blur-md shrink-0 sticky top-0 z-20">
           {/* Navigation between roles */}
           <div className="flex items-center gap-1.5">
             <button
@@ -235,13 +232,13 @@ export function InternshipDetailDrawer({
             >
               <ChevronRight className="w-4 h-4" />
             </button>
-            <span className="text-xs text-slate-500 font-mono ml-2 font-medium">
+            <span className="text-xs text-slate-500 font-mono ml-1.5 font-medium whitespace-nowrap">
               Role {drawerIndex + 1}
             </span>
           </div>
 
           {/* Quick Action Icons */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               type="button"
               onClick={handleShare}
@@ -267,7 +264,7 @@ export function InternshipDetailDrawer({
             <button
               type="button"
               onClick={onClose}
-              className="p-2 rounded-xl bg-white border border-slate-200 text-slate-400 hover:text-slate-700 hover:bg-slate-50 transition-colors shadow-2xs ml-1"
+              className="p-2 rounded-xl bg-white border border-slate-200 text-slate-400 hover:text-slate-700 hover:bg-slate-50 transition-colors shadow-2xs"
               title="Close Preview (Esc)"
               aria-label="Close"
             >
@@ -279,42 +276,44 @@ export function InternshipDetailDrawer({
         {/* Scrollable Content Body */}
         <div className="flex-1 overflow-y-auto touch-scroll">
           
-          {/* Hero Identity Banner */}
-          <div className="p-6 sm:p-8 bg-gradient-to-b from-slate-50/90 to-white border-b border-slate-100 space-y-5">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-start gap-4">
+          {/* Hero Identity Banner - Fully Responsive */}
+          <div className="p-4 sm:p-6 lg:p-8 bg-gradient-to-b from-slate-50/90 to-white border-b border-slate-100 space-y-4">
+            
+            {/* Top Company Row */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-3 min-w-0">
                 <CompanyLogo
                   companyName={companyName}
                   slug={companySlug}
                   logo={companyLogo}
                   website={companyWebsite}
-                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl p-2 shrink-0 bg-white border border-slate-200/90 shadow-sm"
+                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl p-1.5 shrink-0 bg-white border border-slate-200/90 shadow-2xs"
                 />
-                <div className="space-y-1.5">
+                <div className="min-w-0 flex-1 space-y-0.5">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
+                    <span className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight truncate">
                       {companyName}
                     </span>
                     {isVerified && (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-brand-50 text-brand-700 border border-brand-200/80 font-mono">
-                        <ShieldCheck className="w-3 h-3 text-brand-600" />
-                        Verified Employer
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-bold bg-brand-50 text-brand-700 border border-brand-200/80 font-mono whitespace-nowrap shrink-0">
+                        <ShieldCheck className="w-3 h-3 text-brand-600 shrink-0" />
+                        Verified
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-500 font-medium flex-wrap">
-                    <span className="text-slate-700 font-semibold">{category}</span>
+                  <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium flex-wrap">
+                    <span className="text-slate-700 font-semibold truncate">{category}</span>
                     {companyWebsite && (
                       <>
-                        <span>•</span>
+                        <span className="text-slate-300">•</span>
                         <a
                           href={companyWebsite}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="hover:text-brand-600 inline-flex items-center gap-1 transition-colors text-brand-600 font-medium"
+                          className="hover:text-brand-600 inline-flex items-center gap-0.5 transition-colors text-brand-600 font-medium whitespace-nowrap"
                         >
-                          Official Website
-                          <ArrowUpRight className="w-3 h-3" />
+                          Website
+                          <ArrowUpRight className="w-3 h-3 shrink-0" />
                         </a>
                       </>
                     )}
@@ -323,154 +322,154 @@ export function InternshipDetailDrawer({
               </div>
 
               {/* Status Badges */}
-              <div className="flex flex-col items-end gap-1.5 shrink-0">
-                {isLiveFeed && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200/80 font-mono">
-                    <Radio className="w-3 h-3 text-amber-600" />
-                    Live 24/7
+              <div className="flex items-center gap-2 flex-wrap shrink-0">
+                {isHighPay && (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/80 font-mono whitespace-nowrap">
+                    <Flame className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    Tier-1 Pay
                   </span>
                 )}
-                {isHighPay && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/80 font-mono">
-                    <Flame className="w-3 h-3 text-emerald-600" />
-                    Tier-1 Compensation
+                {isLiveFeed && (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200/80 font-mono whitespace-nowrap">
+                    <Radio className="w-3 h-3 text-amber-600 shrink-0" />
+                    Live
                   </span>
                 )}
               </div>
             </div>
 
-            {/* Main Role Title */}
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-snug">
+            {/* Main Role Title - Mobile Scaled */}
+            <h1 className="text-lg sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight leading-snug break-words">
               {title}
             </h1>
 
             {/* Key Metadata Pill Badges */}
-            <div className="flex flex-wrap items-center gap-2.5 pt-1">
-              <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold border ${locationStyles[locationType] || locationStyles.Remote}`}>
-                <Laptop className="w-3.5 h-3.5" />
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              <span className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-xl text-xs font-bold border whitespace-nowrap ${locationStyles[locationType] || locationStyles.Remote}`}>
+                <Laptop className="w-3.5 h-3.5 shrink-0" />
                 {locationType}
               </span>
 
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 font-mono">
-                <DollarSign className="w-3.5 h-3.5 text-emerald-600" />
+              <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 font-mono whitespace-nowrap">
+                <DollarSign className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                 {stipendFormatted}
               </span>
 
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
-                <MapPin className="w-3.5 h-3.5 text-slate-500" />
+              <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-xl text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200 whitespace-nowrap">
+                <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0" />
                 {locationFormatted}
               </span>
 
               {daysUntilDeadline !== null && (
                 <span
-                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold border ${
+                  className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-xl text-xs font-semibold border whitespace-nowrap ${
                     daysUntilDeadline <= 5
                       ? 'bg-rose-50 text-rose-700 border-rose-200 font-bold'
                       : 'bg-slate-50 text-slate-600 border-slate-200'
                   }`}
                 >
-                  <Clock className="w-3.5 h-3.5" />
-                  {daysUntilDeadline > 0 ? `${daysUntilDeadline}d left to apply` : 'Applications closing today'}
+                  <Clock className="w-3.5 h-3.5 shrink-0" />
+                  {daysUntilDeadline > 0 ? `${daysUntilDeadline}d left` : 'Closes today'}
                 </span>
               )}
             </div>
           </div>
 
-          {/* Interactive Navigation Tabs */}
-          <div className="border-b border-slate-200 px-6 bg-white sticky top-0 z-10">
-            <div className="flex items-center gap-6 text-xs sm:text-sm font-bold">
+          {/* Interactive Navigation Tabs - Horizontal Scroll on Mobile */}
+          <div className="border-b border-slate-200 px-4 sm:px-6 bg-white sticky top-0 z-10 overflow-x-auto no-scrollbar">
+            <div className="flex items-center gap-4 sm:gap-6 text-xs sm:text-sm font-bold min-w-max">
               <button
                 type="button"
                 onClick={() => setActiveTab('overview')}
-                className={`py-3.5 border-b-2 flex items-center gap-2 transition-all ${
+                className={`py-3 border-b-2 flex items-center gap-1.5 transition-all whitespace-nowrap cursor-pointer ${
                   activeTab === 'overview'
                     ? 'border-brand-600 text-brand-600'
                     : 'border-transparent text-slate-500 hover:text-slate-900'
                 }`}
               >
-                <BookOpen className="w-4 h-4" />
-                Role & Description
+                <BookOpen className="w-4 h-4 shrink-0" />
+                Description
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveTab('skills')}
-                className={`py-3.5 border-b-2 flex items-center gap-2 transition-all ${
+                className={`py-3 border-b-2 flex items-center gap-1.5 transition-all whitespace-nowrap cursor-pointer ${
                   activeTab === 'skills'
                     ? 'border-brand-600 text-brand-600'
                     : 'border-transparent text-slate-500 hover:text-slate-900'
                 }`}
               >
-                <Sparkles className="w-4 h-4" />
-                AI Skill Match ({matchDetails.score}%)
+                <Sparkles className="w-4 h-4 shrink-0" />
+                Skill Match ({matchDetails.score}%)
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveTab('company')}
-                className={`py-3.5 border-b-2 flex items-center gap-2 transition-all ${
+                className={`py-3 border-b-2 flex items-center gap-1.5 transition-all whitespace-nowrap cursor-pointer ${
                   activeTab === 'company'
                     ? 'border-brand-600 text-brand-600'
                     : 'border-transparent text-slate-500 hover:text-slate-900'
                 }`}
               >
-                <Building2 className="w-4 h-4" />
+                <Building2 className="w-4 h-4 shrink-0" />
                 About {companyName}
               </button>
             </div>
           </div>
 
           {/* Tab Content Areas */}
-          <div className="p-6 sm:p-8 space-y-6">
+          <div className="p-4 sm:p-6 lg:p-8 space-y-6">
 
             {/* TAB 1: OVERVIEW */}
             {activeTab === 'overview' && (
               <div className="space-y-6">
                 
                 {/* 3-Column Summary Cards */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
+                  <div className="p-3 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-0.5">
+                    <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
                       Duration
                     </span>
-                    <p className="text-sm font-bold text-slate-900">
-                      {internship.duration || '12 Weeks (Summer 2026)'}
+                    <p className="text-xs sm:text-sm font-bold text-slate-900">
+                      {internship.duration || '12 Weeks (Summer)'}
                     </p>
                   </div>
 
-                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
+                  <div className="p-3 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-0.5">
+                    <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
                       Openings
                     </span>
-                    <p className="text-sm font-bold text-slate-900 font-mono">
-                      {internship.openings || 2} Positions
+                    <p className="text-xs sm:text-sm font-bold text-slate-900 font-mono">
+                      {internship.openings || 1} Positions
                     </p>
                   </div>
 
-                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1 col-span-2 sm:col-span-1">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
+                  <div className="p-3 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-0.5 col-span-2 sm:col-span-1">
+                    <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
                       Target Level
                     </span>
-                    <p className="text-sm font-bold text-slate-900">
-                      {internship.experienceLevel || 'Undergraduate / Masters'}
+                    <p className="text-xs sm:text-sm font-bold text-slate-900">
+                      {internship.experienceLevel || 'Undergrad / Masters'}
                     </p>
                   </div>
                 </div>
 
                 {/* Structured Description Blocks */}
-                <div className="space-y-5 pt-2">
+                <div className="space-y-4 pt-1">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 font-mono flex items-center gap-2">
-                    <Briefcase className="w-4 h-4 text-brand-600" />
+                    <Briefcase className="w-4 h-4 text-brand-600 shrink-0" />
                     Role Overview & Scope
                   </h3>
 
-                  <div className="space-y-4 text-sm text-slate-700 leading-relaxed">
+                  <div className="space-y-3.5 text-xs sm:text-sm text-slate-700 leading-relaxed">
                     {descriptionBlocks.map((block, bIdx) => {
                       if (block.type === 'heading') {
                         return (
-                          <div key={bIdx} className="pt-3 pb-1 border-b border-slate-100">
-                            <h4 className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
-                              <span className="w-2 h-2 rounded-full bg-brand-600 shrink-0" />
+                          <div key={bIdx} className="pt-2 pb-1 border-b border-slate-100">
+                            <h4 className="text-xs sm:text-sm font-bold text-slate-900 flex items-center gap-2">
+                              <span className="w-1.5 h-1.5 rounded-full bg-brand-600 shrink-0" />
                               {block.title}
                             </h4>
                           </div>
@@ -479,11 +478,11 @@ export function InternshipDetailDrawer({
 
                       if (block.type === 'list') {
                         return (
-                          <ul key={bIdx} className="space-y-2.5 pl-1 my-2">
+                          <ul key={bIdx} className="space-y-2 pl-0.5 my-2">
                             {block.items.map((item, iIdx) => (
-                              <li key={iIdx} className="flex items-start gap-2.5 text-slate-700 text-sm">
-                                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                                <span className="leading-snug">{item}</span>
+                              <li key={iIdx} className="flex items-start gap-2 text-slate-700 text-xs sm:text-sm">
+                                <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600 shrink-0 mt-0.5" />
+                                <span className="leading-relaxed">{item}</span>
                               </li>
                             ))}
                           </ul>
@@ -501,16 +500,16 @@ export function InternshipDetailDrawer({
 
                 {/* Required Tech Stack */}
                 {skills.length > 0 && (
-                  <div className="space-y-3 pt-4 border-t border-slate-100">
+                  <div className="space-y-2.5 pt-3 border-t border-slate-100">
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 font-mono flex items-center gap-2">
-                      <Layers className="w-4 h-4 text-brand-600" />
-                      Required Tech Stack & Skills
+                      <Layers className="w-4 h-4 text-brand-600 shrink-0" />
+                      Required Tech Stack
                     </h3>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
                       {skills.map((skill) => (
                         <span
                           key={skill}
-                          className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-50 border border-slate-200 text-slate-800 hover:border-brand-300 hover:bg-brand-50/50 transition-all shadow-2xs"
+                          className="px-2.5 sm:px-3 py-1 rounded-xl text-xs font-bold bg-slate-50 border border-slate-200 text-slate-800 hover:border-brand-300 transition-all shadow-2xs"
                         >
                           {skill}
                         </span>
@@ -523,28 +522,28 @@ export function InternshipDetailDrawer({
 
             {/* TAB 2: AI SKILL MATCH */}
             {activeTab === 'skills' && (
-              <div className="space-y-6">
-                <div className="p-5 rounded-2xl bg-gradient-to-br from-brand-50/80 via-indigo-50/50 to-white border border-brand-200/80 shadow-xs space-y-4">
+              <div className="space-y-5">
+                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-brand-50/80 via-indigo-50/50 to-white border border-brand-200/80 shadow-xs space-y-3.5">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-xl bg-brand-600 text-white flex items-center justify-center font-bold text-base shadow-xs">
-                        <Sparkles className="w-5 h-5" />
+                      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-brand-600 text-white flex items-center justify-center font-bold text-sm shadow-xs shrink-0">
+                        <Sparkles className="w-4 h-4" />
                       </div>
                       <div>
-                        <h4 className="text-sm font-bold text-slate-900">
-                          AI Resume & Skill Compatibility
+                        <h4 className="text-xs sm:text-sm font-bold text-slate-900">
+                          AI Compatibility
                         </h4>
-                        <p className="text-xs text-slate-500">
-                          Analyzed against your active profile
+                        <p className="text-[11px] text-slate-500">
+                          Profile skill evaluation
                         </p>
                       </div>
                     </div>
-                    <span className="text-2xl font-black text-brand-700 font-mono">
+                    <span className="text-xl sm:text-2xl font-black text-brand-700 font-mono">
                       {matchDetails.score}%
                     </span>
                   </div>
 
-                  <div className="w-full bg-slate-200/80 h-2.5 rounded-full overflow-hidden">
+                  <div className="w-full bg-slate-200/80 h-2 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-brand-500 to-indigo-600 rounded-full transition-all duration-700"
                       style={{ width: `${matchDetails.score}%` }}
@@ -557,18 +556,18 @@ export function InternshipDetailDrawer({
                 </div>
 
                 {/* Matched Skills */}
-                <div className="space-y-3">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-800 font-mono flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <div className="space-y-2.5">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-800 font-mono flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                     Matched Profile Skills ({matchDetails.matched.length})
                   </h4>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {matchDetails.matched.map((skill) => (
                       <span
                         key={skill}
-                        className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 border border-emerald-200 text-emerald-800 flex items-center gap-1.5"
+                        className="px-2.5 sm:px-3 py-1 rounded-xl text-xs font-semibold bg-emerald-50 border border-emerald-200 text-emerald-800 flex items-center gap-1"
                       >
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                        <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0" />
                         {skill}
                       </span>
                     ))}
@@ -577,16 +576,16 @@ export function InternshipDetailDrawer({
 
                 {/* Recommended Skills to Highlight */}
                 {matchDetails.missing.length > 0 && (
-                  <div className="space-y-3">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-amber-800 font-mono flex items-center gap-2">
-                      <Zap className="w-4 h-4 text-amber-600" />
-                      Recommended Skills to Highlight in Application
+                  <div className="space-y-2.5">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-amber-800 font-mono flex items-center gap-1.5">
+                      <Zap className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                      Recommended Skills to Highlight
                     </h4>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
                       {matchDetails.missing.map((skill) => (
                         <span
                           key={skill}
-                          className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-amber-50/80 border border-amber-200 text-amber-800"
+                          className="px-2.5 sm:px-3 py-1 rounded-xl text-xs font-semibold bg-amber-50/80 border border-amber-200 text-amber-800"
                         >
                           + {skill}
                         </span>
@@ -599,19 +598,19 @@ export function InternshipDetailDrawer({
 
             {/* TAB 3: COMPANY CULTURE & SPOTLIGHT */}
             {activeTab === 'company' && (
-              <div className="space-y-6">
-                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+              <div className="space-y-5">
+                <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
                   <div className="flex items-center gap-3">
                     <CompanyLogo
                       companyName={companyName}
                       slug={companySlug}
                       logo={companyLogo}
                       website={companyWebsite}
-                      className="w-12 h-12 rounded-xl p-1.5 bg-white border border-slate-200"
+                      className="w-11 h-11 rounded-xl p-1.5 bg-white border border-slate-200 shrink-0"
                     />
-                    <div>
-                      <h4 className="text-base font-bold text-slate-900">{companyName}</h4>
-                      <p className="text-xs text-slate-500">{company.industry || 'Technology & Software'}</p>
+                    <div className="min-w-0">
+                      <h4 className="text-sm sm:text-base font-bold text-slate-900 truncate">{companyName}</h4>
+                      <p className="text-xs text-slate-500 truncate">{company.industry || 'Technology & Software'}</p>
                     </div>
                   </div>
                   <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -620,13 +619,13 @@ export function InternshipDetailDrawer({
                   </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
-                    <span className="text-[11px] font-semibold text-slate-400 font-mono uppercase">Company Size</span>
-                    <p className="text-xs sm:text-sm font-bold text-slate-900">{company.companySize || '1,000+ Employees'}</p>
+                <div className="grid grid-cols-2 gap-2.5">
+                  <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-0.5">
+                    <span className="text-[10px] font-semibold text-slate-400 font-mono uppercase">Company Size</span>
+                    <p className="text-xs sm:text-sm font-bold text-slate-900">{company.companySize || '1,000+ Team'}</p>
                   </div>
-                  <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
-                    <span className="text-[11px] font-semibold text-slate-400 font-mono uppercase">Founded Year</span>
+                  <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-0.5">
+                    <span className="text-[10px] font-semibold text-slate-400 font-mono uppercase">Founded</span>
                     <p className="text-xs sm:text-sm font-bold text-slate-900">{company.foundedYear || '2015'}</p>
                   </div>
                 </div>
@@ -635,25 +634,25 @@ export function InternshipDetailDrawer({
           </div>
         </div>
 
-        {/* Bottom Sticky Command Footer */}
-        <div className="p-4 sm:p-5 border-t border-slate-200 bg-white/95 backdrop-blur-md shadow-lg shrink-0 flex items-center justify-between gap-4">
+        {/* Bottom Sticky Command Footer - Compact & Responsive */}
+        <div className="p-3.5 sm:p-4 border-t border-slate-200 bg-white/95 backdrop-blur-md shadow-lg shrink-0 flex items-center justify-between gap-2.5 sm:gap-4">
           <div className="hidden sm:block">
-            <p className="text-[11px] font-semibold text-slate-400 font-mono uppercase">Monthly Stipend</p>
-            <p className="text-lg font-black text-slate-900 font-mono tracking-tight">{stipendFormatted}</p>
+            <p className="text-[10px] font-semibold text-slate-400 font-mono uppercase">Monthly Stipend</p>
+            <p className="text-base sm:text-lg font-black text-slate-900 font-mono tracking-tight">{stipendFormatted}</p>
           </div>
 
-          <div className="flex items-center gap-2.5 flex-1 sm:flex-initial justify-end">
+          <div className="flex items-center gap-2 flex-1 sm:flex-initial justify-end w-full sm:w-auto">
             <button
               type="button"
               onClick={() => onToggleSave?.(id)}
-              className={`px-4 py-2.5 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-all shadow-2xs ${
+              className={`px-3 sm:px-4 py-2.5 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer ${
                 isSaved
                   ? 'bg-brand-50 border-brand-200 text-brand-600'
-                  : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300'
+                  : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
               }`}
             >
               <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-brand-600 text-brand-600' : ''}`} />
-              <span>{isSaved ? 'Saved' : 'Save'}</span>
+              <span className="text-xs">{isSaved ? 'Saved' : 'Save'}</span>
             </button>
 
             {applyUrl && (
@@ -667,7 +666,7 @@ export function InternshipDetailDrawer({
                   variant="outline"
                   size="sm"
                   rightIcon={<ExternalLink className="w-3.5 h-3.5" />}
-                  className="font-bold text-xs"
+                  className="font-bold text-xs cursor-pointer"
                 >
                   Career Site
                 </Button>
@@ -678,8 +677,8 @@ export function InternshipDetailDrawer({
               variant="primary"
               size="md"
               onClick={handleApply}
-              rightIcon={<Send className="w-4 h-4" />}
-              className="font-bold text-xs sm:text-sm shadow-sm flex-1 sm:flex-initial"
+              rightIcon={<Send className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
+              className="font-bold text-xs sm:text-sm shadow-sm flex-1 sm:flex-initial cursor-pointer justify-center"
             >
               1-Click Apply Now
             </Button>
