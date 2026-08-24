@@ -41,12 +41,12 @@ export function Avatar({
   };
 
   const sizeClasses = {
-    xs: 'w-6 h-6 text-[10px]',
-    sm: 'w-8 h-8 text-xs',
-    md: 'w-10 h-10 text-sm',
-    lg: 'w-12 h-12 text-base',
-    xl: 'w-16 h-16 text-xl',
-    '2xl': 'w-20 h-20 text-2xl',
+    xs: 'w-6 h-6 min-w-6 min-h-6 text-[10px]',
+    sm: 'w-8 h-8 min-w-8 min-h-8 text-xs',
+    md: 'w-10 h-10 min-w-10 min-h-10 text-sm',
+    lg: 'w-12 h-12 min-w-12 min-h-12 text-base',
+    xl: 'w-16 h-16 min-w-16 min-h-16 text-xl',
+    '2xl': 'w-20 h-20 min-w-20 min-h-20 text-2xl',
   };
 
   const statusDotSizes = {
@@ -69,25 +69,27 @@ export function Avatar({
   const showFallback = !src || imageError;
 
   return (
-    <div className={`relative inline-flex shrink-0 select-none ${className}`}>
-      <div
-        className={`w-full h-full rounded-2xl overflow-hidden flex items-center justify-center font-bold text-white shadow-xs border border-white/20 ${
-          sizeClasses[size] || sizeClasses.md
-        } ${showFallback ? `bg-gradient-to-tr ${getGradientByName(name || alt)}` : 'bg-slate-200'}`}
-      >
-        {!showFallback ? (
-          <img
-            src={src}
-            alt={alt || name || 'Avatar'}
-            loading="lazy"
-            decoding="async"
-            onError={() => setImageError(true)}
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <span className="tracking-wider">{initials || 'ST'}</span>
-        )}
-      </div>
+    <div
+      className={`relative shrink-0 select-none rounded-2xl overflow-hidden flex items-center justify-center font-bold text-white shadow-2xs border border-slate-200/80 ${
+        sizeClasses[size] || sizeClasses.md
+      } ${
+        showFallback
+          ? `bg-gradient-to-tr ${getGradientByName(name || alt)}`
+          : 'bg-slate-100'
+      } ${className}`}
+    >
+      {!showFallback ? (
+        <img
+          src={src}
+          alt={alt || name || 'Avatar'}
+          loading="lazy"
+          decoding="async"
+          onError={() => setImageError(true)}
+          className="w-full h-full object-cover block rounded-2xl"
+        />
+      ) : (
+        <span className="tracking-wider">{initials || 'ST'}</span>
+      )}
 
       {status && statusColors[status] && (
         <span
