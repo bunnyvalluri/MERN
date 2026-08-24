@@ -337,8 +337,8 @@ export function StudentProfilePage() {
               <div className="relative">
                 <Avatar
                   name={user?.name || 'Jordan Lee'}
-                  size="xl"
-                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl border-4 border-white shadow-md text-xl font-black bg-gradient-to-tr from-brand-600 to-indigo-600 text-white"
+                  size="2xl"
+                  className="w-20 h-20 sm:w-24 sm:h-24 shadow-md ring-4 ring-white"
                 />
                 <div className="absolute -bottom-1 -right-1 bg-emerald-500 text-white p-1 rounded-full border-2 border-white shadow-xs" title="Profile Verified">
                   <Check className="w-3.5 h-3.5" />

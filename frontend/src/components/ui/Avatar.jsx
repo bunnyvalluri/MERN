@@ -13,25 +13,29 @@ export function Avatar({
 }) {
   const [imageError, setImageError] = useState(false);
 
-  // Compute initials from name
+  // Compute clean initials from name (filter out numbers and special characters)
   const getInitials = (n) => {
     if (!n) return '';
-    const parts = n.trim().split(/\s+/);
-    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    const cleanLetters = n.replace(/[^a-zA-Z\s]/g, '').trim();
+    if (!cleanLetters) return n.trim().slice(0, 2).toUpperCase();
+    const parts = cleanLetters.split(/\s+/);
+    if (parts.length === 1) {
+      return parts[0].slice(0, 2).toUpperCase();
+    }
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   };
 
-  // Generate deterministic gradient based on name hash
+  // Generate deterministic modern gradient based on name hash
   const getGradientByName = (n) => {
-    if (!n) return 'from-brand-600 to-indigo-700';
+    if (!n) return 'from-brand-600 via-indigo-600 to-brand-700';
     const charCodeSum = n.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const gradients = [
-      'from-brand-600 to-indigo-700',
-      'from-violet-600 to-purple-700',
-      'from-emerald-600 to-teal-700',
-      'from-rose-600 to-pink-700',
-      'from-amber-600 to-orange-700',
-      'from-sky-600 to-blue-700',
+      'from-brand-600 via-indigo-600 to-brand-700',
+      'from-indigo-600 via-violet-600 to-indigo-700',
+      'from-blue-600 via-indigo-600 to-cyan-700',
+      'from-teal-600 via-emerald-600 to-teal-700',
+      'from-violet-600 via-purple-600 to-indigo-700',
+      'from-slate-700 via-slate-800 to-slate-900',
     ];
     return gradients[charCodeSum % gradients.length];
   };
@@ -55,10 +59,10 @@ export function Avatar({
   };
 
   const statusColors = {
-    online: 'bg-success-500',
-    offline: 'bg-slate-500',
-    busy: 'bg-danger-500',
-    away: 'bg-warning-500',
+    online: 'bg-emerald-500',
+    offline: 'bg-slate-400',
+    busy: 'bg-rose-500',
+    away: 'bg-amber-500',
   };
 
   const initials = getInitials(name || alt);
@@ -67,7 +71,7 @@ export function Avatar({
   return (
     <div className={`relative inline-flex shrink-0 select-none ${className}`}>
       <div
-        className={`rounded-full overflow-hidden flex items-center justify-center font-semibold text-white border border-slate-200 shadow-sm ${
+        className={`w-full h-full rounded-2xl overflow-hidden flex items-center justify-center font-bold text-white shadow-xs border border-white/20 ${
           sizeClasses[size] || sizeClasses.md
         } ${showFallback ? `bg-gradient-to-tr ${getGradientByName(name || alt)}` : 'bg-slate-200'}`}
       >
@@ -81,13 +85,13 @@ export function Avatar({
             className="w-full h-full object-cover"
           />
         ) : (
-          <span>{initials || '?'}</span>
+          <span className="tracking-wider">{initials || 'ST'}</span>
         )}
       </div>
 
       {status && statusColors[status] && (
         <span
-          className={`absolute bottom-0 right-0 rounded-full ring-white ${
+          className={`absolute bottom-0 right-0 rounded-full ring-2 ring-white ${
             statusDotSizes[size] || statusDotSizes.md
           } ${statusColors[status]}`}
           aria-label={`Status: ${status}`}
@@ -119,7 +123,7 @@ export function AvatarGroup({ max = 4, size = 'md', className = '', children }) 
       {visibleAvatars.map((child, idx) => (
         <div
           key={idx}
-          className={`relative ring-2 ring-white rounded-full transition-transform hover:scale-110 hover:z-10 ${
+          className={`relative ring-2 ring-white rounded-2xl transition-transform hover:scale-110 hover:z-10 ${
             idx > 0 ? sizeClasses[size].split(' ').pop() : ''
           }`}
         >
@@ -129,7 +133,7 @@ export function AvatarGroup({ max = 4, size = 'md', className = '', children }) 
 
       {excess > 0 && (
         <div
-          className={`relative rounded-full bg-slate-100 border border-slate-200 text-slate-700 font-semibold ring-2 ring-white flex items-center justify-center select-none ${
+          className={`relative rounded-2xl bg-slate-100 border border-slate-200 text-slate-700 font-semibold ring-2 ring-white flex items-center justify-center select-none ${
             sizeClasses[size] || sizeClasses.md
           }`}
         >
