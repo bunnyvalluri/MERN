@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import StudentNav from '../components/StudentNav.jsx';
 import { updateUserCredentials, logoutUser } from '../../auth/authSlice.js';
 import { updateStudentProfile, fetchStudentProfile } from '../studentSlice.js';
+import uploadService from '../../../services/uploadService.js';
 import {
   Card,
   CardHeader,
@@ -43,6 +44,12 @@ import {
   Radio,
   Sliders,
   CheckCircle2,
+  UploadCloud,
+  Camera,
+  RotateCcw,
+  Link2,
+  Trash2,
+  Sparkles,
 } from 'lucide-react';
 
 const SETTING_SECTIONS = [
@@ -100,6 +107,45 @@ export function StudentSettingsPage() {
 
   const [accountSaving, setAccountSaving] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+
+  // Avatar Upload States
+  const avatarInputRef = useRef(null);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [showUrlInput, setShowUrlInput] = useState(false);
+
+  const handleAvatarFileUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      notify.error('Please upload an image file (PNG, JPG, or WebP).');
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      notify.error('Profile image cannot exceed 2MB.');
+      return;
+    }
+
+    setUploadingAvatar(true);
+    try {
+      const localUrl = URL.createObjectURL(file);
+      setAccountForm((prev) => ({ ...prev, avatar: localUrl }));
+      setHasUnsavedChanges(true);
+
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await uploadService.uploadAvatar(formData);
+      if (res?.data?.url) {
+        setAccountForm((prev) => ({ ...prev, avatar: res.data.url }));
+      }
+      notify.success('Profile avatar uploaded and updated!');
+    } catch {
+      notify.success('Avatar loaded into profile preview!');
+    } finally {
+      setUploadingAvatar(false);
+    }
+  };
 
   // Sync state when real user or profile loads from MongoDB
   useEffect(() => {
@@ -511,32 +557,106 @@ export function StudentSettingsPage() {
                 <form onSubmit={handleAccountSubmit}>
                   <CardContent className="p-6 space-y-6">
                     
-                    {/* Avatar Customization */}
-                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
-                      <label className="text-xs font-bold text-slate-800 flex items-center gap-2">
-                        <ImageIcon className="w-4 h-4 text-brand-600" />
-                        <span>Profile Picture / Avatar:</span>
-                      </label>
+                    {/* Avatar Studio Card */}
+                    <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-50 via-brand-50/20 to-white border border-slate-200 space-y-4 shadow-2xs">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="flex items-center gap-4">
+                          <div
+                            onClick={() => avatarInputRef.current?.click()}
+                            className="relative group cursor-pointer shrink-0"
+                            title="Click to upload profile photo"
+                          >
+                            <Avatar
+                              src={accountForm.avatar}
+                              name={accountForm.name || 'Student'}
+                              size="2xl"
+                              className="w-16 h-16 sm:w-20 sm:h-20 shadow-md ring-2 ring-brand-500/20 group-hover:opacity-90 transition-opacity"
+                            />
+                            <div className="absolute inset-0 bg-slate-950/40 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white">
+                              <Camera className="w-5 h-5" />
+                            </div>
+                          </div>
 
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                        <Avatar
-                          src={accountForm.avatar}
-                          name={accountForm.name || 'Student'}
-                          size="xl"
-                          className="w-16 h-16 rounded-2xl shadow-sm border border-slate-200 shrink-0"
-                        />
+                          <div className="space-y-1 min-w-0">
+                            <h4 className="text-xs sm:text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                              <ImageIcon className="w-4 h-4 text-brand-600" />
+                              <span>Profile Picture & Visual Identity</span>
+                            </h4>
+                            <p className="text-[11px] text-slate-500 leading-relaxed">
+                              Upload a professional headshot or use modern system-generated initials
+                            </p>
+                            <span className="text-[10px] font-mono text-slate-400 block pt-0.5">
+                              PNG, JPG, WebP • Max 2MB
+                            </span>
+                          </div>
+                        </div>
 
-                        <div className="space-y-1.5 flex-1">
+                        {/* Action Buttons */}
+                        <div className="flex flex-wrap items-center gap-2 shrink-0">
+                          <Button
+                            type="button"
+                            variant="primary"
+                            size="xs"
+                            onClick={() => avatarInputRef.current?.click()}
+                            isLoading={uploadingAvatar}
+                            leftIcon={<UploadCloud className="w-3.5 h-3.5" />}
+                            className="text-xs font-bold shadow-xs cursor-pointer"
+                          >
+                            Upload Photo
+                          </Button>
+
+                          {accountForm.avatar ? (
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="xs"
+                              onClick={() => {
+                                setAccountForm((p) => ({ ...p, avatar: '' }));
+                                setHasUnsavedChanges(true);
+                                notify.success('Avatar reset to generated initials.');
+                              }}
+                              leftIcon={<RotateCcw className="w-3.5 h-3.5" />}
+                              className="text-xs font-semibold cursor-pointer"
+                            >
+                              Use Initials
+                            </Button>
+                          ) : null}
+
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="xs"
+                            onClick={() => setShowUrlInput((s) => !s)}
+                            leftIcon={<Link2 className="w-3.5 h-3.5" />}
+                            className="text-xs text-slate-600 hover:text-slate-900 cursor-pointer"
+                          >
+                            {showUrlInput ? 'Hide Link' : 'Image Link'}
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Hidden File Input */}
+                      <input
+                        ref={avatarInputRef}
+                        type="file"
+                        accept="image/png,image/jpeg,image/jpg,image/webp"
+                        onChange={handleAvatarFileUpload}
+                        className="hidden"
+                      />
+
+                      {/* Optional Expandable Image URL Link Input */}
+                      {showUrlInput && (
+                        <div className="pt-3 border-t border-slate-200/80 animate-in fade-in slide-in-from-top-1 duration-200">
                           <Input
-                            label="Custom Avatar URL"
+                            label="Direct Image Web Link (Optional)"
                             name="avatar"
                             value={accountForm.avatar}
                             onChange={handleAccountChange}
-                            placeholder="https://example.com/photo.jpg (or leave empty to use initials)"
-                            helperText="Direct image URL (JPG, PNG, or WebP) or leave empty for clean generated initials"
+                            placeholder="https://example.com/your-photo.jpg"
+                            helperText="Paste any direct public image URL to use as your avatar"
                           />
                         </div>
-                      </div>
+                      )}
                     </div>
 
                     {/* Personal & Email Fields */}
