@@ -52,6 +52,8 @@ import {
   Workflow,
   Server,
   Flame,
+  FileSearch,
+  XCircle,
 } from 'lucide-react';
 
 const FALLBACK_SIMULATION_JOBS = [
@@ -128,12 +130,28 @@ export function StudentResumePage() {
   const [activeTab, setActiveTab] = useState('preview'); // 'preview' | 'signals' | 'ats' | 'tailor'
   const [applyModalOpen, setApplyModalOpen] = useState(false);
   const [applyInternship, setApplyInternship] = useState(null);
+  
+  // Live uploaded file state
+  const [uploadedFileUrl, setUploadedFileUrl] = useState(null);
+  const [uploadedFileName, setUploadedFileName] = useState(null);
+  const [uploadedFileSize, setUploadedFileSize] = useState(null);
+  const [viewMode, setViewMode] = useState('structured'); // 'structured' | 'pdf'
+
   const fileInputRef = useRef(null);
 
   useEffect(() => {
     dispatch(fetchStudentProfile());
     dispatch(fetchInternships({ limit: 50 }));
   }, [dispatch]);
+
+  // If student profile has an existing resume URL, set it
+  useEffect(() => {
+    if (profile?.resumeUrl && !uploadedFileUrl) {
+      setUploadedFileUrl(profile.resumeUrl);
+      setUploadedFileName(profile.resumeName || 'Uploaded_Resume.pdf');
+      setUploadedFileSize('Active PDF');
+    }
+  }, [profile?.resumeUrl, profile?.resumeName, uploadedFileUrl]);
 
   // Build simulation jobs list from live database or verified fallbacks
   const simulationJobs = useMemo(() => {
@@ -190,8 +208,8 @@ export function StudentResumePage() {
     {
       id: 'res_swe_default',
       title: 'AI & Distributed Systems (Default)',
-      fileName: `${studentName.toLowerCase().replace(/\s+/g, '_')}_ai_systems_resume.pdf`,
-      fileSize: '198 KB',
+      fileName: uploadedFileName || `${studentName.toLowerCase().replace(/\s+/g, '_')}_ai_systems_resume.pdf`,
+      fileSize: uploadedFileSize || '198 KB',
       updatedAt: '2026-08-22T10:00:00.000Z',
       isDefault: true,
       atsScore: 98,
@@ -207,11 +225,11 @@ export function StudentResumePage() {
       atsScore: 94,
       skills: ['Python', 'PyTorch', 'JAX', 'Transformers', 'CUDA', 'Distributed Training', 'RLHF'],
     },
-  ], [studentName, studentSkills]);
+  ], [studentName, studentSkills, uploadedFileName, uploadedFileSize]);
 
   const currentVersion = resumeVersions.find((v) => v.id === activeResumeId) || resumeVersions[0];
 
-  // Calculate tailored match score dynamically against targetJob
+  // Calculate tailored match score dynamically & realistically against targetJob
   const matchAnalysis = useMemo(() => {
     const candidateSkills = new Set(currentVersion.skills.map((s) => s.toLowerCase()));
     const jobSkills = targetJob.skills || [];
@@ -227,12 +245,40 @@ export function StudentResumePage() {
       }
     });
 
-    const matchPct = Math.round((matched.length / Math.max(1, jobSkills.length)) * 100);
+    const total = Math.max(1, jobSkills.length);
+    const matchPct = Math.round((matched.length / total) * 100);
+
+    let scoreColor = 'text-emerald-600';
+    let statusBadge = 'Strong Match';
+    let badgeVariant = 'success';
+    let statusText = `Your verified technical background strongly aligns with ${targetJob.companyName}'s requirements.`;
+
+    if (matchPct === 0) {
+      scoreColor = 'text-rose-600';
+      statusBadge = 'No Direct Match (0%)';
+      badgeVariant = 'danger';
+      statusText = `No required keywords matched (0 of ${total}). Add the missing technical skills listed below to pass automated screening.`;
+    } else if (matchPct < 50) {
+      scoreColor = 'text-rose-600';
+      statusBadge = 'Low Match';
+      badgeVariant = 'danger';
+      statusText = `Significant keyword gap (${matched.length} of ${total} matched). Adding recommended skills will significantly increase recruiter visibility.`;
+    } else if (matchPct < 75) {
+      scoreColor = 'text-amber-600';
+      statusBadge = 'Moderate Match';
+      badgeVariant = 'warning';
+      statusText = `Moderate alignment (${matched.length} of ${total} matched). Highlighting missing keywords in your projects will boost your ranking.`;
+    }
 
     return {
-      matchPct: Math.max(78, Math.min(99, matchPct > 0 ? matchPct + 20 : 80)),
+      matchPct,
       matched,
       missing,
+      total,
+      scoreColor,
+      statusBadge,
+      badgeVariant,
+      statusText,
     };
   }, [currentVersion, targetJob]);
 
@@ -270,16 +316,23 @@ export function StudentResumePage() {
   const processUpload = async (file) => {
     setUploading(true);
     try {
+      // Create local object URL for instant visible preview in the workspace
+      const localUrl = URL.createObjectURL(file);
+      setUploadedFileUrl(localUrl);
+      setUploadedFileName(file.name);
+      setUploadedFileSize(`${(file.size / 1024).toFixed(1)} KB`);
+      setViewMode('pdf');
+
       const formData = new FormData();
       formData.append('file', file);
       formData.append('title', file.name.replace(/\.[^/.]+$/, ''));
       formData.append('isDefault', 'true');
 
       await uploadService.uploadResume(formData);
-      notify.success('New resume uploaded and parsed successfully!');
+      notify.success('New resume uploaded and parsed successfully into workspace!');
       await dispatch(fetchStudentProfile());
     } catch {
-      notify.success('Resume version uploaded & parsed! (Simulated Mode)');
+      notify.success('Resume version uploaded & rendered in preview! (Simulated Mode)');
     } finally {
       setUploading(false);
     }
@@ -338,7 +391,7 @@ export function StudentResumePage() {
                 size="md"
                 onClick={handleCopyText}
                 leftIcon={<Copy className="w-4 h-4 text-slate-600" />}
-                className="bg-white hover:bg-slate-50 text-xs font-semibold"
+                className="bg-white hover:bg-slate-50 text-xs font-semibold cursor-pointer"
               >
                 Copy Text
               </Button>
@@ -444,7 +497,13 @@ export function StudentResumePage() {
                   >
                     <Target className="w-4 h-4" />
                     <span>Job Tailor Analyzer</span>
-                    <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-emerald-50 text-emerald-700 font-mono font-bold border border-emerald-200/80">
+                    <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono font-bold border ${
+                      matchAnalysis.matchPct >= 75
+                        ? 'bg-emerald-50 text-emerald-700 border-emerald-200/80'
+                        : matchAnalysis.matchPct >= 40
+                        ? 'bg-amber-50 text-amber-700 border-amber-200/80'
+                        : 'bg-rose-50 text-rose-700 border-rose-200/80'
+                    }`}>
                       {matchAnalysis.matchPct}%
                     </span>
                   </button>
@@ -476,102 +535,154 @@ export function StudentResumePage() {
               {/* Tab 1: Rendered Document View */}
               {activeTab === 'preview' && (
                 <div className="p-4 sm:p-6 bg-slate-100/70 space-y-4 flex flex-col items-center">
-                  <div
-                    style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'top center' }}
-                    className="w-full max-w-2xl bg-white rounded-xl shadow-lg border border-slate-200/90 p-8 sm:p-12 space-y-6 transition-transform duration-200 text-slate-800 selection:bg-brand-500/20"
-                  >
-                    {/* Resume Header */}
-                    <div className="text-center space-y-1.5 border-b border-slate-200 pb-4">
-                      <h2 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900">
-                        {studentName.toUpperCase()}
-                      </h2>
-                      <p className="text-xs text-slate-600 font-medium">
-                        San Francisco, CA • {studentEmail} • +1 (555) 234-5678 • linkedin.com/in/{studentName.toLowerCase().replace(/\s+/g, '')}
-                      </p>
-                      <p className="text-xs text-brand-600 font-mono font-semibold">
-                        github.com/{studentName.toLowerCase().replace(/\s+/g, '')}/fastkv • stanford.edu/~{studentName.toLowerCase().replace(/\s+/g, '')}
-                      </p>
-                    </div>
-
-                    {/* Education Section */}
-                    <div className="space-y-2">
-                      <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 border-b border-slate-900/20 pb-0.5">
-                        Education
-                      </h3>
-                      <div className="flex justify-between items-baseline text-xs">
-                        <span className="font-bold text-slate-900">Stanford University</span>
-                        <span className="text-slate-500 font-mono">Sep 2023 — Jun 2027</span>
+                  
+                  {/* Uploaded File Banner & View Mode Toggle */}
+                  {uploadedFileUrl && (
+                    <div className="w-full max-w-2xl bg-white p-3 rounded-xl border border-brand-200 flex items-center justify-between gap-3 shadow-2xs">
+                      <div className="flex items-center gap-2 text-xs font-semibold text-slate-800 truncate">
+                        <FileText className="w-4 h-4 text-brand-600 shrink-0" />
+                        <span className="truncate">{uploadedFileName || 'Uploaded Resume'}</span>
+                        <span className="text-slate-400 font-mono text-[11px]">({uploadedFileSize || 'PDF'})</span>
+                        <Badge variant="success" size="xs">
+                          Live Rendered
+                        </Badge>
                       </div>
-                      <div className="flex justify-between items-baseline text-xs text-slate-700">
-                        <span>Bachelor of Science in Computer Science (GPA: 3.92 / 4.0)</span>
-                        <span className="text-slate-500">Stanford, CA</span>
+
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <button
+                          type="button"
+                          onClick={() => setViewMode('structured')}
+                          className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                            viewMode === 'structured'
+                              ? 'bg-brand-50 text-brand-700 border border-brand-200'
+                              : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+                          }`}
+                        >
+                          Structured View
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setViewMode('pdf')}
+                          className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                            viewMode === 'pdf'
+                              ? 'bg-brand-50 text-brand-700 border border-brand-200'
+                              : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+                          }`}
+                        >
+                          PDF Viewer
+                        </button>
                       </div>
-                      <p className="text-[11px] text-slate-600">
-                        <strong className="text-slate-800">Relevant Coursework:</strong> Operating Systems, Distributed Systems, Data Structures & Algorithms, Compilers, Machine Learning.
-                      </p>
                     </div>
+                  )}
 
-                    {/* Experience Section */}
-                    <div className="space-y-3">
-                      <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 border-b border-slate-900/20 pb-0.5">
-                        Experience
-                      </h3>
+                  {/* Embedded PDF iframe if in PDF mode and URL exists */}
+                  {uploadedFileUrl && viewMode === 'pdf' ? (
+                    <div className="w-full max-w-2xl bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+                      <iframe
+                        src={uploadedFileUrl}
+                        className="w-full h-[700px] border-0"
+                        title="Live Uploaded Resume PDF"
+                      />
+                    </div>
+                  ) : (
+                    /* A4 Paper Structured Mockup Container */
+                    <div
+                      style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'top center' }}
+                      className="w-full max-w-2xl bg-white rounded-xl shadow-lg border border-slate-200/90 p-8 sm:p-12 space-y-6 transition-transform duration-200 text-slate-800 selection:bg-brand-500/20"
+                    >
+                      {/* Resume Header */}
+                      <div className="text-center space-y-1.5 border-b border-slate-200 pb-4">
+                        <h2 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900">
+                          {studentName.toUpperCase()}
+                        </h2>
+                        <p className="text-xs text-slate-600 font-medium">
+                          San Francisco, CA • {studentEmail} • +1 (555) 234-5678 • linkedin.com/in/{studentName.toLowerCase().replace(/\s+/g, '')}
+                        </p>
+                        <p className="text-xs text-brand-600 font-mono font-semibold">
+                          github.com/{studentName.toLowerCase().replace(/\s+/g, '')}/fastkv • stanford.edu/~{studentName.toLowerCase().replace(/\s+/g, '')}
+                        </p>
+                      </div>
 
-                      <div className="space-y-1 text-xs">
-                        <div className="flex justify-between items-baseline">
-                          <span className="font-bold text-slate-900">Distributed Systems & AI Fellow</span>
-                          <span className="text-slate-500 font-mono">Jun 2025 — Aug 2025</span>
+                      {/* Education Section */}
+                      <div className="space-y-2">
+                        <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 border-b border-slate-900/20 pb-0.5">
+                          Education
+                        </h3>
+                        <div className="flex justify-between items-baseline text-xs">
+                          <span className="font-bold text-slate-900">Stanford University</span>
+                          <span className="text-slate-500 font-mono">Sep 2023 — Jun 2027</span>
                         </div>
-                        <p className="text-slate-700 font-medium italic">Acme Research & Systems Lab • San Francisco, CA</p>
-                        <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-600 leading-relaxed pt-0.5">
-                          <li>
-                            Architected asynchronous high-throughput event processing pipelines in Go and Rust handling over 50,000 requests/second.
-                          </li>
-                          <li>
-                            Trained and deployed sub-50ms embedding retrieval pipelines using pgvector and PyTorch transformers.
-                          </li>
-                          <li>
-                            Wrote integration test suites maintaining 99.99% uptime across Kubernetes clusters.
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-
-                    {/* Projects Section */}
-                    <div className="space-y-3">
-                      <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 border-b border-slate-900/20 pb-0.5">
-                        Technical Projects
-                      </h3>
-
-                      <div className="space-y-1 text-xs">
-                        <div className="flex justify-between items-baseline">
-                          <span className="font-bold text-slate-900">FastKV — Distributed Log-Structured Key-Value Engine</span>
-                          <span className="text-slate-500 font-mono">Rust, TypeScript, Raft</span>
+                        <div className="flex justify-between items-baseline text-xs text-slate-700">
+                          <span>Bachelor of Science in Computer Science (GPA: 3.92 / 4.0)</span>
+                          <span className="text-slate-500">Stanford, CA</span>
                         </div>
-                        <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-600 leading-relaxed pt-0.5">
-                          <li>
-                            Engineered an append-only LSM storage engine in Rust with WAL replication achieving 85,000 IOPS.
-                          </li>
-                          <li>
-                            Designed interactive browser CLI playground compiled to WebAssembly.
-                          </li>
-                        </ul>
+                        <p className="text-[11px] text-slate-600">
+                          <strong className="text-slate-800">Relevant Coursework:</strong> Operating Systems, Distributed Systems, Data Structures & Algorithms, Compilers, Machine Learning.
+                        </p>
+                      </div>
+
+                      {/* Experience Section */}
+                      <div className="space-y-3">
+                        <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 border-b border-slate-900/20 pb-0.5">
+                          Experience
+                        </h3>
+
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between items-baseline">
+                            <span className="font-bold text-slate-900">Distributed Systems & AI Fellow</span>
+                            <span className="text-slate-500 font-mono">Jun 2025 — Aug 2025</span>
+                          </div>
+                          <p className="text-slate-700 font-medium italic">Acme Research & Systems Lab • San Francisco, CA</p>
+                          <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-600 leading-relaxed pt-0.5">
+                            <li>
+                              Architected asynchronous high-throughput event processing pipelines in Go and Rust handling over 50,000 requests/second.
+                            </li>
+                            <li>
+                              Trained and deployed sub-50ms embedding retrieval pipelines using pgvector and PyTorch transformers.
+                            </li>
+                            <li>
+                              Wrote integration test suites maintaining 99.99% uptime across Kubernetes clusters.
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+
+                      {/* Projects Section */}
+                      <div className="space-y-3">
+                        <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 border-b border-slate-900/20 pb-0.5">
+                          Technical Projects
+                        </h3>
+
+                        <div className="space-y-1 text-xs">
+                          <div className="flex justify-between items-baseline">
+                            <span className="font-bold text-slate-900">FastKV — Distributed Log-Structured Key-Value Engine</span>
+                            <span className="text-slate-500 font-mono">Rust, TypeScript, Raft</span>
+                          </div>
+                          <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-600 leading-relaxed pt-0.5">
+                            <li>
+                              Engineered an append-only LSM storage engine in Rust with WAL replication achieving 85,000 IOPS.
+                            </li>
+                            <li>
+                              Designed interactive browser CLI playground compiled to WebAssembly.
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+
+                      {/* Skills Section */}
+                      <div className="space-y-1.5 text-xs">
+                        <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 border-b border-slate-900/20 pb-0.5">
+                          Technical Skills
+                        </h3>
+                        <p className="text-[11px] text-slate-700 leading-relaxed">
+                          <strong className="text-slate-900">Languages & Systems:</strong> {currentVersion.skills.join(', ')}.
+                        </p>
+                        <p className="text-[11px] text-slate-700 leading-relaxed">
+                          <strong className="text-slate-900">Infrastructure:</strong> Docker, Kubernetes, PostgreSQL, Redis, CUDA, Git, Linux Internals.
+                        </p>
                       </div>
                     </div>
-
-                    {/* Skills Section */}
-                    <div className="space-y-1.5 text-xs">
-                      <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 border-b border-slate-900/20 pb-0.5">
-                        Technical Skills
-                      </h3>
-                      <p className="text-[11px] text-slate-700 leading-relaxed">
-                        <strong className="text-slate-900">Languages & Systems:</strong> {currentVersion.skills.join(', ')}.
-                      </p>
-                      <p className="text-[11px] text-slate-700 leading-relaxed">
-                        <strong className="text-slate-900">Infrastructure:</strong> Docker, Kubernetes, PostgreSQL, Redis, CUDA, Git, Linux Internals.
-                      </p>
-                    </div>
-                  </div>
+                  )}
                 </div>
               )}
 
@@ -647,17 +758,22 @@ export function StudentResumePage() {
                     </select>
                   </div>
 
-                  {/* Match Analysis Results Banner */}
-                  <div className="p-5 rounded-2xl bg-gradient-to-br from-brand-50/60 via-indigo-50/30 to-white border border-brand-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs">
-                    <div className="space-y-1">
-                      <span className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono">
-                        Tailored Match Score
-                      </span>
-                      <p className="text-3xl font-black font-mono text-emerald-600">
+                  {/* Match Analysis Results Banner - Real Realistic Scoring */}
+                  <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-50/80 via-brand-50/20 to-white border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs">
+                    <div className="space-y-1.5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono">
+                          Tailored Match Score:
+                        </span>
+                        <Badge variant={matchAnalysis.badgeVariant} size="xs" className="font-mono font-bold">
+                          {matchAnalysis.statusBadge}
+                        </Badge>
+                      </div>
+                      <p className={`text-3xl sm:text-4xl font-black font-mono tracking-tight ${matchAnalysis.scoreColor}`}>
                         {matchAnalysis.matchPct}% Match
                       </p>
-                      <p className="text-xs text-slate-600">
-                        Your verified technical background strongly aligns with {targetJob.companyName}&apos;s requirements.
+                      <p className="text-xs text-slate-600 max-w-md leading-relaxed">
+                        {matchAnalysis.statusText}
                       </p>
                     </div>
 
@@ -676,38 +792,88 @@ export function StudentResumePage() {
                     </Button>
                   </div>
 
-                  {/* Matched vs Missing Skill Matrix */}
+                  {/* Side-by-Side Match Matrix */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                    <div className="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200 space-y-2">
-                      <span className="font-bold text-emerald-900 flex items-center gap-1.5">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                        Matched Required Keywords ({matchAnalysis.matched.length}):
-                      </span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {matchAnalysis.matched.map((s, idx) => (
-                          <Badge key={idx} variant="success" size="xs" className="font-mono">
-                            {s}
-                          </Badge>
-                        ))}
+                    {/* Matched Skills */}
+                    <div className="p-4 rounded-xl bg-emerald-50/60 border border-emerald-200/90 space-y-2.5">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-emerald-900 flex items-center gap-1.5">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                          Matched Requisition Skills ({matchAnalysis.matched.length}):
+                        </span>
+                        <span className="text-[11px] font-mono font-bold text-emerald-700">
+                          {matchAnalysis.matched.length} / {matchAnalysis.total}
+                        </span>
                       </div>
-                    </div>
-
-                    <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
-                      <span className="font-bold text-slate-800 flex items-center gap-1.5">
-                        <Sparkles className="w-4 h-4 text-brand-600 shrink-0" />
-                        Recommended Keywords to Highlight:
-                      </span>
                       <div className="flex flex-wrap gap-1.5">
-                        {matchAnalysis.missing.length > 0 ? (
-                          matchAnalysis.missing.map((s, idx) => (
-                            <Badge key={idx} variant="secondary" size="xs" className="font-mono">
-                              + {s}
+                        {matchAnalysis.matched.length > 0 ? (
+                          matchAnalysis.matched.map((s, idx) => (
+                            <Badge key={idx} variant="success" size="xs" className="font-mono font-semibold">
+                              ✓ {s}
                             </Badge>
                           ))
                         ) : (
-                          <span className="text-slate-500 italic">100% core requisition keywords matched!</span>
+                          <span className="text-rose-600 text-xs italic flex items-center gap-1">
+                            <XCircle className="w-3.5 h-3.5 shrink-0" />
+                            No direct keyword matches found in your active resume version.
+                          </span>
                         )}
                       </div>
+                    </div>
+
+                    {/* Missing Skills */}
+                    <div className="p-4 rounded-xl bg-amber-50/60 border border-amber-200/90 space-y-2.5">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-amber-900 flex items-center gap-1.5">
+                          <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+                          Skills to Highlight in Resume:
+                        </span>
+                        <span className="text-[11px] font-mono font-bold text-amber-700">
+                          {matchAnalysis.missing.length} missing
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {matchAnalysis.missing.length > 0 ? (
+                          matchAnalysis.missing.map((s, idx) => (
+                            <span
+                              key={idx}
+                              className="px-2 py-0.5 rounded-md bg-white border border-amber-300 text-amber-900 font-mono text-[11px] font-semibold shadow-2xs"
+                            >
+                              + {s}
+                            </span>
+                          ))
+                        ) : (
+                          <span className="text-emerald-700 text-xs italic flex items-center gap-1">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                            100% of required technical skills present in your active resume!
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Active Resume Skills Reference */}
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                    <span className="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono flex items-center gap-1.5">
+                      <Code2 className="w-3.5 h-3.5 text-brand-600" />
+                      Your Active Resume Skills ({currentVersion.skills.length}):
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {currentVersion.skills.map((skill, idx) => {
+                        const isMatched = matchAnalysis.matched.map(m => m.toLowerCase()).includes(skill.toLowerCase());
+                        return (
+                          <span
+                            key={idx}
+                            className={`px-2.5 py-1 rounded-lg text-xs font-mono font-medium border ${
+                              isMatched
+                                ? 'bg-emerald-50 border-emerald-200 text-emerald-800 font-bold'
+                                : 'bg-white border-slate-200 text-slate-600'
+                            }`}
+                          >
+                            {isMatched ? '✓ ' : ''}{skill}
+                          </span>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
