@@ -3,7 +3,6 @@ dotenv.config({ path: 'backend/.env' });
 
 import mongoose from 'mongoose';
 import { Internship } from '../models/Internship.model.js';
-import { Company } from '../models/Company.model.js';
 
 async function run() {
   await mongoose.connect(process.env.MONGODB_URI);

@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: 'backend/.env' });
 
 import mongoose from 'mongoose';
-import { Internship, INTERNSHIP_STATUS, WORKPLACE_TYPE, EMPLOYMENT_TYPE, OPPORTUNITY_TYPE, APPLICATION_METHOD, SOURCE_TYPE } from '../models/Internship.model.js';
+import { Internship, INTERNSHIP_STATUS, APPLICATION_METHOD, SOURCE_TYPE } from '../models/Internship.model.js';
 import { Company } from '../models/Company.model.js';
 
 // Top tech employers
