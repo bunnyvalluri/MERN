@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import internshipService from '../../services/internshipService.js';
+import { PRISTINE_INTERNSHIPS_DATA, filterLocalInternships } from './data/internshipsData.js';
 
 const initialFilters = {
   search: '',
@@ -44,24 +45,26 @@ const initialState = {
 };
 
 /**
- * Fetch Internships with Filter & Pagination (Database-driven)
+ * Fetch Internships with Filter & Pagination (Database-driven with Netlify Resilience Fallback)
  */
 export const fetchInternships = createAsyncThunk(
   'internships/fetchList',
-  async (params = {}, { rejectWithValue }) => {
+  async (params = {}) => {
     try {
       const response = await internshipService.getInternships(params);
-      if (response && response.data) {
+      if (
+        response &&
+        response.data &&
+        Array.isArray(response.data.data) &&
+        response.data.data.length > 0
+      ) {
         return response.data;
       }
-      return {
-        data: [],
-        pagination: { page: 1, limit: 12, total: 0, totalPages: 1 },
-        lastSyncedAt: new Date().toISOString(),
-      };
-    } catch (err) {
-      const message = err.response?.data?.message || err.message || 'Failed to fetch internships';
-      return rejectWithValue(message);
+      // If API returns empty or is running on static Netlify deployment
+      return filterLocalInternships(params);
+    } catch {
+      // Gracefully serve filtered pristine dataset on Netlify
+      return filterLocalInternships(params);
     }
   }
 );
@@ -77,10 +80,17 @@ export const fetchInternshipDetail = createAsyncThunk(
       if (response && response.data) {
         return response.data;
       }
+      const local = PRISTINE_INTERNSHIPS_DATA.find(
+        (i) => i.id === idOrSlug || i._id === idOrSlug || i.slug === idOrSlug
+      );
+      if (local) return local;
       return rejectWithValue('Internship opportunity not found.');
-    } catch (err) {
-      const message = err.response?.data?.message || err.message || 'Internship opportunity not found.';
-      return rejectWithValue(message);
+    } catch {
+      const local = PRISTINE_INTERNSHIPS_DATA.find(
+        (i) => i.id === idOrSlug || i._id === idOrSlug || i.slug === idOrSlug
+      );
+      if (local) return local;
+      return rejectWithValue('Internship opportunity not found.');
     }
   }
 );
