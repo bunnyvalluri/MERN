@@ -1,7 +1,7 @@
 import React, { forwardRef, useId } from 'react';
 
 /**
- * Accessible SaaS Toggle Switch.
+ * Accessible SaaS Toggle Switch Component with Smooth Hardware-Accelerated Thumb Animation.
  */
 export const Switch = forwardRef(function Switch(
   {
@@ -21,36 +21,48 @@ export const Switch = forwardRef(function Switch(
   const id = explicitId || autoId;
 
   const trackSizes = {
-    sm: 'w-8 h-4.5',
-    md: 'w-10 h-6',
-    lg: 'w-12 h-7',
+    sm: 'w-8 h-4 p-0.5',
+    md: 'w-11 h-6 p-0.5',
+    lg: 'w-14 h-7.5 p-0.5',
   };
 
   const thumbSizes = {
-    sm: 'w-3.5 h-3.5',
-    md: 'w-4.5 h-4.5',
-    lg: 'w-5.5 h-5.5',
+    sm: 'w-3 h-3',
+    md: 'w-5 h-5',
+    lg: 'w-6.5 h-6.5',
   };
 
   const thumbTranslate = {
-    sm: checked ? 'translate-x-3.5' : 'translate-x-0.5',
-    md: checked ? 'translate-x-4.5' : 'translate-x-0.5',
-    lg: checked ? 'translate-x-5.5' : 'translate-x-0.5',
+    sm: checked ? 'translate-x-4' : 'translate-x-0',
+    md: checked ? 'translate-x-5' : 'translate-x-0',
+    lg: checked ? 'translate-x-6.5' : 'translate-x-0',
+  };
+
+  const handleChange = (e) => {
+    if (disabled) return;
+    if (onChange) {
+      // Support both event signature and direct boolean callback
+      if (typeof e?.target?.checked === 'boolean') {
+        onChange(e.target.checked, e);
+      } else {
+        onChange(!checked);
+      }
+    }
   };
 
   return (
-    <div className={`flex items-start justify-between gap-4 ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}>
+    <div className={`flex items-center justify-between gap-4 ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}>
       {(label || description) && (
         <div className="text-xs select-none">
           {label && (
             <label
               htmlFor={id}
-              className="font-medium text-slate-800 cursor-pointer block"
+              className="font-semibold text-slate-800 cursor-pointer block leading-tight"
             >
               {label}
             </label>
           )}
-          {description && <p className="text-slate-500 mt-0.5">{description}</p>}
+          {description && <p className="text-slate-500 mt-0.5 text-[11px] leading-tight">{description}</p>}
         </div>
       )}
 
@@ -62,27 +74,31 @@ export const Switch = forwardRef(function Switch(
           role="switch"
           aria-checked={checked}
           checked={checked}
-          onChange={onChange}
+          onChange={handleChange}
           disabled={disabled}
-          className="peer sr-only"
+          className="sr-only peer"
           {...props}
         />
-        <label
-          htmlFor={id}
-          className={`inline-flex items-center rounded-full transition-colors duration-200 ease-in-out cursor-pointer peer-focus-visible:ring-2 peer-focus-visible:ring-brand-500 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white border ${
+        <button
+          type="button"
+          role="switch"
+          aria-checked={checked}
+          disabled={disabled}
+          onClick={handleChange}
+          className={`inline-flex items-center rounded-full transition-all duration-200 ease-in-out cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 border ${
             trackSizes[size] || trackSizes.md
           } ${
             checked
-              ? 'bg-brand-600 border-brand-600'
-              : 'bg-slate-300 border-slate-300 hover:bg-slate-400'
+              ? 'bg-brand-600 border-brand-600 shadow-xs'
+              : 'bg-slate-200 border-slate-300 hover:bg-slate-300'
           }`}
         >
           <span
-            className={`inline-block rounded-full bg-white shadow-sm transform transition-transform duration-200 ease-in-out ${
+            className={`inline-block rounded-full bg-white shadow-md transform transition-transform duration-200 ease-in-out pointer-events-none ring-1 ring-black/5 ${
               thumbSizes[size] || thumbSizes.md
             } ${thumbTranslate[size] || thumbTranslate.md}`}
           />
-        </label>
+        </button>
       </div>
     </div>
   );
