@@ -24,7 +24,11 @@ import {
   Textarea,
 } from '../../../components/ui/index.js';
 import { notify } from '../../../utils/toast.js';
-import { parseDescriptionParagraphs } from '../../../utils/textUtils.js';
+import {
+  parseDescriptionParagraphs,
+  formatLocationSmart,
+  cleanDescriptionText,
+} from '../../../utils/textUtils.js';
 import {
   Building2,
   MapPin,
@@ -224,12 +228,11 @@ export function InternshipDetailPage() {
   }
 
   // Location text
-  const locationText =
-    typeof internship.location === 'object'
-      ? `${internship.location?.city || ''}${
-          internship.location?.city && internship.location?.country ? ', ' : ''
-        }${internship.location?.country || ''}` || 'Remote'
-      : internship.location || 'Remote';
+  const locationText = formatLocationSmart(
+    internship.location,
+    internship.city,
+    internship.country
+  );
 
   const daysUntilDeadline = internship.applicationDeadline
     ? Math.ceil(
@@ -299,9 +302,10 @@ export function InternshipDetailPage() {
   const pageTitle = `${internship.title} at ${company.name || 'Company'} — InternHub`;
 
   /** Dynamic description — first 155 chars of the internship description */
-  const pageDescription = internship.description
-    ? internship.description.slice(0, 152) + (internship.description.length > 152 ? '...' : '')
-    : `Apply to ${internship.title} at ${company.name}. View responsibilities, requirements, and compensation on InternHub.`;
+  const cleanedDesc = cleanDescriptionText(internship.description || '');
+  const pageDescription = cleanedDesc
+    ? cleanedDesc.slice(0, 152) + (cleanedDesc.length > 152 ? '...' : '')
+    : `Apply to ${internship.title} at ${company.name || 'Company'}. View responsibilities, requirements, and compensation on InternHub.`;
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col selection:bg-brand-500/20 selection:text-brand-700">

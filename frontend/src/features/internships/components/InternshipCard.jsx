@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import CompanyLogo from '../../../components/common/CompanyLogo.jsx';
-import { cleanDescriptionText } from '../../../utils/textUtils.js';
+import { cleanDescriptionText, formatLocationSmart } from '../../../utils/textUtils.js';
 import {
   Bookmark,
   MapPin,
@@ -105,12 +105,11 @@ export function InternshipCard({
   const _aiMatch = internship.aiMatch;
 
   // Format location
-  const locationFormatted =
-    typeof internship.location === 'object' && internship.location !== null
-      ? `${internship.location.city || ''}${
-          internship.location.city && (internship.location.country || internship.location.state) ? ', ' : ''
-        }${internship.location.state || internship.location.country || ''}` || 'Remote'
-      : internship.city || internship.location || 'Remote';
+  const locationFormatted = formatLocationSmart(
+    internship.location,
+    internship.city,
+    internship.country
+  );
 
   // Workplace type formatting
   const remoteType = (internship.workMode || internship.remote || 'REMOTE').toUpperCase();
