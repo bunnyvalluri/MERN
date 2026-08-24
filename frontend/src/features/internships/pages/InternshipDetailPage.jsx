@@ -542,6 +542,16 @@ export function InternshipDetailPage() {
                 {/* Info List */}
                 <div className="space-y-2.5 text-xs text-slate-600 border-t border-slate-100 pt-3">
                   <div className="flex justify-between">
+                    <span className="text-slate-500">Source:</span>
+                    <span className="font-semibold text-brand-600 font-mono">{internship.source || 'InternHub Verified'}</span>
+                  </div>
+                  {internship.lastVerifiedAt && (
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Last Verified:</span>
+                      <span className="text-slate-700 font-mono">{new Date(internship.lastVerifiedAt).toLocaleDateString()}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between">
                     <span className="text-slate-500">Monthly Compensation:</span>
                     <span className="font-semibold text-slate-900 font-mono">{stipendText}</span>
                   </div>
@@ -563,7 +573,17 @@ export function InternshipDetailPage() {
 
                 {/* Apply Button */}
                 <div className="pt-3 border-t border-slate-100 space-y-2">
-                  {hasAlreadyApplied ? (
+                  {internship.applicationMethod === 'EXTERNAL' && internship.applicationUrl ? (
+                    <a
+                      href={internship.applicationUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold rounded-xl shadow-xs transition-colors"
+                    >
+                      <span>Apply on Official Portal</span>
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  ) : hasAlreadyApplied ? (
                     <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-center space-y-1">
                       <p className="text-xs font-bold text-emerald-700 flex items-center justify-center gap-1.5">
                         <CheckCircle2 className="w-4 h-4" />
@@ -585,7 +605,9 @@ export function InternshipDetailPage() {
                     </Button>
                   )}
                   <p className="text-[11px] text-slate-500 text-center">
-                    Instant 1-click submission with your verified profile
+                    {internship.applicationMethod === 'EXTERNAL'
+                      ? 'Direct verified application link to official employer careers portal'
+                      : 'Instant 1-click submission with your verified profile'}
                   </p>
                 </div>
               </CardContent>

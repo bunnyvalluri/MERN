@@ -20,7 +20,6 @@ import {
   Input,
 } from '../../../components/ui/index.js';
 import { notify } from '../../../utils/toast.js';
-import { REAL_INTERNSHIPS } from '../../internships/data/realInternships.js';
 import {
   Briefcase,
   Building2,

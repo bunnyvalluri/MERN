@@ -19,11 +19,13 @@ import {
   LogOut,
   Sparkles,
   ExternalLink,
+  Globe2,
 } from 'lucide-react';
 import { Badge, Avatar } from '../../../components/ui/index.js';
 
 const ADMIN_SECTIONS = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { id: 'sources', label: 'Ingestion & Connectors', icon: Globe2 },
   { id: 'users', label: 'Users', icon: Users },
   { id: 'students', label: 'Students', icon: GraduationCap },
   { id: 'recruiters', label: 'Recruiters', icon: Briefcase },

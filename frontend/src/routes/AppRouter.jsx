@@ -10,6 +10,7 @@ import LandingPage from '../pages/LandingPage.jsx';
 // ─── Code-Split Lazy Loaded Route Components ─────────────────────────────────
 const InternshipsPage = lazy(() => import('../features/internships/pages/InternshipsPage.jsx'));
 const InternshipDetailPage = lazy(() => import('../features/internships/pages/InternshipDetailPage.jsx'));
+const SavedInternshipsPage = lazy(() => import('../features/internships/pages/SavedInternshipsPage.jsx'));
 const CompaniesPage = lazy(() => import('../features/companies/pages/CompaniesPage.jsx'));
 const CompanyDetailPage = lazy(() => import('../features/companies/pages/CompanyDetailPage.jsx'));
 
@@ -67,6 +68,14 @@ export function AppRouter() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/internships" element={<InternshipsPage />} />
           <Route path="/internships/:id" element={<InternshipDetailPage />} />
+          <Route
+            path="/saved-internships"
+            element={
+              <ProtectedRoute allowedRoles={['STUDENT', 'ADMIN', 'SUPER_ADMIN']}>
+                <SavedInternshipsPage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/companies" element={<CompaniesPage />} />
           <Route path="/companies/:id" element={<CompanyDetailPage />} />
 

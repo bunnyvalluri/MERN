@@ -97,8 +97,6 @@ export const companyProfileSchema = Joi.object({
     country: Joi.string().trim().allow('').optional(),
     address: Joi.string().trim().allow('').optional(),
   }).optional(),
-  companySize: Joi.string()
-    .valid('1-10', '11-50', '51-200', '201-500', '501-1000', '1000+')
-    .default('11-50'),
+  companySize: Joi.string().trim().default('11-50'),
   foundedYear: Joi.number().integer().min(1800).max(new Date().getFullYear()).optional(),
 });

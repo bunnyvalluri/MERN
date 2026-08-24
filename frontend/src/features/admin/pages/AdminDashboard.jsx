@@ -13,6 +13,9 @@ import {
   fetchAdminApplications,
   fetchAdminAuditLogs,
   sendBroadcastNotification,
+  fetchAdminSources,
+  fetchAdminSyncJobs,
+  triggerAdminSyncJob,
   setActiveSection,
 } from '../adminSlice.js';
 import AdminSidebar from '../components/AdminSidebar.jsx';
@@ -88,12 +91,15 @@ export function AdminDashboard() {
     internships,
     applications,
     auditLogs,
+    sources,
+    syncJobs,
     activeSection,
   } = useSelector((state) => state.admin);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [broadcastModalOpen, setBroadcastModalOpen] = useState(false);
+  const [syncingSource, setSyncingSource] = useState(null);
 
   // Search & Filter local states
   const [userSearch, setUserSearch] = useState('');
@@ -133,6 +139,20 @@ export function AdminDashboard() {
     setMobileMenuOpen(false);
   };
 
+  const handleTriggerSync = async (sourceName = 'ALL') => {
+    setSyncingSource(sourceName);
+    try {
+      await dispatch(triggerAdminSyncJob(sourceName)).unwrap();
+      notify.success(`Ingestion job for ${sourceName} completed successfully.`);
+      dispatch(fetchAdminSources());
+      dispatch(fetchAdminSyncJobs());
+    } catch (err) {
+      notify.error(err || `Failed to sync source ${sourceName}`);
+    } finally {
+      setSyncingSource(null);
+    }
+  };
+
   // Initial load of metrics
   useEffect(() => {
     dispatch(fetchAdminMetrics());
@@ -144,6 +164,10 @@ export function AdminDashboard() {
       case 'dashboard':
       case 'reports':
         dispatch(fetchAdminMetrics());
+        break;
+      case 'sources':
+        dispatch(fetchAdminSources());
+        dispatch(fetchAdminSyncJobs());
         break;
       case 'users':
         dispatch(fetchAdminUsers({ search: userSearch, role: userRoleFilter, page: usersPage }));
@@ -666,6 +690,246 @@ export function AdminDashboard() {
                   </div>
                 </CardContent>
               </Card>
+            </div>
+          )}
+
+          {/* ──────────────────────────────────────────────────────────────────
+              DATA INGESTION & SOURCE CONNECTORS (TELEMETRY & AUDIT)
+          ─────────────────────────────────────────────────────────────────── */}
+          {activeSection === 'sources' && (
+            <div className="space-y-8 animate-fade-in">
+              {/* Header & Global Actions */}
+              <div className="rounded-2xl bg-white border border-slate-200 shadow-sm p-6 sm:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative overflow-hidden">
+                <div className="space-y-2 relative z-10">
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    <Badge variant="primary" size="xs" className="font-mono flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      INGESTION ENGINE ACTIVE
+                    </Badge>
+                    <span className="text-xs text-slate-400 font-mono">•</span>
+                    <span className="text-xs text-slate-500 font-mono flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-brand-600" />
+                      Continuous 24/7 Scheduling
+                    </span>
+                  </div>
+
+                  <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                    Data Ingestion & Source Connectors
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-500 max-w-2xl leading-relaxed">
+                    Audit external API job boards, ATS feeds, circuit-breaker resiliency metrics, deduplication pipelines, and sync execution ledgers.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3 relative z-10 shrink-0">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      dispatch(fetchAdminSources());
+                      dispatch(fetchAdminSyncJobs());
+                    }}
+                    leftIcon={<RefreshCw className="w-4 h-4" />}
+                    className="bg-white hover:bg-slate-50 text-xs font-semibold"
+                  >
+                    Refresh Status
+                  </Button>
+
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    disabled={syncingSource !== null}
+                    onClick={() => handleTriggerSync('ALL')}
+                    leftIcon={<Zap className={`w-4 h-4 ${syncingSource === 'ALL' ? 'animate-spin' : ''}`} />}
+                    className="bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold shadow-sm"
+                  >
+                    {syncingSource === 'ALL' ? 'Syncing All Sources...' : 'Trigger Full Ingestion Cycle'}
+                  </Button>
+                </div>
+              </div>
+
+              {/* Source Connectors Health Cards */}
+              <div className="space-y-4">
+                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                  <Server className="w-4 h-4 text-brand-600" />
+                  <span>Registered Connector Endpoints ({sources.length})</span>
+                </h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {sources.length === 0 ? (
+                    <div className="col-span-2 p-8 text-center bg-white rounded-2xl border border-slate-200 text-slate-400 text-xs">
+                      Loading registered source connectors...
+                    </div>
+                  ) : (
+                    sources.map((src) => {
+                      const isHealthy = src.status === 'ACTIVE' && src.circuitBreaker?.state !== 'OPEN';
+                      return (
+                        <Card key={src.name} className="border-slate-200 bg-white shadow-sm hover:shadow-md transition-all overflow-hidden">
+                          <CardHeader className="pb-3 border-b border-slate-100 flex flex-row items-center justify-between">
+                            <div className="flex items-center gap-2.5">
+                              <div className={`w-3 h-3 rounded-full ${isHealthy ? 'bg-emerald-500' : 'bg-rose-500'}`} />
+                              <div>
+                                <CardTitle className="text-sm font-bold text-slate-900">
+                                  {src.name}
+                                </CardTitle>
+                                <span className="text-[10px] text-slate-400 font-mono uppercase">
+                                  {src.type}
+                                </span>
+                              </div>
+                            </div>
+
+                            <Badge variant={isHealthy ? 'success' : 'danger'} size="xs" className="font-mono font-bold">
+                              {src.circuitBreaker?.state === 'OPEN' ? 'CIRCUIT OPEN' : src.status}
+                            </Badge>
+                          </CardHeader>
+
+                          <CardContent className="p-5 space-y-4">
+                            <div className="space-y-2 text-xs">
+                              <div className="flex justify-between items-center text-slate-600">
+                                <span className="text-slate-500 font-mono">Endpoint / Target:</span>
+                                <span className="font-mono text-slate-800 truncate max-w-[200px]" title={src.endpoint}>
+                                  {src.endpoint || 'Internal DB'}
+                                </span>
+                              </div>
+
+                              <div className="flex justify-between items-center text-slate-600">
+                                <span className="text-slate-500 font-mono">Circuit State:</span>
+                                <span className="font-semibold text-slate-800 font-mono">
+                                  {src.circuitBreaker?.state || 'CLOSED'} (Failures: {src.circuitBreaker?.consecutiveFailures || 0})
+                                </span>
+                              </div>
+
+                              <div className="flex justify-between items-center text-slate-600">
+                                <span className="text-slate-500 font-mono">Total Fetched:</span>
+                                <span className="font-bold text-emerald-600 font-mono">
+                                  {(src.metrics?.totalFetched || 0).toLocaleString()} items
+                                </span>
+                              </div>
+
+                              <div className="flex justify-between items-center text-slate-600">
+                                <span className="text-slate-500 font-mono">Last Ingestion Run:</span>
+                                <span className="font-mono text-slate-700">
+                                  {src.lastRunAt ? new Date(src.lastRunAt).toLocaleTimeString() : 'Never'}
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                              <span className="text-[11px] text-slate-400 font-mono">
+                                Rate limit: {src.rateLimitPerMinute || 60}/min
+                              </span>
+
+                              <Button
+                                variant="outline"
+                                size="xs"
+                                disabled={syncingSource !== null}
+                                onClick={() => handleTriggerSync(src.name)}
+                                leftIcon={<RefreshCw className={`w-3.5 h-3.5 ${syncingSource === src.name ? 'animate-spin' : ''}`} />}
+                              >
+                                {syncingSource === src.name ? 'Running...' : 'Run Connector'}
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+
+              {/* Sync Jobs Execution Audit Table */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <Activity className="w-4 h-4 text-rose-600" />
+                    <span>Sync Job Execution Audit Ledger</span>
+                  </h3>
+                  <span className="text-xs text-slate-500 font-mono">
+                    Total Executions: {syncJobs.total || syncJobs.data?.length || 0}
+                  </span>
+                </div>
+
+                <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left text-xs">
+                      <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-mono text-[10px]">
+                        <tr>
+                          <th className="p-3.5">Job ID</th>
+                          <th className="p-3.5">Source</th>
+                          <th className="p-3.5">Trigger Type</th>
+                          <th className="p-3.5">Status</th>
+                          <th className="p-3.5 text-center">Processed</th>
+                          <th className="p-3.5 text-center">Created</th>
+                          <th className="p-3.5 text-center">Updated</th>
+                          <th className="p-3.5 text-center">Skipped</th>
+                          <th className="p-3.5 text-center">Errors</th>
+                          <th className="p-3.5">Duration</th>
+                          <th className="p-3.5 text-right">Started At</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {(!syncJobs.data || syncJobs.data.length === 0) ? (
+                          <tr>
+                            <td colSpan="11" className="p-8 text-center text-slate-400">
+                              No ingestion sync jobs executed yet. Trigger a sync above to populate the ledger.
+                            </td>
+                          </tr>
+                        ) : (
+                          syncJobs.data.map((job) => (
+                            <tr key={job._id || job.jobId} className="hover:bg-slate-50/80 transition-colors">
+                              <td className="p-3.5 font-mono text-slate-600 text-[11px]">
+                                {job.jobId ? job.jobId.slice(0, 16) : job._id?.slice(-8)}
+                              </td>
+                              <td className="p-3.5 font-bold text-slate-900">
+                                {job.source}
+                              </td>
+                              <td className="p-3.5 font-mono text-slate-500 text-[11px]">
+                                {job.trigger}
+                              </td>
+                              <td className="p-3.5">
+                                <Badge
+                                  variant={
+                                    job.status === 'COMPLETED'
+                                      ? 'success'
+                                      : job.status === 'FAILED'
+                                      ? 'danger'
+                                      : 'warning'
+                                  }
+                                  size="xs"
+                                  className="font-mono font-bold"
+                                >
+                                  {job.status}
+                                </Badge>
+                              </td>
+                              <td className="p-3.5 text-center font-mono font-bold text-slate-800">
+                                {job.itemsProcessed ?? 0}
+                              </td>
+                              <td className="p-3.5 text-center font-mono font-bold text-emerald-600">
+                                +{job.itemsCreated ?? 0}
+                              </td>
+                              <td className="p-3.5 text-center font-mono text-blue-600">
+                                {job.itemsUpdated ?? 0}
+                              </td>
+                              <td className="p-3.5 text-center font-mono text-slate-400">
+                                {job.itemsSkipped ?? 0}
+                              </td>
+                              <td className="p-3.5 text-center font-mono font-bold text-rose-600">
+                                {job.errorsCount ?? 0}
+                              </td>
+                              <td className="p-3.5 font-mono text-slate-500 text-[11px]">
+                                {job.durationMs ? `${job.durationMs}ms` : '—'}
+                              </td>
+                              <td className="p-3.5 text-right font-mono text-slate-400 text-[11px]">
+                                {new Date(job.startedAt || job.createdAt).toLocaleString()}
+                              </td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 

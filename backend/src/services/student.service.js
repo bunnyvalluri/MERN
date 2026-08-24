@@ -2,10 +2,7 @@ import mongoose from 'mongoose';
 import { StudentProfile } from '../models/StudentProfile.model.js';
 import { User, USER_ROLES } from '../models/User.model.js';
 import { ApiError } from '../utils/ApiError.js';
-import { DEMO_ACCOUNTS } from './auth.service.js';
 
-// In-memory profiles store for instant local execution
-const inMemoryProfiles = new Map();
 
 export const calculateProfileCompletion = (profile, _user = null) => {
   let score = 0;
@@ -157,54 +154,29 @@ function getInMemoryProfile(userId) {
 
 export class StudentService {
   /**
-   * Retrieves current student's full profile and completion metric (instantaneous).
+   * Retrieves current student's full profile and completion metric.
    */
   static async getOwnProfile(userId) {
     if (mongoose.connection.readyState !== 1) {
-      const profile = getInMemoryProfile(userId);
-      const user = Object.values(DEMO_ACCOUNTS).find((u) => u._id === userId.toString()) || {
-        _id: userId,
-        name: 'Jordan Lee',
-        email: 'student@internhub.dev',
-        role: 'STUDENT',
-        avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80',
-        isVerified: true,
-        isActive: true,
-      };
-      const completion = calculateProfileCompletion(profile, user);
-      return { user, profile, completion };
+      throw new ApiError(503, 'Database connection unavailable. Please try again shortly.');
     }
 
-    try {
-      let profile = await StudentProfile.findOne({ userId });
-      if (!profile) {
-        profile = await StudentProfile.create({
-          userId,
-          headline: '',
-          bio: '',
-          skills: [],
-        });
-      }
-
-      const user = await User.findById(userId).select(
-        '_id name email avatar role isVerified isActive'
-      );
-
-      const completion = calculateProfileCompletion(profile, user);
-      return { user, profile, completion };
-    } catch {
-      const profile = getInMemoryProfile(userId);
-      const user = {
-        _id: userId,
-        name: 'Jordan Lee',
-        email: 'student@internhub.dev',
-        role: 'STUDENT',
-        isVerified: true,
-        isActive: true,
-      };
-      const completion = calculateProfileCompletion(profile, user);
-      return { user, profile, completion };
+    let profile = await StudentProfile.findOne({ userId });
+    if (!profile) {
+      profile = await StudentProfile.create({
+        userId,
+        headline: '',
+        bio: '',
+        skills: [],
+      });
     }
+
+    const user = await User.findById(userId).select(
+      '_id name email avatar role isVerified isActive'
+    );
+
+    const completion = calculateProfileCompletion(profile, user);
+    return { user, profile, completion };
   }
 
   /**
@@ -212,32 +184,22 @@ export class StudentService {
    */
   static async updateOwnProfile(userId, updateData) {
     if (mongoose.connection.readyState !== 1) {
-      const profile = getInMemoryProfile(userId);
-      Object.assign(profile, updateData);
-      const completion = calculateProfileCompletion(profile);
-      return { profile, completion };
+      throw new ApiError(503, 'Database connection unavailable. Please try again shortly.');
     }
 
-    try {
-      let profile = await StudentProfile.findOne({ userId });
-      if (!profile) {
-        profile = new StudentProfile({ userId, ...updateData });
-      } else {
-        Object.assign(profile, updateData);
-      }
-      await profile.save();
-
-      const user = await User.findById(userId).select(
-        '_id name email avatar role isVerified isActive'
-      );
-      const completion = calculateProfileCompletion(profile, user);
-      return { user, profile, completion };
-    } catch {
-      const profile = getInMemoryProfile(userId);
+    let profile = await StudentProfile.findOne({ userId });
+    if (!profile) {
+      profile = new StudentProfile({ userId, ...updateData });
+    } else {
       Object.assign(profile, updateData);
-      const completion = calculateProfileCompletion(profile);
-      return { profile, completion };
     }
+    await profile.save();
+
+    const user = await User.findById(userId).select(
+      '_id name email avatar role isVerified isActive'
+    );
+    const completion = calculateProfileCompletion(profile, user);
+    return { user, profile, completion };
   }
 
   /**
@@ -245,42 +207,22 @@ export class StudentService {
    */
   static async updateResume(userId, { url, fileName, publicId }) {
     if (mongoose.connection.readyState !== 1) {
-      const profile = getInMemoryProfile(userId);
-      profile.resume = {
-        url,
-        fileName,
-        publicId: publicId || null,
-        uploadedAt: new Date().toISOString(),
-      };
-      const completion = calculateProfileCompletion(profile);
-      return { resume: profile.resume, completion };
+      throw new ApiError(503, 'Database connection unavailable. Please try again shortly.');
     }
 
-    try {
-      let profile = await StudentProfile.findOne({ userId });
-      if (!profile) profile = new StudentProfile({ userId });
+    let profile = await StudentProfile.findOne({ userId });
+    if (!profile) profile = new StudentProfile({ userId });
 
-      profile.resume = {
-        url,
-        fileName,
-        publicId: publicId || null,
-        uploadedAt: new Date(),
-      };
-      await profile.save();
+    profile.resume = {
+      url,
+      fileName,
+      publicId: publicId || null,
+      uploadedAt: new Date(),
+    };
+    await profile.save();
 
-      const completion = calculateProfileCompletion(profile);
-      return { resume: profile.resume, completion };
-    } catch {
-      const profile = getInMemoryProfile(userId);
-      profile.resume = {
-        url,
-        fileName,
-        publicId: publicId || null,
-        uploadedAt: new Date().toISOString(),
-      };
-      const completion = calculateProfileCompletion(profile);
-      return { resume: profile.resume, completion };
-    }
+    const completion = calculateProfileCompletion(profile);
+    return { resume: profile.resume, completion };
   }
 
   /**
@@ -288,27 +230,17 @@ export class StudentService {
    */
   static async deleteResume(userId) {
     if (mongoose.connection.readyState !== 1) {
-      const profile = getInMemoryProfile(userId);
-      profile.resume = { url: null, fileName: null, publicId: null, uploadedAt: null };
-      const completion = calculateProfileCompletion(profile);
-      return { completion };
+      throw new ApiError(503, 'Database connection unavailable. Please try again shortly.');
     }
 
-    try {
-      const profile = await StudentProfile.findOne({ userId });
-      if (!profile) throw new ApiError(404, 'Student profile not found.');
+    const profile = await StudentProfile.findOne({ userId });
+    if (!profile) throw new ApiError(404, 'Student profile not found.');
 
-      profile.resume = { url: null, fileName: null, publicId: null, uploadedAt: null };
-      await profile.save();
+    profile.resume = { url: null, fileName: null, publicId: null, uploadedAt: null };
+    await profile.save();
 
-      const completion = calculateProfileCompletion(profile);
-      return { completion };
-    } catch {
-      const profile = getInMemoryProfile(userId);
-      profile.resume = { url: null, fileName: null, publicId: null, uploadedAt: null };
-      const completion = calculateProfileCompletion(profile);
-      return { completion };
-    }
+    const completion = calculateProfileCompletion(profile);
+    return { completion };
   }
 
   /**
@@ -316,36 +248,20 @@ export class StudentService {
    */
   static async getPublicProfile(studentUserId) {
     if (mongoose.connection.readyState !== 1) {
-      const profile = getInMemoryProfile(studentUserId);
-      const user = Object.values(DEMO_ACCOUNTS).find((u) => u._id === studentUserId.toString()) || {
-        _id: studentUserId,
-        name: 'Jordan Lee',
-        email: 'student@internhub.dev',
-        role: 'STUDENT',
-        isVerified: true,
-      };
-      return { user, profile };
+      throw new ApiError(503, 'Database connection unavailable. Please try again shortly.');
     }
 
-    try {
-      const user = await User.findById(studentUserId).select(
-        '_id name email avatar role isVerified isActive'
-      );
-      if (!user || user.role !== USER_ROLES.STUDENT) {
-        throw new ApiError(404, 'Student profile not found.');
-      }
-      const profile = await StudentProfile.findOne({ userId: studentUserId });
-      if (!profile) {
-        throw new ApiError(404, 'Student profile details not available.');
-      }
-      return { user, profile };
-    } catch {
-      const profile = getInMemoryProfile(studentUserId);
-      return {
-        user: { _id: studentUserId, name: 'Jordan Lee', email: 'student@internhub.dev', role: 'STUDENT' },
-        profile,
-      };
+    const user = await User.findById(studentUserId).select(
+      '_id name email avatar role isVerified isActive'
+    );
+    if (!user || user.role !== USER_ROLES.STUDENT) {
+      throw new ApiError(404, 'Student profile not found.');
     }
+    const profile = await StudentProfile.findOne({ userId: studentUserId });
+    if (!profile) {
+      throw new ApiError(404, 'Student profile details not available.');
+    }
+    return { user, profile };
   }
 }
 

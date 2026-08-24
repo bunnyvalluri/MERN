@@ -11,6 +11,10 @@ import {
   getApplicationsHandler,
   getAuditLogsHandler,
   broadcastNotificationHandler,
+  getSourcesHandler,
+  updateSourceHandler,
+  getSyncJobsHandler,
+  triggerSyncJobHandler,
 } from '../controllers/admin.controller.js';
 import { authenticateUser } from '../middleware/auth.middleware.js';
 import { requireRole } from '../middleware/authorization.middleware.js';
@@ -36,5 +40,11 @@ router.delete('/internships/:id', deleteInternshipHandler);
 router.get('/applications', getApplicationsHandler);
 router.get('/audit-logs', getAuditLogsHandler);
 router.post('/broadcast', broadcastNotificationHandler);
+
+// ─── Ingestion & Source Monitoring Endpoints ────────────────────────────────
+router.get('/sources', getSourcesHandler);
+router.patch('/sources/:name', updateSourceHandler);
+router.get('/sync-jobs', getSyncJobsHandler);
+router.post('/sync-jobs/trigger', triggerSyncJobHandler);
 
 export default router;

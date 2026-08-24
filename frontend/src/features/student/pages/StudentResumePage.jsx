@@ -15,7 +15,6 @@ import {
   Modal,
 } from '../../../components/ui/index.js';
 import { notify } from '../../../utils/toast.js';
-import { REAL_INTERNSHIPS } from '../../internships/data/realInternships.js';
 import {
   FileText,
   UploadCloud,

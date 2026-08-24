@@ -8,6 +8,8 @@ const initialState = {
   internships: { data: [], page: 1, limit: 15, total: 0, totalPages: 1 },
   applications: { data: [], page: 1, limit: 15, total: 0, totalPages: 1 },
   auditLogs: { data: [], page: 1, limit: 20, total: 0, totalPages: 1 },
+  sources: [],
+  syncJobs: { data: [], page: 1, limit: 15, total: 0, totalPages: 1 },
   activeSection: 'dashboard',
   loading: false,
   actionLoading: false,
@@ -170,6 +172,48 @@ export const sendBroadcastNotification = createAsyncThunk(
   }
 );
 
+export const fetchAdminSources = createAsyncThunk(
+  'admin/fetchSources',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await adminService.getSources();
+      return response.data || [];
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message || 'Failed to fetch source connectors.'
+      );
+    }
+  }
+);
+
+export const fetchAdminSyncJobs = createAsyncThunk(
+  'admin/fetchSyncJobs',
+  async (params = {}, { rejectWithValue }) => {
+    try {
+      const response = await adminService.getSyncJobs(params);
+      return response.data || { data: [], page: 1, total: 0 };
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message || 'Failed to fetch sync jobs.'
+      );
+    }
+  }
+);
+
+export const triggerAdminSyncJob = createAsyncThunk(
+  'admin/triggerSyncJob',
+  async (sourceName = 'ALL', { rejectWithValue }) => {
+    try {
+      const response = await adminService.triggerSync(sourceName);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message || 'Failed to trigger sync job.'
+      );
+    }
+  }
+);
+
 // ─── Slice ───────────────────────────────────────────────────────────────────
 
 export const adminSlice = createSlice({
@@ -300,6 +344,18 @@ export const adminSlice = createSlice({
       .addCase(fetchAdminAuditLogs.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      });
+
+    // Source Connectors
+    builder
+      .addCase(fetchAdminSources.fulfilled, (state, action) => {
+        state.sources = action.payload || [];
+      });
+
+    // Sync Jobs Ledger
+    builder
+      .addCase(fetchAdminSyncJobs.fulfilled, (state, action) => {
+        state.syncJobs = action.payload || { data: [], page: 1, total: 0 };
       });
   },
 });

@@ -14,7 +14,6 @@ import {
   Badge,
   Skeleton,
 } from '../../../components/ui/index.js';
-import { REAL_INTERNSHIPS } from '../../internships/data/realInternships.js';
 import {
   Briefcase,
   Eye,

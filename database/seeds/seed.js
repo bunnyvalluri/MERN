@@ -11,6 +11,8 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '../../backend/.env') });
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
+import { connectDB, closeDB } from '../../backend/src/config/db.js';
+
 import {
   User,
   StudentProfile,
@@ -28,19 +30,20 @@ import {
 
 import { mockUsers, mockCompanies, mockInternships } from './data/mockData.js';
 
-const MONGODB_URI =
-  process.env.MONGODB_URI || 'mongodb://localhost:27017/internhub';
-
 console.log('=============================================================================');
 console.log('                 🌱 INTERNHUB ENTERPRISE DATABASE SEEDER                     ');
 console.log('=============================================================================\n');
 
 async function seedDatabase() {
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('❌ FATAL: Database seeding is strictly prohibited in PRODUCTION environment.');
+  }
+
   const startTime = Date.now();
 
   try {
-    console.log(`📡 Connecting to MongoDB: ${MONGODB_URI.replace(/\/\/.*@/, '//<credentials>@')}...`);
-    await mongoose.connect(MONGODB_URI);
+    console.log('📡 Connecting to MongoDB Atlas...');
+    await connectDB();
     console.log('  ✅ Connected successfully to MongoDB.\n');
 
     console.log('🧹 Clearing existing collections...');
@@ -282,7 +285,7 @@ async function seedDatabase() {
     console.log('  • Recruiter: sarah.jenkins@stripe.com / RecruiterPassword123!');
     console.log('  • Student:   jordan.lee@stanford.edu / StudentPassword123!');
     console.log('=============================================================================\n');
-
+    await closeDB();
     process.exit(0);
   } catch (error) {
     console.error('❌ Seeder Error:', error);

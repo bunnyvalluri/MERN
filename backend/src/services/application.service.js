@@ -9,50 +9,6 @@ import { Notification, NOTIFICATION_TYPES } from '../models/Notification.model.j
 import { NotificationService } from './notification.service.js';
 import { AuditLog } from '../models/AuditLog.model.js';
 import { ApiError } from '../utils/ApiError.js';
-import { REAL_INTERNSHIPS, REAL_COMPANIES } from '../data/realInternshipsData.js';
-
-const IN_MEMORY_SAMPLE_APPLICATIONS = [
-  {
-    _id: 'app_demo_01',
-    internshipId: REAL_INTERNSHIPS[0],
-    companyId: REAL_COMPANIES[0],
-    status: 'INTERVIEW',
-    appliedAt: '2026-08-18T14:30:00.000Z',
-    createdAt: '2026-08-18T14:30:00.000Z',
-    coverLetter: 'Excited to apply for the Core Payments SWE internship at Stripe...',
-    timeline: [
-      { status: 'APPLIED', note: 'Application submitted successfully', changedAt: '2026-08-18T14:30:00.000Z' },
-      { status: 'UNDER_REVIEW', note: 'Recruiter screened profile & resume', changedAt: '2026-08-19T09:00:00.000Z' },
-      { status: 'INTERVIEW', note: 'Technical screen scheduled for Friday', changedAt: '2026-08-20T11:00:00.000Z' },
-    ],
-  },
-  {
-    _id: 'app_demo_02',
-    internshipId: REAL_INTERNSHIPS[4],
-    companyId: REAL_COMPANIES[3],
-    status: 'UNDER_REVIEW',
-    appliedAt: '2026-08-19T16:00:00.000Z',
-    createdAt: '2026-08-19T16:00:00.000Z',
-    coverLetter: 'Passionate about AI safety evaluations and scalable oversight...',
-    timeline: [
-      { status: 'APPLIED', note: 'Application submitted', changedAt: '2026-08-19T16:00:00.000Z' },
-      { status: 'UNDER_REVIEW', note: 'Research team reviewing technical portfolio', changedAt: '2026-08-20T10:00:00.000Z' },
-    ],
-  },
-  {
-    _id: 'app_demo_03',
-    internshipId: REAL_INTERNSHIPS[7],
-    companyId: REAL_COMPANIES[9],
-    status: 'APPLIED',
-    appliedAt: '2026-08-21T18:00:00.000Z',
-    createdAt: '2026-08-21T18:00:00.000Z',
-    coverLetter: 'Fascinated by WebGL graphics pipelines and WebAssembly rendering...',
-    timeline: [
-      { status: 'APPLIED', note: 'Application submitted', changedAt: '2026-08-21T18:00:00.000Z' },
-    ],
-  },
-];
-
 export class ApplicationService {
   /**
    * Applies a student to an internship posting.
@@ -90,44 +46,7 @@ export class ApplicationService {
       });
     }
 
-    if (!internship) {
-      const slugKey = String(internshipId).replace(/^int_/, '').toLowerCase();
-      const matched = REAL_INTERNSHIPS.find(
-        (i) => i.slug === slugKey || i._id === internshipId || i.id === internshipId
-      );
-      if (matched) {
-        let comp = await Company.findOne({ slug: matched.companySlug || matched.companyId?.slug });
-        if (!comp) {
-          comp = await Company.create({
-            name: matched.company || matched.companyId?.name || 'Tech Company',
-            slug: matched.companySlug || matched.companyId?.slug || 'tech-company',
-            logo: matched.companyLogo || matched.companyId?.logo || '',
-            description: matched.companyId?.description || 'Enterprise Technology Leader',
-            website: matched.companyId?.website || 'https://internhub.dev',
-            industry: matched.companyId?.industry || 'Technology',
-            verified: true,
-          });
-        }
-        internship = await Internship.create({
-          companyId: comp._id,
-          title: matched.title,
-          slug: matched.slug || slugKey,
-          description: matched.description,
-          responsibilities: matched.responsibilities || [],
-          requirements: matched.requirements || [],
-          skills: matched.skills && matched.skills.length ? matched.skills : ['Software Engineering'],
-          location: matched.location || { city: 'San Francisco', state: 'CA', country: 'United States' },
-          remote: matched.remote || 'REMOTE',
-          type: matched.type || 'FULL_TIME',
-          duration: matched.duration || '3 Months',
-          stipend: matched.stipend || { amount: 8500, currency: 'USD', period: 'MONTH', isUnpaid: false },
-          openings: matched.openings || 5,
-          applicationDeadline: matched.applicationDeadline ? new Date(matched.applicationDeadline) : new Date(Date.now() + 60 * 24 * 3600 * 1000),
-          status: INTERNSHIP_STATUS.PUBLISHED,
-        });
-      }
-    }
-
+    // All internship data is now in MongoDB Atlas — if not found by ID or slug, it does not exist.
     if (!internship) {
       throw new ApiError(404, 'Internship opportunity not found.');
     }

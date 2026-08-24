@@ -3,13 +3,13 @@ import { ApiError } from '../utils/ApiError.js';
 import { verifyAccessToken } from '../utils/token.utils.js';
 import { User } from '../models/User.model.js';
 import { logger } from '../utils/logger.js';
-import { DEMO_ACCOUNTS } from '../services/auth.service.js';
 
 export * from './authorization.middleware.js';
 
 /**
  * Middleware to authenticate requests using JWT Access Tokens.
  * Expects header: Authorization: Bearer <token>
+ * All DEMO_ACCOUNTS and offline fallbacks removed — requires live Atlas connection.
  */
 export const authenticateUser = async (req, _res, next) => {
   const logCtx = {
@@ -57,24 +57,6 @@ export const authenticateUser = async (req, _res, next) => {
         });
         return next(new ApiError(401, 'Access token has expired. Please refresh your session.', [], 'TOKEN_EXPIRED'));
       }
-      // Demo token bypass for development
-      if (token.startsWith('demo_')) {
-        const role = token.includes('admin')
-          ? 'ADMIN'
-          : token.includes('recruiter')
-          ? 'RECRUITER'
-          : 'STUDENT';
-
-        req.user = {
-          _id: '64b1f2a3c9e77a0012345671',
-          name: 'Jordan Lee',
-          email: 'student@internhub.dev',
-          role,
-          isVerified: true,
-          isActive: true,
-        };
-        return next();
-      }
 
       logger.warn('Auth failure: invalid token signature', {
         event: 'AUTH_FAILURE',
@@ -84,27 +66,12 @@ export const authenticateUser = async (req, _res, next) => {
       return next(new ApiError(401, 'Invalid authentication token.', [], 'INVALID_TOKEN'));
     }
 
-    // 1. Check Demo Accounts first for 0ms latency
-    const demoUser = Object.values(DEMO_ACCOUNTS).find((u) => u._id === decoded.id || u.email === decoded.email);
-    if (demoUser) {
-      req.user = demoUser;
-      return next();
-    }
-
-    // 2. If MongoDB is offline, use decoded token payload directly
+    // If MongoDB is offline, return 503 cleanly
     if (mongoose.connection.readyState !== 1) {
-      req.user = {
-        _id: decoded.id || '64b1f2a3c9e77a0012345671',
-        name: decoded.name || 'Jordan Lee',
-        email: decoded.email || 'student@internhub.dev',
-        role: decoded.role || 'STUDENT',
-        isVerified: true,
-        isActive: true,
-      };
-      return next();
+      return next(new ApiError(503, 'Database connection unavailable. Please try again shortly.'));
     }
 
-    // 3. Query Database
+    // Query Database for live user record
     const user = await User.findById(decoded.id).select(
       '_id name email role avatar isActive isVerified'
     );
@@ -141,6 +108,7 @@ export const authenticateUser = async (req, _res, next) => {
 
 /**
  * Optional Authentication Middleware.
+ * Silently attaches user to req if valid token is present. Never blocks the request.
  */
 export const optionalAuth = async (req, _res, next) => {
   try {
@@ -150,12 +118,6 @@ export const optionalAuth = async (req, _res, next) => {
       if (token) {
         try {
           const decoded = verifyAccessToken(token);
-          const demoUser = Object.values(DEMO_ACCOUNTS).find((u) => u._id === decoded.id || u.email === decoded.email);
-          if (demoUser) {
-            req.user = demoUser;
-            return next();
-          }
-
           if (mongoose.connection.readyState === 1) {
             const user = await User.findById(decoded.id).select(
               '_id name email role avatar isActive isVerified'
@@ -163,17 +125,9 @@ export const optionalAuth = async (req, _res, next) => {
             if (user && user.isActive) {
               req.user = user;
             }
-          } else {
-            req.user = {
-              _id: decoded.id,
-              email: decoded.email,
-              role: decoded.role,
-              isActive: true,
-              isVerified: true,
-            };
           }
         } catch {
-          // Continue anonymously
+          // Continue anonymously — token invalid or expired
         }
       }
     }

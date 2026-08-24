@@ -14,38 +14,53 @@ import {
   ChevronDown,
   ChevronUp,
   X,
+  Code2,
+  Cpu,
+  GraduationCap,
 } from 'lucide-react';
 
 const COMMON_SKILLS = [
-  'React',
-  'TypeScript',
-  'JavaScript',
-  'Node.js',
+  'UI/UX Design',
+  'Figma',
+  'Design Systems',
+  'User Research',
+  'PostgreSQL',
+  'MongoDB',
+  'SQL',
+  'Vector DBs',
+  'Redis',
+  'ClickHouse',
+  'AI Agents',
+  'LangChain',
+  'LLMs',
   'Python',
   'PyTorch',
+  'CUDA',
+  'React',
+  'TypeScript',
+  'Node.js',
+  'Next.js',
+  'Tailwind CSS',
   'Go',
   'Rust',
-  'C++',
-  'Java',
-  'PostgreSQL',
   'Docker',
   'Kubernetes',
   'AWS',
+  'Flutter',
+  'React Native',
+  'Cypress',
+  'Distributed Systems',
+  'Cybersecurity',
   'GraphQL',
-  'Next.js',
-  'Swift',
-  'Tailwind CSS',
-  'MongoDB',
-  'Redis',
 ];
 
 const STIPEND_PRESETS = [
-  { label: 'Any', value: '' },
-  { label: '$4k+', value: '4000' },
-  { label: '$6k+', value: '6000' },
-  { label: '$8k+', value: '8000' },
-  { label: '$10k+', value: '10000' },
-  { label: '$12k+', value: '12000' },
+  { label: 'Any', value: '', sub: 'All roles' },
+  { label: '$6k+', value: '6000', sub: '$72k/yr' },
+  { label: '$8k+', value: '8000', sub: '$96k/yr' },
+  { label: '$10k+', value: '10000', sub: '$120k/yr' },
+  { label: '$12k+', value: '12000', sub: '$144k/yr' },
+  { label: '$15k+', value: '15000', sub: '$180k/yr' },
 ];
 
 export function InternshipFilters({
@@ -99,17 +114,17 @@ export function InternshipFilters({
   ].filter(Boolean).length;
 
   return (
-    <aside className="w-full space-y-6 bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/90 shadow-sm">
+    <aside className="w-full space-y-5 bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/90 shadow-sm">
       {/* Header */}
       <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-xl bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-xl bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600 shadow-2xs">
             <Filter className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-sm font-extrabold text-slate-900 tracking-tight">Filters</h3>
+            <h3 className="text-sm font-black text-slate-900 tracking-tight">Stream Filters</h3>
             {activeCount > 0 && (
-              <span className="text-[11px] text-brand-600 font-semibold">{activeCount} active</span>
+              <span className="text-[11px] text-brand-600 font-bold">{activeCount} active criteria</span>
             )}
           </div>
         </div>
@@ -119,7 +134,7 @@ export function InternshipFilters({
             <button
               type="button"
               onClick={onReset}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-bold text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
             >
               <RotateCcw className="w-3 h-3" />
               Reset
@@ -129,7 +144,7 @@ export function InternshipFilters({
             <button
               type="button"
               onClick={onClose}
-              className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+              className="lg:hidden p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
               aria-label="Close filters"
             >
               ✕
@@ -140,12 +155,12 @@ export function InternshipFilters({
 
       {/* Saved / Bookmarked Only Toggle */}
       {onToggleSavedOnly && (
-        <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
+        <div className="p-3 rounded-2xl bg-gradient-to-r from-brand-50/40 to-slate-50 border border-brand-100 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Bookmark className={`w-4 h-4 ${savedOnly ? 'fill-brand-600 text-brand-600' : 'text-slate-400'}`} />
-            <span className="text-xs font-bold text-slate-800">Saved Wishlist</span>
+            <span className="text-xs font-black text-slate-800">Saved Wishlist</span>
             {savedCount > 0 && (
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-brand-50 text-brand-700 border border-brand-200">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-brand-600 text-white shadow-2xs">
                 {savedCount}
               </span>
             )}
@@ -174,7 +189,7 @@ export function InternshipFilters({
         <div className="relative">
           <input
             type="text"
-            placeholder="e.g. AI, React, Python, Stripe"
+            placeholder="e.g. LLM, CUDA, Raft, React..."
             value={filters.search || ''}
             onChange={(e) => handleInputChange('search', e.target.value)}
             className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-medium text-slate-900 bg-slate-50/50 focus:bg-white focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none transition-all"
@@ -183,7 +198,7 @@ export function InternshipFilters({
             <button
               type="button"
               onClick={() => handleInputChange('search', '')}
-              className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600"
+              className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 cursor-pointer"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -194,24 +209,27 @@ export function InternshipFilters({
       {/* Domain / Category Dropdown */}
       <div className="space-y-1.5">
         <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-          <Briefcase className="w-3.5 h-3.5 text-brand-600" /> Domain & Category
+          <Briefcase className="w-3.5 h-3.5 text-brand-600" /> Technical Domain
         </label>
         <select
           value={filters.category || 'ALL'}
           onChange={(e) => handleInputChange('category', e.target.value)}
-          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-800 bg-slate-50/50 focus:bg-white focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none transition-all"
+          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-800 bg-slate-50/50 focus:bg-white focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none transition-all cursor-pointer"
         >
-          <option value="ALL">All Categories & Domains (100+)</option>
-          <option value="LIVE_FEED">🟢 Live Synced Feeds (24/7 Drops)</option>
-          <option value="TIER_1">🏢 Verified Tier-1 Tech & FAANG</option>
-          <option value="Artificial Intelligence">🤖 AI & Foundation Models</option>
-          <option value="Full-Stack Engineering">💻 Full-Stack Engineering</option>
-          <option value="Frontend Engineering">🎨 Frontend & UI/UX</option>
-          <option value="Backend Engineering">⚙️ Backend Systems</option>
-          <option value="DevOps & Infrastructure">☁️ Cloud & DevOps</option>
-          <option value="Systems Engineering">⚡ Systems & Kernel</option>
-          <option value="Security Engineering">🛡️ Cybersecurity</option>
-          <option value="Quantitative Trading">📈 Quantitative Trading</option>
+          <option value="ALL">All Technical Domains</option>
+          <option value="UI/UX">🎨 UI/UX & Product Design</option>
+          <option value="Database">🗄️ Database & Cloud Storage</option>
+          <option value="AI Automation">🤖 AI Automation & Agents</option>
+          <option value="Data Science">📈 Data Science & Machine Learning</option>
+          <option value="Full-Stack">💻 Full-Stack Engineering</option>
+          <option value="Frontend">🖥️ Frontend & UI Systems</option>
+          <option value="Backend">⚙️ Backend & Distributed Systems</option>
+          <option value="Cloud">☁️ DevOps & Cloud Infrastructure</option>
+          <option value="Cybersecurity">🛡️ Cybersecurity & Privacy</option>
+          <option value="Mobile">📱 Mobile App Engineering (iOS/Android)</option>
+          <option value="Product">💼 Product Management</option>
+          <option value="QA">✅ QA & Test Automation</option>
+          <option value="Web3">⚡ Blockchain & Web3</option>
         </select>
       </div>
 
@@ -232,7 +250,7 @@ export function InternshipFilters({
             <button
               type="button"
               onClick={() => handleInputChange('location', '')}
-              className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600"
+              className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 cursor-pointer"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -258,7 +276,7 @@ export function InternshipFilters({
                 key={item.id}
                 type="button"
                 onClick={() => handleInputChange('remote', item.id)}
-                className={`px-3 py-2 rounded-xl text-xs font-semibold border transition-all text-center shadow-2xs ${
+                className={`px-3 py-2 rounded-xl text-xs font-bold border transition-all text-center shadow-2xs cursor-pointer ${
                   isSelected
                     ? 'bg-slate-900 border-slate-900 text-white shadow-xs'
                     : 'bg-slate-50/60 border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-white'
@@ -275,10 +293,10 @@ export function InternshipFilters({
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-            <DollarSign className="w-3.5 h-3.5 text-emerald-600" /> Min Stipend
+            <DollarSign className="w-3.5 h-3.5 text-emerald-600" /> Min Compensation
           </label>
           {filters.minStipend && (
-            <span className="text-xs font-mono font-bold text-emerald-600">
+            <span className="text-xs font-mono font-black text-emerald-600">
               ${Number(filters.minStipend).toLocaleString()}/mo
             </span>
           )}
@@ -292,13 +310,16 @@ export function InternshipFilters({
                 key={preset.label}
                 type="button"
                 onClick={() => handleInputChange('minStipend', preset.value)}
-                className={`px-2.5 py-2 rounded-xl text-xs font-semibold border transition-all text-center ${
+                className={`p-2 rounded-xl text-xs font-bold border transition-all text-center cursor-pointer flex flex-col items-center justify-center ${
                   isSelected
                     ? 'bg-emerald-600 border-emerald-600 text-white shadow-xs'
-                    : 'bg-slate-50/60 border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-white'
+                    : 'bg-slate-50/60 border-slate-200 text-slate-700 hover:text-slate-900 hover:bg-white hover:border-slate-300'
                 }`}
               >
-                {preset.label}
+                <span>{preset.label}</span>
+                <span className={`text-[9px] font-mono ${isSelected ? 'text-emerald-100' : 'text-slate-400'}`}>
+                  {preset.sub}
+                </span>
               </button>
             );
           })}
@@ -313,7 +334,7 @@ export function InternshipFilters({
         <select
           value={filters.type || 'ALL'}
           onChange={(e) => handleInputChange('type', e.target.value)}
-          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-800 bg-slate-50/50 focus:bg-white focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none transition-all"
+          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-800 bg-slate-50/50 focus:bg-white focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none transition-all cursor-pointer"
         >
           <option value="ALL">All Commitments</option>
           <option value="FULL_TIME">Full-Time (Summer 2026 / Co-op)</option>
@@ -324,12 +345,12 @@ export function InternshipFilters({
       {/* Date Posted */}
       <div className="space-y-1.5">
         <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-          <Sparkles className="w-3.5 h-3.5 text-brand-600" /> Publication Date
+          <Sparkles className="w-3.5 h-3.5 text-brand-600" /> Publication Recency
         </label>
         <select
           value={filters.datePosted || 'all'}
           onChange={(e) => handleInputChange('datePosted', e.target.value)}
-          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-800 bg-slate-50/50 focus:bg-white focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none transition-all"
+          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-800 bg-slate-50/50 focus:bg-white focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none transition-all cursor-pointer"
         >
           <option value="all">Any time (24/7 Live Stream)</option>
           <option value="24h">Past 24 hours</option>
@@ -342,26 +363,26 @@ export function InternshipFilters({
       {/* Popular Skills Multi-Select with Quick Filter */}
       <div className="space-y-2.5 pt-3 border-t border-slate-100">
         <div className="flex items-center justify-between">
-          <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
-            Tech Stack & Skills
+          <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+            <Code2 className="w-3.5 h-3.5 text-brand-600" /> Core Tech Stack
           </label>
           {selectedSkillsList.length > 0 && (
             <button
               type="button"
               onClick={() => onFilterChange({ skills: '' })}
-              className="text-[11px] text-slate-400 hover:text-slate-700 font-medium underline"
+              className="text-[11px] text-brand-600 hover:text-brand-800 font-bold underline cursor-pointer"
             >
-              Clear
+              Clear ({selectedSkillsList.length})
             </button>
           )}
         </div>
 
         <input
           type="text"
-          placeholder="Filter skills..."
+          placeholder="Filter skills (e.g. CUDA, Python)..."
           value={skillSearch}
           onChange={(e) => setSkillSearch(e.target.value)}
-          className="w-full px-3 py-1.5 rounded-xl border border-slate-200 text-xs text-slate-800 bg-slate-50 focus:bg-white focus:border-brand-500 focus:outline-none"
+          className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-800 bg-slate-50 focus:bg-white focus:border-brand-500 focus:outline-none"
         />
 
         <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto pr-1">
@@ -372,13 +393,13 @@ export function InternshipFilters({
                 key={skill}
                 type="button"
                 onClick={() => handleSkillToggle(skill)}
-                className={`text-[11px] px-2.5 py-1.5 rounded-xl border font-mono transition-all duration-150 ${
+                className={`text-[11px] px-2.5 py-1.5 rounded-xl border font-mono transition-all duration-150 cursor-pointer ${
                   isSelected
-                    ? 'bg-brand-50 border-brand-300 text-brand-700 font-bold shadow-2xs'
+                    ? 'bg-brand-600 border-brand-700 text-white font-bold shadow-2xs'
                     : 'bg-slate-50 border-slate-200/80 text-slate-600 hover:text-slate-900 hover:border-slate-300 hover:bg-white'
                 }`}
               >
-                {isSelected && <Check className="w-3 h-3 inline mr-1 text-brand-600" />}
+                {isSelected && <Check className="w-3 h-3 inline mr-1 text-white" />}
                 {skill}
               </button>
             );
@@ -390,3 +411,4 @@ export function InternshipFilters({
 }
 
 export default InternshipFilters;
+

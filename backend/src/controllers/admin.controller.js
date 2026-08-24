@@ -1,4 +1,7 @@
 import { AdminService } from '../services/admin.service.js';
+import { IngestionService } from '../services/ingestion.service.js';
+import { sourceRegistry } from '../connectors/SourceRegistry.js';
+import { SyncJob, SYNC_JOB_TYPE } from '../models/SyncJob.model.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { logger } from '../utils/logger.js';
@@ -170,6 +173,90 @@ export const broadcastNotificationHandler = asyncHandler(async (req, res) => {
   );
 });
 
+// ─── Source Health & Ingestion Management Handlers ───────────────────────────
+
+export const getSourcesHandler = asyncHandler(async (req, res) => {
+  const metrics = sourceRegistry.getMetrics();
+  res.status(200).json(
+    new ApiResponse(200, 'Source connector metrics retrieved successfully.', metrics)
+  );
+});
+
+export const updateSourceHandler = asyncHandler(async (req, res) => {
+  const { name } = req.params;
+  const { enabled } = req.body;
+  const success = sourceRegistry.setSourceEnabled(name, enabled);
+
+  if (!success) {
+    return res.status(404).json(
+      new ApiResponse(404, `Source connector "${name}" not found.`)
+    );
+  }
+
+  res.status(200).json(
+    new ApiResponse(200, `Source "${name}" updated successfully.`, {
+      name,
+      enabled,
+    })
+  );
+});
+
+export const getSyncJobsHandler = asyncHandler(async (req, res) => {
+  const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+  const limit = Math.min(50, Math.max(1, parseInt(req.query.limit, 10) || 20));
+  const skip = (page - 1) * limit;
+
+  const [jobs, total] = await Promise.all([
+    SyncJob.find({})
+      .sort({ startedAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean(),
+    SyncJob.countDocuments({}),
+  ]);
+
+  res.status(200).json(
+    new ApiResponse(200, 'Sync jobs retrieved successfully.', {
+      data: jobs,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit) || 1,
+      },
+    })
+  );
+});
+
+export const triggerSyncJobHandler = asyncHandler(async (req, res) => {
+  const { sourceName } = req.body;
+  let results;
+
+  if (sourceName) {
+    const connector = sourceRegistry.getConnector(sourceName);
+    if (!connector) {
+      return res.status(404).json(
+        new ApiResponse(404, `Source connector "${sourceName}" not found.`)
+      );
+    }
+    const result = await IngestionService.ingestFromConnector(
+      connector,
+      SYNC_JOB_TYPE.MANUAL_SYNC,
+      req.user._id
+    );
+    results = [result];
+  } else {
+    results = await IngestionService.syncAllSources(
+      SYNC_JOB_TYPE.MANUAL_SYNC,
+      req.user._id
+    );
+  }
+
+  res.status(200).json(
+    new ApiResponse(200, 'Manual sync triggered and executed successfully.', results)
+  );
+});
+
 export default {
   getDashboardMetricsHandler,
   getUsersHandler,
@@ -182,4 +269,8 @@ export default {
   getApplicationsHandler,
   getAuditLogsHandler,
   broadcastNotificationHandler,
+  getSourcesHandler,
+  updateSourceHandler,
+  getSyncJobsHandler,
+  triggerSyncJobHandler,
 };

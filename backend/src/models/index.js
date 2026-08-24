@@ -9,3 +9,6 @@ export * from './SavedInternship.model.js';
 export * from './Interview.model.js';
 export * from './Document.model.js';
 export * from './AuditLog.model.js';
+export * from './SyncJob.model.js';
+export * from './DataSource.model.js';
+export * from './AnalyticsEvent.model.js';

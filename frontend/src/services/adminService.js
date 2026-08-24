@@ -55,6 +55,21 @@ export const adminService = {
     const response = await apiClient.post('/admin/broadcast', payload);
     return response.data;
   },
+
+  getSources: async () => {
+    const response = await apiClient.get('/admin/sources');
+    return response.data;
+  },
+
+  getSyncJobs: async (params = {}) => {
+    const response = await apiClient.get('/admin/sync-jobs', { params });
+    return response.data;
+  },
+
+  triggerSync: async (source = 'ALL') => {
+    const response = await apiClient.post('/admin/sync-jobs/trigger', { source });
+    return response.data;
+  },
 };
 
 export default adminService;

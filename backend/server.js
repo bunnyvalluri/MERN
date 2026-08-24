@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import app from './src/app.js';
 import { connectDB } from './src/config/db.js';
+import { schedulerService } from './src/services/scheduler.service.js';
 import { logger } from './src/utils/logger.js';
 
 const PORT = process.env.PORT || 5000;
@@ -9,19 +10,26 @@ const PORT = process.env.PORT || 5000;
  * Boot sequence:
  * 1. Connect to MongoDB Atlas
  * 2. Start Express HTTP server
- * 3. Register graceful shutdown handlers
+ * 3. Start Background Ingestion & Freshness Scheduler
+ * 4. Register graceful shutdown handlers
  */
 const startServer = async () => {
   await connectDB();
 
+  // Start background continuous synchronization scheduler
+  schedulerService.start();
+
   const server = app.listen(PORT, () => {
     logger.info(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
     logger.info(`Health: http://localhost:${PORT}/api/v1/health`);
+    logger.info(`Live Stream: http://localhost:${PORT}/api/v1/internships/stream`);
   });
 
   // ─── Graceful shutdown ───────────────────────────────────────────────────
   const shutdown = (signal) => {
     logger.warn(`${signal} received. Shutting down gracefully...`);
+    schedulerService.stop();
+
     server.close(() => {
       logger.info('HTTP server closed.');
       process.exit(0);

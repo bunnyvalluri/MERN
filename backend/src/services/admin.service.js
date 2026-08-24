@@ -6,140 +6,23 @@ import { Application, APPLICATION_STATUS } from '../models/Application.model.js'
 import { AuditLog } from '../models/AuditLog.model.js';
 import { Notification, NOTIFICATION_TYPES } from '../models/Notification.model.js';
 import { ApiError } from '../utils/ApiError.js';
-import { REAL_COMPANIES, REAL_INTERNSHIPS } from '../data/realInternshipsData.js';
 
-// Fallback in-memory state for zero-latency local execution
-const DEMO_ADMIN_USERS = [
-  {
-    _id: '64b1f2a3c9e77a0012345670',
-    name: 'Admin Supervisor',
-    email: 'admin@internhub.dev',
-    role: 'ADMIN',
-    isActive: true,
-    isVerified: true,
-    createdAt: '2026-01-01T00:00:00.000Z',
-  },
-  {
-    _id: '64b1f2a3c9e77a0012345671',
-    name: 'Jordan Lee',
-    email: 'student@internhub.dev',
-    role: 'STUDENT',
-    isActive: true,
-    isVerified: true,
-    createdAt: '2026-02-10T10:00:00.000Z',
-  },
-  {
-    _id: '64b1f2a3c9e77a0012345672',
-    name: 'Elena Rostova',
-    email: 'recruiter@internhub.dev',
-    role: 'RECRUITER',
-    isActive: true,
-    isVerified: true,
-    createdAt: '2026-01-15T12:00:00.000Z',
-  },
-  {
-    _id: 'usr_sarah_04',
-    name: 'Sarah Chen',
-    email: 'sarah.chen@berkeley.edu',
-    role: 'STUDENT',
-    isActive: true,
-    isVerified: true,
-    createdAt: '2026-03-01T08:30:00.000Z',
-  },
-  {
-    _id: 'usr_alex_05',
-    name: 'Alex Rivera',
-    email: 'alex.rivera@mit.edu',
-    role: 'STUDENT',
-    isActive: true,
-    isVerified: true,
-    createdAt: '2026-03-12T14:15:00.000Z',
-  },
-  {
-    _id: 'usr_marcus_06',
-    name: 'Marcus Vance',
-    email: 'recruiter@stripe.com',
-    role: 'RECRUITER',
-    isActive: true,
-    isVerified: true,
-    createdAt: '2026-02-20T09:00:00.000Z',
-  },
-];
-
-const DEMO_AUDIT_LOGS = [
-  {
-    _id: 'log_01',
-    userId: { _id: '64b1f2a3c9e77a0012345670', name: 'Admin Supervisor', email: 'admin@internhub.dev', role: 'ADMIN' },
-    action: 'PLATFORM_BOOTSTRAP',
-    resource: 'System',
-    resourceId: 'cluster_primary',
-    createdAt: '2026-08-23T22:00:00.000Z',
-  },
-  {
-    _id: 'log_02',
-    userId: { _id: '64b1f2a3c9e77a0012345672', name: 'Elena Rostova', email: 'recruiter@internhub.dev', role: 'RECRUITER' },
-    action: 'INTERVIEW_SCHEDULED',
-    resource: 'Interview',
-    resourceId: 'intv_demo_01',
-    createdAt: '2026-08-23T20:15:00.000Z',
-  },
-  {
-    _id: 'log_03',
-    userId: { _id: '64b1f2a3c9e77a0012345671', name: 'Jordan Lee', email: 'student@internhub.dev', role: 'STUDENT' },
-    action: 'APPLICATION_SUBMITTED',
-    resource: 'Application',
-    resourceId: 'app_demo_01',
-    createdAt: '2026-08-23T18:40:00.000Z',
-  },
-  {
-    _id: 'log_04',
-    userId: { _id: '64b1f2a3c9e77a0012345670', name: 'Admin Supervisor', email: 'admin@internhub.dev', role: 'ADMIN' },
-    action: 'COMPANY_VERIFIED',
-    resource: 'Company',
-    resourceId: 'comp_stripe_01',
-    createdAt: '2026-08-23T15:10:00.000Z',
-  },
-];
+/**
+ * Throws a 503 if MongoDB Atlas is not connected.
+ * Replaces all the previous offline fallback branches that caused ReferenceErrors.
+ */
+function requireDB() {
+  if (mongoose.connection.readyState !== 1) {
+    throw new ApiError(503, 'Database connection unavailable. Please try again shortly.');
+  }
+}
 
 export class AdminService {
   /**
    * 1. Get Platform Dashboard Metrics.
    */
   static async getDashboardMetrics() {
-    if (mongoose.connection.readyState !== 1) {
-      return {
-        metrics: {
-          totalUsers: 482,
-          activeUsers: 468,
-          studentsCount: 384,
-          recruitersCount: 92,
-          companiesCount: REAL_COMPANIES.length,
-          internshipsCount: REAL_INTERNSHIPS.length,
-          applicationsCount: 142,
-          pendingApprovals: 1,
-          unverifiedCompanies: 1,
-          draftInternships: 0,
-        },
-        charts: {
-          userGrowth: [
-            { label: 'Mar 26', count: 48 },
-            { label: 'Apr 26', count: 96 },
-            { label: 'May 26', count: 184 },
-            { label: 'Jun 26', count: 290 },
-            { label: 'Jul 26', count: 395 },
-            { label: 'Aug 26', count: 482 },
-          ],
-          statusDistribution: [
-            { status: 'SUBMITTED', count: 42 },
-            { status: 'UNDER_REVIEW', count: 54 },
-            { status: 'INTERVIEW', count: 28 },
-            { status: 'OFFERED', count: 12 },
-            { status: 'REJECTED', count: 6 },
-          ],
-        },
-        recentLogs: DEMO_AUDIT_LOGS,
-      };
-    }
+    requireDB();
 
     const [
       totalUsers,
@@ -248,29 +131,11 @@ export class AdminService {
    * 2. List Users with Search, Filters, and Pagination.
    */
   static async getUsers(queryParams = {}) {
+    requireDB();
+
     const page = Math.max(1, parseInt(queryParams.page, 10) || 1);
     const limit = Math.min(100, Math.max(1, parseInt(queryParams.limit, 10) || 15));
     const skip = (page - 1) * limit;
-
-    if (mongoose.connection.readyState !== 1) {
-      let filtered = [...DEMO_ADMIN_USERS];
-      if (queryParams.role && queryParams.role !== 'ALL') {
-        filtered = filtered.filter((u) => u.role === queryParams.role);
-      }
-      if (queryParams.search) {
-        const q = queryParams.search.toLowerCase();
-        filtered = filtered.filter(
-          (u) => u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q)
-        );
-      }
-      return {
-        data: filtered.slice(skip, skip + limit),
-        page,
-        limit,
-        total: filtered.length,
-        totalPages: Math.ceil(filtered.length / limit) || 1,
-      };
-    }
 
     const filter = {};
     if (queryParams.role && queryParams.role !== 'ALL') {
@@ -310,18 +175,10 @@ export class AdminService {
    * 3. Activate or Deactivate User Account.
    */
   static async updateUserStatus(userId, { isActive }, adminUser, auditInfo = {}) {
+    requireDB();
+
     if (userId.toString() === adminUser._id.toString() && !isActive) {
       throw new ApiError(400, 'You cannot deactivate your own administrative account.');
-    }
-
-    if (mongoose.connection.readyState !== 1) {
-      const u = DEMO_ADMIN_USERS.find((item) => item._id === userId.toString());
-      if (u) u.isActive = Boolean(isActive);
-      return {
-        success: true,
-        message: `User status was successfully updated.`,
-        user: u || { _id: userId, isActive },
-      };
     }
 
     const user = await User.findById(userId);
@@ -361,24 +218,11 @@ export class AdminService {
    * 4. List Companies with Owner and Internship counts.
    */
   static async getCompanies(queryParams = {}) {
+    requireDB();
+
     const page = Math.max(1, parseInt(queryParams.page, 10) || 1);
     const limit = Math.min(100, Math.max(1, parseInt(queryParams.limit, 10) || 15));
     const skip = (page - 1) * limit;
-
-    if (mongoose.connection.readyState !== 1) {
-      let filtered = [...REAL_COMPANIES];
-      if (queryParams.search) {
-        const q = queryParams.search.toLowerCase();
-        filtered = filtered.filter((c) => c.name.toLowerCase().includes(q));
-      }
-      return {
-        data: filtered.slice(skip, skip + limit),
-        page,
-        limit,
-        total: filtered.length,
-        totalPages: Math.ceil(filtered.length / limit) || 1,
-      };
-    }
 
     const filter = {};
     if (queryParams.verified !== undefined && queryParams.verified !== 'ALL') {
@@ -427,15 +271,7 @@ export class AdminService {
    * 5. Verify or Suspend Company.
    */
   static async verifyCompany(companyId, { verified }, adminUser, auditInfo = {}) {
-    if (mongoose.connection.readyState !== 1) {
-      const c = REAL_COMPANIES.find((item) => item._id === companyId || item.id === companyId);
-      if (c) c.verified = Boolean(verified);
-      return {
-        success: true,
-        message: `Company verification status updated to ${verified ? 'Verified' : 'Unverified'}.`,
-        company: c || { _id: companyId, verified },
-      };
-    }
+    requireDB();
 
     const company = await Company.findById(companyId);
     if (!company) {
@@ -470,24 +306,11 @@ export class AdminService {
    * 6. List all Internships.
    */
   static async getInternships(queryParams = {}) {
+    requireDB();
+
     const page = Math.max(1, parseInt(queryParams.page, 10) || 1);
     const limit = Math.min(100, Math.max(1, parseInt(queryParams.limit, 10) || 15));
     const skip = (page - 1) * limit;
-
-    if (mongoose.connection.readyState !== 1) {
-      let filtered = [...REAL_INTERNSHIPS];
-      if (queryParams.search) {
-        const q = queryParams.search.toLowerCase();
-        filtered = filtered.filter((i) => i.title.toLowerCase().includes(q));
-      }
-      return {
-        data: filtered.slice(skip, skip + limit),
-        page,
-        limit,
-        total: filtered.length,
-        totalPages: Math.ceil(filtered.length / limit) || 1,
-      };
-    }
 
     const filter = {};
     if (queryParams.status && queryParams.status !== 'ALL') {
@@ -501,7 +324,7 @@ export class AdminService {
     }
     if (queryParams.search) {
       const searchRegex = new RegExp(queryParams.search.trim(), 'i');
-      filter.$or = [{ title: searchRegex }, { location: searchRegex }];
+      filter.$or = [{ title: searchRegex }, { companyName: searchRegex }];
     }
 
     const [internships, total] = await Promise.all([
@@ -528,18 +351,10 @@ export class AdminService {
    * 7. Moderate Internship Status.
    */
   static async updateInternshipStatus(internshipId, { status }, adminUser, auditInfo = {}) {
+    requireDB();
+
     if (!Object.values(INTERNSHIP_STATUS).includes(status)) {
       throw new ApiError(400, 'Invalid internship status specified.');
-    }
-
-    if (mongoose.connection.readyState !== 1) {
-      const i = REAL_INTERNSHIPS.find((item) => item._id === internshipId || item.id === internshipId);
-      if (i) i.status = status;
-      return {
-        success: true,
-        message: `Internship status updated to ${status}.`,
-        internship: i || { _id: internshipId, status },
-      };
     }
 
     const internship = await Internship.findById(internshipId);
@@ -576,11 +391,7 @@ export class AdminService {
    * 8. Delete internship.
    */
   static async deleteInternship(internshipId, adminUser, auditInfo = {}) {
-    if (mongoose.connection.readyState !== 1) {
-      const idx = REAL_INTERNSHIPS.findIndex((item) => item._id === internshipId || item.id === internshipId);
-      if (idx !== -1) REAL_INTERNSHIPS.splice(idx, 1);
-      return { success: true, message: 'Internship deleted successfully.' };
-    }
+    requireDB();
 
     const internship = await Internship.findById(internshipId);
     if (!internship) {
@@ -612,18 +423,10 @@ export class AdminService {
    * 9. List Applications.
    */
   static async getApplications(queryParams = {}) {
+    requireDB();
+
     const page = Math.max(1, parseInt(queryParams.page, 10) || 1);
     const limit = Math.min(100, Math.max(1, parseInt(queryParams.limit, 10) || 15));
-
-    if (mongoose.connection.readyState !== 1) {
-      return {
-        data: [],
-        page,
-        limit,
-        total: 0,
-        totalPages: 1,
-      };
-    }
 
     const filter = {};
     if (queryParams.status && queryParams.status !== 'ALL') {
@@ -655,18 +458,10 @@ export class AdminService {
    * 10. List Audit Logs.
    */
   static async getAuditLogs(queryParams = {}) {
+    requireDB();
+
     const page = Math.max(1, parseInt(queryParams.page, 10) || 1);
     const limit = Math.min(100, Math.max(1, parseInt(queryParams.limit, 10) || 20));
-
-    if (mongoose.connection.readyState !== 1) {
-      return {
-        data: DEMO_AUDIT_LOGS,
-        page,
-        limit,
-        total: DEMO_AUDIT_LOGS.length,
-        totalPages: 1,
-      };
-    }
 
     const filter = {};
     if (queryParams.action && queryParams.action !== 'ALL') {
@@ -702,16 +497,10 @@ export class AdminService {
    * 11. Broadcast System Notification.
    */
   static async broadcastNotification({ targetRole = 'ALL', title, message, link = '' }, adminUser, auditInfo = {}) {
+    requireDB();
+
     if (!title || !message) {
       throw new ApiError(400, 'Notification title and message are required.');
-    }
-
-    if (mongoose.connection.readyState !== 1) {
-      return {
-        success: true,
-        message: `Broadcast delivered to all active users.`,
-        recipientCount: 482,
-      };
     }
 
     const userFilter = { isActive: true };
