@@ -111,7 +111,7 @@ export function Navbar() {
                 </Button>
               </Link>
               <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
-                <Avatar name={user?.name || 'User'} size="sm" />
+                <Avatar src={user?.avatar} name={user?.name || 'User'} size="sm" />
                 <button
                   type="button"
                   onClick={() => dispatch(logoutUser())}

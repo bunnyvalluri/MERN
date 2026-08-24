@@ -55,7 +55,7 @@ export function StudentNav() {
             <NotificationBell />
 
             <div className="flex items-center gap-2.5 pl-2 border-l border-slate-200">
-              <Avatar name={user?.name || 'Student'} size="sm" />
+              <Avatar src={user?.avatar} name={user?.name || 'Student'} size="sm" />
               <div className="hidden sm:block text-left">
                 <p className="text-xs font-semibold text-slate-900 leading-tight">{user?.name}</p>
                 <p className="text-[11px] text-slate-500 leading-tight truncate max-w-[140px]">

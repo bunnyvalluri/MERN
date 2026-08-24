@@ -202,7 +202,7 @@ export function RecruiterSidebar({
           <div className="p-2.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex items-center justify-between gap-2.5">
             <div className="flex items-center gap-2.5 min-w-0">
               <div className="relative shrink-0">
-                <Avatar name={user?.name || 'Recruiter'} size="xs" />
+                <Avatar src={user?.avatar} name={user?.name || 'Recruiter'} size="xs" />
                 <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white" />
               </div>
               <div className="min-w-0">
@@ -217,7 +217,7 @@ export function RecruiterSidebar({
           </div>
         ) : (
           <div className="flex justify-center py-1">
-            <Avatar name={user?.name || 'Recruiter'} size="xs" />
+            <Avatar src={user?.avatar} name={user?.name || 'Recruiter'} size="xs" />
           </div>
         )}
       </div>

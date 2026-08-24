@@ -132,7 +132,7 @@ export function AdminSidebar({
         {!collapsed ? (
           <div className="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-200">
             <div className="flex items-center gap-2.5 min-w-0">
-              <Avatar name={user?.name || 'Admin'} size="sm" />
+              <Avatar src={user?.avatar} name={user?.name || 'Admin'} size="sm" />
               <div className="min-w-0">
                 <p className="text-xs font-bold text-slate-900 truncate">
                   {user?.name || 'Administrator'}
@@ -152,7 +152,7 @@ export function AdminSidebar({
           </div>
         ) : (
           <div className="flex flex-col items-center gap-2">
-            <Avatar name={user?.name || 'Admin'} size="sm" />
+            <Avatar src={user?.avatar} name={user?.name || 'Admin'} size="sm" />
             <button
               onClick={() => dispatch(logoutUser())}
               className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors"

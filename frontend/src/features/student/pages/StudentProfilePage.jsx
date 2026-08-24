@@ -336,7 +336,8 @@ export function StudentProfilePage() {
             <div className="flex items-center gap-5">
               <div className="relative">
                 <Avatar
-                  name={user?.name || 'Jordan Lee'}
+                  src={formData.avatar || profile?.avatar || user?.avatar}
+                  name={user?.name || formData.fullName || 'Student'}
                   size="2xl"
                   className="w-20 h-20 sm:w-24 sm:h-24 shadow-md ring-4 ring-white"
                 />
