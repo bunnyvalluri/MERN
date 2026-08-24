@@ -123,7 +123,7 @@ export function RegisterPage() {
       return;
     }
     if (!isPasswordValid) {
-      notify.error('Password does not meet requirements.');
+      notify.error('Password does not meet security requirements.');
       return;
     }
     if (!formData.agreedToTerms) {
@@ -131,9 +131,18 @@ export function RegisterPage() {
       return;
     }
     const res = await dispatch(
-      registerUser({ name: formData.name, email: formData.email, password: formData.password, role: formData.role })
+      registerUser({
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        password: formData.password,
+        role: formData.role,
+      })
     );
-    if (registerUser.fulfilled.match(res)) notify.success('Account created! Welcome to InternHub 🎉');
+    if (registerUser.fulfilled.match(res)) {
+      notify.success('Account created successfully in MongoDB Atlas! Welcome to InternHub 🎉');
+    } else {
+      notify.error(res.payload || 'Registration failed. Please check your details.');
+    }
   };
 
   const panelBg = isStudent

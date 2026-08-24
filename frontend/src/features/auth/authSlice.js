@@ -64,27 +64,16 @@ const initialState = {
  */
 export const registerUser = createAsyncThunk(
   'auth/register',
-  async ({ name, email, password, role }) => {
+  async ({ name, email, password, role }, { rejectWithValue }) => {
     try {
-      const data = await authService.register({ name, email, password, role });
-      return data;
-    } catch {
-      // Offline / fallback registration support
-      const fallbackUser = {
-        _id: `usr_${Date.now()}`,
-        name: name.trim(),
-        email: email.toLowerCase().trim(),
-        role: role || 'STUDENT',
-        isVerified: true,
-        isActive: true,
-      };
-      return {
-        success: true,
-        data: {
-          user: fallbackUser,
-          accessToken: `demo_token_${fallbackUser.role}_${Date.now()}`,
-        },
-      };
+      const response = await authService.register({ name, email, password, role });
+      return response;
+    } catch (err) {
+      const message =
+        err.response?.data?.message ||
+        err.message ||
+        'Registration failed. Please check your details and try again.';
+      return rejectWithValue(message);
     }
   }
 );
