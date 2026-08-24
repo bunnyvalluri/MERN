@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchStudentProfile, deleteStudentResume } from '../studentSlice.js';
 import uploadService from '../../../services/uploadService.js';
 import StudentNav from '../components/StudentNav.jsx';
+import InternshipQuickApplyModal from '../../internships/components/InternshipQuickApplyModal.jsx';
 import {
   Card,
   CardHeader,
@@ -108,6 +109,8 @@ export function StudentResumePage() {
   const [dragOver, setDragOver] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [activeTab, setActiveTab] = useState('preview'); // 'preview' | 'signals' | 'ats' | 'tailor'
+  const [applyModalOpen, setApplyModalOpen] = useState(false);
+  const [applyInternship, setApplyInternship] = useState(null);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -265,22 +268,28 @@ export function StudentResumePage() {
         {/* Version Switcher Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3 rounded-2xl border border-slate-200 shadow-xs">
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
-            <span className="text-xs font-bold text-slate-500 pl-2 shrink-0">Version Vault:</span>
+            <span className="text-xs font-bold text-slate-500 pl-2 shrink-0 font-mono uppercase tracking-wider">Versions:</span>
             {RESUME_VERSIONS.map((ver) => (
               <button
                 key={ver.id}
                 type="button"
                 onClick={() => setActiveResumeId(ver.id)}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-2 ${
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-2 cursor-pointer ${
                   activeResumeId === ver.id
-                    ? 'bg-slate-900 text-white shadow-xs'
-                    : 'bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                    ? 'bg-brand-50 border border-brand-300 text-brand-700 shadow-2xs ring-2 ring-brand-500/10'
+                    : 'bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 hover:border-slate-300'
                 }`}
               >
-                <FileText className="w-3.5 h-3.5" />
+                <FileText className={`w-3.5 h-3.5 ${activeResumeId === ver.id ? 'text-brand-600' : 'text-slate-400'}`} />
                 <span>{ver.title}</span>
                 {ver.isDefault && (
-                  <span className="px-1.5 py-0.5 rounded-full text-[9px] bg-brand-500 text-white font-mono">
+                  <span
+                    className={`px-1.5 py-0.5 rounded-full text-[9px] font-mono font-bold ${
+                      activeResumeId === ver.id
+                        ? 'bg-brand-600 text-white'
+                        : 'bg-slate-100 text-slate-600 border border-slate-200'
+                    }`}
+                  >
                     DEFAULT
                   </span>
                 )}
@@ -550,15 +559,23 @@ export function StudentResumePage() {
                         {matchAnalysis.matchPct}% Match
                       </p>
                       <p className="text-xs text-slate-600">
-                        Your profile and resume strongly align with {targetJob.companyId?.name}&apos;s required qualifications.
+                        Your profile and resume strongly align with {targetJob.companyName || targetJob.company || 'the employer'}&apos;s required qualifications.
                       </p>
                     </div>
 
-                    <Link to={`/internships/${targetJob._id || targetJob.id}`}>
-                      <Button variant="primary" size="sm" rightIcon={<ArrowRight className="w-4 h-4" />}>
-                        1-Click Apply to Role
-                      </Button>
-                    </Link>
+                    <Button
+                      type="button"
+                      variant="primary"
+                      size="sm"
+                      onClick={() => {
+                        setApplyInternship(targetJob);
+                        setApplyModalOpen(true);
+                      }}
+                      rightIcon={<ArrowRight className="w-4 h-4" />}
+                      className="font-bold cursor-pointer"
+                    >
+                      1-Click Apply to Role
+                    </Button>
                   </div>
 
                   {/* Matched vs Missing Skill Matrix */}
@@ -804,6 +821,17 @@ export function StudentResumePage() {
           </Button>
         </div>
       </Modal>
+
+      {/* Quick Apply Modal */}
+      <InternshipQuickApplyModal
+        internship={applyInternship || targetJob}
+        isOpen={applyModalOpen}
+        onClose={() => setApplyModalOpen(false)}
+        onAppliedSuccessfully={() => {
+          setApplyModalOpen(false);
+          notify.success(`Application submitted to ${targetJob.companyName || 'the employer'}!`);
+        }}
+      />
     </div>
   );
 }
