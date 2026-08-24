@@ -37,6 +37,7 @@ export function InternshipDetailDrawer({
   isOpen,
   onClose,
   onApplyClick,
+  onQuickApply,
   onToggleSave,
   isSaved,
   onNavigatePrev,
@@ -47,6 +48,14 @@ export function InternshipDetailDrawer({
 }) {
   const { profile } = useSelector((state) => state.student);
   const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'skills' | 'company'
+
+  const handleApply = () => {
+    if (onApplyClick) {
+      onApplyClick(internship);
+    } else if (onQuickApply) {
+      onQuickApply(internship);
+    }
+  };
 
   // Reset tab on internship change
   useEffect(() => {
@@ -668,7 +677,7 @@ export function InternshipDetailDrawer({
             <Button
               variant="primary"
               size="md"
-              onClick={() => onApplyClick(internship)}
+              onClick={handleApply}
               rightIcon={<Send className="w-4 h-4" />}
               className="font-bold text-xs sm:text-sm shadow-sm flex-1 sm:flex-initial"
             >

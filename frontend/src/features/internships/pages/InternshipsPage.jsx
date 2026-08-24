@@ -698,6 +698,7 @@ export function InternshipsPage() {
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         onToggleSave={handleToggleSave}
+        onApplyClick={handleQuickApply}
         onQuickApply={handleQuickApply}
       />
 
