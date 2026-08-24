@@ -758,13 +758,13 @@ export function StudentResumePage() {
             </Card>
 
             {/* Senior Recruiter Tip */}
-            <div className="p-5 rounded-2xl bg-gradient-to-br from-indigo-950 via-slate-900 to-slate-950 text-white shadow-md space-y-2.5">
-              <div className="flex items-center gap-2 text-xs font-bold text-indigo-300 uppercase tracking-wider font-mono">
-                <Zap className="w-4 h-4 text-amber-400" />
+            <div className="p-5 rounded-2xl bg-gradient-to-br from-amber-50/70 via-orange-50/30 to-white border border-amber-200/80 shadow-xs space-y-2.5 relative overflow-hidden">
+              <div className="flex items-center gap-2 text-xs font-bold text-amber-900 uppercase tracking-wider font-mono">
+                <Zap className="w-4 h-4 text-amber-600" />
                 Senior Recruiter Advice
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                When applying to Tier-1 SWE roles (Stripe, Figma, OpenAI), mention specific technologies like <strong className="text-white">Distributed Systems, WebAssembly, or PyTorch</strong> in project bullets for immediate recruiter flagging.
+              <p className="text-xs text-slate-700 leading-relaxed">
+                When applying to Tier-1 SWE roles (Stripe, Figma, OpenAI), mention specific technologies like <strong className="text-slate-900 font-semibold">Distributed Systems, WebAssembly, or PyTorch</strong> in project bullets for immediate recruiter flagging.
               </p>
             </div>
           </div>

@@ -575,24 +575,28 @@ export function StudentDashboard() {
             </Card>
 
             {/* Tech Internship Compensation Transparency */}
-            <div className="p-5 rounded-2xl bg-gradient-to-br from-indigo-900 via-slate-900 to-slate-950 text-white shadow-md space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold font-mono uppercase tracking-wider text-indigo-300 flex items-center gap-1.5">
-                  <Award className="w-4 h-4 text-brand-400" />
+            <div className="p-5 rounded-2xl bg-gradient-to-br from-brand-50/60 via-indigo-50/30 to-white border border-brand-200/80 shadow-xs space-y-3 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-brand-100/40 rounded-full blur-2xl pointer-events-none -mr-10 -mt-10" />
+
+              <div className="relative flex items-center justify-between">
+                <span className="text-xs font-bold font-mono uppercase tracking-wider text-brand-700 flex items-center gap-1.5">
+                  <Award className="w-4 h-4 text-brand-600" />
                   Market Benchmarks
                 </span>
                 <Badge variant="primary" size="xs">
                   Summer 2026
                 </Badge>
               </div>
-              <div className="space-y-1">
-                <p className="text-xl font-bold font-mono text-white">$9,200 — $12,000 / mo</p>
-                <p className="text-xs text-slate-300 leading-relaxed">
+              <div className="relative space-y-1">
+                <p className="text-xl sm:text-2xl font-extrabold font-mono text-slate-900 tracking-tight">
+                  $9,200 — $12,000 <span className="text-xs font-semibold text-slate-500 font-sans">/ mo</span>
+                </p>
+                <p className="text-xs text-slate-600 leading-relaxed">
                   Average compensation for Tier-1 SWE, Research, and Systems internships with housing stipend.
                 </p>
               </div>
-              <Link to="/internships" className="block pt-1">
-                <Button variant="secondary" size="xs" fullWidth className="bg-white/10 hover:bg-white/20 text-white border-white/20">
+              <Link to="/internships" className="relative block pt-1">
+                <Button variant="outline" size="xs" fullWidth className="bg-white hover:bg-brand-50/60 text-brand-700 border-brand-200 font-semibold shadow-2xs">
                   Explore High-Pay Roles
                 </Button>
               </Link>
