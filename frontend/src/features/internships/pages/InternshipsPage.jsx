@@ -246,8 +246,8 @@ export function InternshipsPage() {
   };
 
   const handleRefreshNewArrivals = () => {
-    dispatch(fetchInternships(currentFilters));
     dispatch(clearNewArrivals());
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const splitSelectedInternship = useMemo(() => {
@@ -259,28 +259,39 @@ export function InternshipsPage() {
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
       <SEOHead
         title="Live Tech Internships & Roles — InternHub Discovery"
-        description="Discover thousands of verified tech internships and opportunities from top companies and authorized sources. Continuous 24/7 live synchronization."
+        description="Discover verified tech internships and opportunities from top companies and authorized sources. Continuous 24/7 live synchronization."
       />
 
       <Navbar />
 
       {/* Real-time SSE Incoming Notification Banner */}
       {newArrivalsCount > 0 && (
-        <div className="sticky top-16 z-40 bg-brand-600 text-white shadow-md transition-all">
+        <div className="sticky top-16 z-40 bg-gradient-to-r from-brand-600 via-indigo-600 to-brand-700 text-white shadow-md transition-all animate-slide-down">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold">
-              <BellRing className="w-4 h-4 animate-bounce shrink-0" />
+            <div className="flex items-center gap-2.5 text-xs sm:text-sm font-semibold">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
               <span>
-                {newArrivalsCount} new internship{newArrivalsCount > 1 ? 's' : ''} recently synced and available.
+                {newArrivalsCount} new verified opportunity{newArrivalsCount > 1 ? 'ies' : ''} added live.
               </span>
             </div>
-            <button
-              onClick={handleRefreshNewArrivals}
-              className="inline-flex items-center gap-1.5 px-3 py-1 bg-white text-brand-700 rounded-lg text-xs font-bold hover:bg-brand-50 transition-colors shadow-2xs cursor-pointer shrink-0"
-            >
-              <RefreshCw className="w-3.5 h-3.5" />
-              <span>View new listings</span>
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleRefreshNewArrivals}
+                className="inline-flex items-center gap-1.5 px-3 py-1 bg-white text-brand-700 rounded-lg text-xs font-bold hover:bg-brand-50 transition-colors shadow-2xs cursor-pointer shrink-0"
+              >
+                <span>Jump to newest</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => dispatch(clearNewArrivals())}
+                className="p-1 text-white/80 hover:text-white rounded-lg hover:bg-white/10 transition-colors"
+                title="Dismiss"
+                aria-label="Dismiss banner"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
       )}

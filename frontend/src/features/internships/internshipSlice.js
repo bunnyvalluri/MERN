@@ -137,8 +137,19 @@ export const internshipSlice = createSlice({
       state.hasApplied = false;
     },
     incomingInternshipCreated: (state, action) => {
-      state.newArrivalsCount += 1;
-      state.newArrivals.unshift(action.payload);
+      const incoming = action.payload;
+      if (!incoming) return;
+      const incomingId = incoming._id || incoming.id;
+      const exists = state.internships.some((i) => (i._id || i.id) === incomingId);
+      if (!exists) {
+        state.newArrivalsCount += 1;
+        state.newArrivals.unshift(incoming);
+        // Seamlessly inject directly into active list on page 1 without needing manual reload
+        if (state.filters.page === 1) {
+          state.internships.unshift(incoming);
+          state.pagination.total = (state.pagination.total || 0) + 1;
+        }
+      }
     },
     incomingInternshipExpired: (state, action) => {
       const expiredId = action.payload?.id;
@@ -161,6 +172,8 @@ export const internshipSlice = createSlice({
       .addCase(fetchInternships.fulfilled, (state, action) => {
         state.loading = false;
         state.internships = action.payload.data || [];
+        state.newArrivalsCount = 0;
+        state.newArrivals = [];
         state.pagination = action.payload.pagination || {
           page: 1,
           limit: 12,
