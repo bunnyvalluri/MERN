@@ -275,10 +275,19 @@ export function InternshipsPage() {
                 : 'Verified tech opportunities synchronized and available.'}
             </span>
           </div>
-          <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-white/90">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <button
+            type="button"
+            onClick={async () => {
+              dispatch(fetchInternships(currentFilters));
+              notify.success('Feed refreshed! Latest verified opportunities synchronized.');
+            }}
+            className="inline-flex items-center gap-2 px-3 py-1 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white rounded-lg text-xs font-semibold backdrop-blur-xs transition-all border border-white/20 shadow-xs cursor-pointer group shrink-0"
+            title="Click to check for live updates and refresh feed"
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse group-hover:scale-125 transition-transform" />
             <span>Live 24/7 Verified Feed</span>
-          </div>
+            <RefreshCw className="w-3 h-3 text-white/90 group-hover:rotate-180 transition-transform duration-500" />
+          </button>
         </div>
       </div>
 
