@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchStudentProfile, deleteStudentResume } from '../studentSlice.js';
@@ -108,6 +108,7 @@ export function StudentResumePage() {
   const [dragOver, setDragOver] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [activeTab, setActiveTab] = useState('preview'); // 'preview' | 'signals' | 'ats' | 'tailor'
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     dispatch(fetchStudentProfile());
@@ -247,25 +248,16 @@ export function StudentResumePage() {
                 Copy Text
               </Button>
 
-              <input
-                type="file"
-                id="resume-header-input"
-                accept=".pdf,application/pdf"
-                onChange={handleFileSelect}
-                className="hidden"
-              />
-              <label htmlFor="resume-header-input">
-                <Button
-                  variant="primary"
-                  size="md"
-                  as="span"
-                  isLoading={uploading}
-                  leftIcon={<UploadCloud className="w-4 h-4" />}
-                  className="shadow-sm text-xs font-semibold cursor-pointer"
-                >
-                  Upload New Version
-                </Button>
-              </label>
+              <Button
+                variant="primary"
+                size="md"
+                onClick={() => fileInputRef.current?.click()}
+                isLoading={uploading}
+                leftIcon={<UploadCloud className="w-4 h-4" />}
+                className="shadow-sm text-xs font-semibold cursor-pointer"
+              >
+                Upload New Version
+              </Button>
             </div>
           </div>
         </div>
@@ -609,6 +601,7 @@ export function StudentResumePage() {
 
             {/* Drag & Drop Upload Replacement */}
             <div
+              onClick={() => fileInputRef.current?.click()}
               onDragOver={(e) => {
                 e.preventDefault();
                 setDragOver(true);
@@ -650,27 +643,31 @@ export function StudentResumePage() {
                 </span>
               </div>
 
+              {/* Hidden Global File Input */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf,application/pdf"
+                onChange={handleFileSelect}
+                className="hidden"
+              />
+
               {/* Select Button */}
               <div className="pt-2">
-                <input
-                  type="file"
-                  id="resume-bottom-input"
-                  accept=".pdf,application/pdf"
-                  onChange={handleFileSelect}
-                  className="hidden"
-                />
-                <label htmlFor="resume-bottom-input">
-                  <Button
-                    variant="primary"
-                    size="md"
-                    as="span"
-                    isLoading={uploading}
-                    leftIcon={<UploadCloud className="w-4 h-4" />}
-                    className="font-bold text-xs sm:text-sm shadow-sm cursor-pointer hover:shadow-md transition-all px-6 py-2.5"
-                  >
-                    Select File from Device
-                  </Button>
-                </label>
+                <Button
+                  type="button"
+                  variant="primary"
+                  size="md"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    fileInputRef.current?.click();
+                  }}
+                  isLoading={uploading}
+                  leftIcon={<UploadCloud className="w-4 h-4" />}
+                  className="font-bold text-xs sm:text-sm shadow-sm cursor-pointer hover:shadow-md transition-all px-6 py-2.5"
+                >
+                  Select File from Device
+                </Button>
               </div>
             </div>
           </div>
