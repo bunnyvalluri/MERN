@@ -265,16 +265,30 @@ export function InternshipsPage() {
       <Navbar />
 
       {/* Live Synced Opportunities Banner (100% Real Dynamic Total Count) */}
-      <div className="bg-brand-600 text-white shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3 text-xs sm:text-sm font-bold">
-          <div className="flex items-center gap-2.5">
-            <BellRing className="w-4 h-4 text-white shrink-0" />
-            <span>
+      <div className="bg-brand-600 hover:bg-brand-700 transition-colors text-white shadow-xs select-none">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm font-bold">
+          <button
+            type="button"
+            onClick={async () => {
+              dispatch(fetchInternships(currentFilters));
+              notify.success(`Synchronized ${(pagination?.total || internships?.length || 0)} live opportunities from MongoDB Atlas!`);
+            }}
+            className="flex items-center gap-2.5 hover:opacity-95 active:scale-[0.99] transition-transform text-left cursor-pointer group"
+            title="Click to refresh and get latest live updates"
+          >
+            <div className="p-1 rounded-md bg-white/20 group-hover:bg-white/30 transition-colors">
+              <BellRing className="w-4 h-4 text-white shrink-0 group-hover:animate-bounce" />
+            </div>
+            <span className="underline decoration-white/40 group-hover:decoration-white transition-all underline-offset-2">
               {(pagination?.total || internships?.length || 0) > 0
                 ? `${pagination?.total || internships?.length} verified tech ${(pagination?.total || internships?.length) === 1 ? 'internship' : 'internships'} live and available.`
                 : 'Verified tech opportunities synchronized and available.'}
             </span>
-          </div>
+            <span className="hidden md:inline-flex items-center gap-1 text-[10px] bg-white/20 text-white px-2 py-0.5 rounded-full font-mono font-medium">
+              Click to Sync
+            </span>
+          </button>
+
           <button
             type="button"
             onClick={async () => {
